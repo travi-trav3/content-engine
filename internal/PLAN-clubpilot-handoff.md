@@ -293,6 +293,27 @@ Done 2026-09-28: `travi-trav3/content-engine` created; this plan and SOW v2 comm
 `internal/`; SOW v2 created as a Google Doc next to the Sep 22 draft.
 
 1. You send SOW v2 to Byron. Its section 7 table is the dependency checklist, so no separate email.
-2. Build starts in this repo: skeleton, portable render harness, gates ported with their
-   regression fixtures, CI. None of it depends on Byron's accounts.
-3. Every day the section 7 items slip moves acceptance a day.
+2. Every day the section 7 items slip moves acceptance a day.
+
+## 11. Build log
+
+### 2026-09-28, increment 1 (branch `claude/sweet-gauss-y7r4ct`)
+
+Done:
+- Gates ported to `engine/gates`, paths resolved through `engine/lib/workspace.js`. The Aug 26
+  regression suite passes against `brands/clubpilot`, plus one new case proving the operational
+  facts file resolves (the gate used to skip that check silently when the file was missing).
+- Renderer in `engine/render`: layout + props to PNG at IG 1080x1350 and LI 1200x1500 from one
+  1080x1350 design canvas. Pinned Chromium 1194 via playwright-core 1.56.1. Verifies fonts and
+  images, auto-fits type, flags overflow, off-canvas text and single-word lines.
+- Layout 1 (type card) on dark and light, with goldens. CI runs both suites on every push.
+
+Needs Byron's sign-off (add to the brand files review):
+- The light surface. Club Pilot's current system has none; it is built from the brand's own ink and
+  greens on off-white, with the deep brand green for headline emphasis because the bright greens are
+  under 3:1 contrast on paper.
+- The on-light wordmark, derived by recoloring the white letters of the on-dark file. BRAND.md
+  already lists the on-light lockup as an open gap; an official file replaces it.
+
+Next increment: layouts 2 to 8 (the rest of the light set, message thread, escalation thread, hub),
+then generation against the OpenAI API, then the Buffer client.
