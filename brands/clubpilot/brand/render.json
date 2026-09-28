@@ -6,5 +6,10 @@
     "dark": "assets/wordmark-on-dark.svg",
     "light": "assets/wordmark-on-light.svg",
     "alt": "clubpilot"
+  },
+  "thread": {
+    "channelLabel": "Texting",
+    "poweredBy": "powered by Club Pilot",
+    "handoffStatus": "Marked for the club team"
   }
 }

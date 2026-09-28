@@ -20,9 +20,11 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 const { workspace } = require('../engine/lib/workspace');
-const { createRenderer, SIZES } = require('../engine/render/render');
+const { createRenderer, loadLayout, validateProps, SIZES } = require('../engine/render/render');
 
 const WS = workspace();
+const LAYOUTS_DIR = path.join(__dirname, '..', 'layouts');
+const renderBrand = () => JSON.parse(fs.readFileSync(path.join(WS.brandDir, 'render.json'), 'utf8'));
 const GOLDENS = path.join(WS.dir, 'goldens');
 const OUT = path.join(__dirname, 'output');
 const UPDATE = process.env.UPDATE_GOLDENS === '1';
@@ -75,7 +77,30 @@ function layoutsWithFixtures() {
     .map((f) => ({ id: path.basename(f, '.json'), props: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) }));
 }
 
+function checkLayoutContract() {
+  console.log('== every layout keeps the layout contract ==');
+  const tokens = fs.readFileSync(path.join(WS.brandDir, 'tokens.css'), 'utf8');
+  const ids = fs.readdirSync(LAYOUTS_DIR, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && !d.name.startsWith('_')).map((d) => d.name);
+  for (const id of ids) {
+    const layout = loadLayout(id);
+    check(`${id}: id matches its folder`, layout.id === id, layout.id);
+    check(`${id}: has a test-props fixture`, fs.existsSync(path.join(WS.dir, 'test-props', `${id}.json`)));
+    const missing = layout.surfaces.filter((s) => !tokens.includes(`.surface-${s}`));
+    check(`${id}: every surface is defined by the brand tokens`, missing.length === 0, missing.join(', '));
+    const src = fs.readFileSync(path.join(LAYOUTS_DIR, id, 'index.js'), 'utf8');
+    const hexes = src.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
+    check(`${id}: uses tokens, not hex colors`, hexes.length === 0, hexes.join(', '));
+  }
+  for (const file of fs.readdirSync(path.join(LAYOUTS_DIR, '_shared'))) {
+    const src = fs.readFileSync(path.join(LAYOUTS_DIR, '_shared', file), 'utf8');
+    const hexes = src.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
+    check(`_shared/${file}: uses tokens, not hex colors`, hexes.length === 0, hexes.join(', '));
+  }
+}
+
 (async () => {
+  checkLayoutContract();
   const renderer = await createRenderer();
   try {
     console.log('== every layout, surface and size renders clean and matches its golden ==');
@@ -122,6 +147,35 @@ function layoutsWithFixtures() {
       await renderer.render({ layout: 'type-card', size: 'ig', props: { headline: 'Fine headline here', cta: 'Book now' } });
     } catch (e) { threw = e.message; }
     check('an unknown prop is rejected', /not a prop/.test(threw || ''), threw || 'did not throw');
+
+    console.log('== prop validation ==');
+    const fixture = (id) => JSON.parse(fs.readFileSync(path.join(WS.dir, 'test-props', `${id}.json`), 'utf8'));
+    const rejects = (label, id, mutate, pattern) => {
+      const props = fixture(id);
+      mutate(props);
+      const errors = validateProps(loadLayout(id), props);
+      check(`rejects ${label}`, errors.some((e) => pattern.test(e)), errors.join('; ') || 'accepted');
+    };
+    rejects('a list with too few items', 'numbered-list', (p) => { p.items = p.items.slice(0, 2); }, /at least 3/);
+    rejects('a list item over its limit', 'numbered-list', (p) => { p.items[0] = 'x'.repeat(49); }, /items\[0\]/);
+    rejects('a stat without a source', 'stat-card', (p) => { delete p.source; }, /source is required/);
+    rejects('a message from anyone but member or club', 'message-thread',
+      (p) => { p.messages[1].from = 'assistant'; }, /from must be one of/);
+    rejects('an unknown field on a message', 'message-thread',
+      (p) => { p.messages[0].avatar = 'CP'; }, /avatar is not an allowed field/);
+    rejects('an escalation continued past the handoff', 'escalation-thread',
+      (p) => { p.followUp = 'You are all set for 8:10.'; }, /followUp is not a prop/);
+    rejects('a hub channel with an unknown icon', 'communication-hub',
+      (p) => { p.channels[0].icon = 'logo'; }, /icon must be one of/);
+
+    console.log('== the escalation thread ends at the handoff ==');
+    const esc = fixture('escalation-thread');
+    const html = loadLayout('escalation-thread').render({ props: esc, brand: renderBrand(), surface: 'dark' });
+    const beats = [...html.matchAll(/class="bubble (member|club)"/g)].map((m) => m[1]);
+    check('four beats: member, club, member, club', beats.join(',') === 'member,club,member,club', beats.join(','));
+    const lastBubble = html.lastIndexOf('class="bubble ');
+    const afterLast = html.slice(lastBubble).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    check('the last bubble is the handoff', afterLast.includes(esc.handoff.split(' ').slice(-3).join(' ')), afterLast.slice(0, 120));
   } finally {
     await renderer.close();
   }

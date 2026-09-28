@@ -1,0 +1,11 @@
+{
+  "headline": "One less call",
+  "emphasis": "to the front desk.",
+  "sender": "Fairhaven Country Club",
+  "timestamp": "Saturday · 5:40 PM",
+  "messages": [
+    { "from": "member", "text": "What time does the range close tonight?" },
+    { "from": "club", "text": "The range closes at 8pm tonight, per the facility hours." }
+  ],
+  "signoff": "Answered from the club's own hours, by text."
+}

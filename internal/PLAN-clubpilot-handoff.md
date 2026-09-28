@@ -315,5 +315,23 @@ Needs Byron's sign-off (add to the brand files review):
 - The on-light wordmark, derived by recoloring the white letters of the on-dark file. BRAND.md
   already lists the on-light lockup as an open gap; an official file replaces it.
 
-Next increment: layouts 2 to 8 (the rest of the light set, message thread, escalation thread, hub),
-then generation against the OpenAI API, then the Buffer client.
+### 2026-09-28, increment 2
+
+Done:
+- Layouts 2 to 8: numbered list, stat card, quote card, question card (light and dark), message
+  thread, escalation thread, communication hub (dark). 26 goldens, all clean at their largest type.
+- The escalation thread takes exactly four beats (question, offer, reply, handoff) plus the inbox
+  status chip. There is no prop for anything after the handoff, so the capability boundary's safe
+  pattern is the only thread this layout can draw.
+- The stat card renders one number and refuses to render without a source.
+- Fitting is per box, so a long chat bubble no longer shrinks the headline. Headlines use
+  `text-wrap: balance` and checked text `text-wrap: pretty`; the type card now wraps "There is no /
+  best channel." exactly as the hand-set batch-5 original did.
+- Tests: layout contract (fixture, surfaces defined by the brand, no hex colors), prop validation,
+  escalation structure. `engine/render/contact-sheet.js` for batch summaries.
+
+Needs Byron's sign-off, in addition to the above: the handoff status wording "Marked for the club
+team".
+
+Next increment: layouts 9 to 15 (product screenshot, proof bar, the four photo layouts, carousel),
+which need the photo library; then generation against the OpenAI API; then the Buffer client.

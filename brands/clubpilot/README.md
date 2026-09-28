@@ -10,3 +10,6 @@ repository at handoff. It is removed from this repository before the engine is u
 - `content/batch-01` to `batch-05` are the shipped batches. The gate regression suite runs against them.
 - The light surface in `tokens.css` and `assets/wordmark-on-light.svg` are provisional and need Byron's
   sign-off. The on-light wordmark is the on-dark file with the white letters recolored to canvas ink.
+- `render.json` `thread.handoffStatus` ("Marked for the club team") is also provisional. It must stay
+  within the capability boundary's verified claim: staff see the question in the inbox and the thread
+  is marked. No push alerts, no texts to staff.

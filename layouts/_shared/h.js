@@ -23,4 +23,14 @@ const wordmark = (brand, surface) => {
   return `<img class="wordmark" src="/brand/${esc(src)}" alt="${esc(brand.wordmark.alt || brand.name || '')}">`;
 };
 
-module.exports = { esc, words, wordmark };
+/** Headline words, with an optional second clause in the accent color on its own line. */
+const headlineWords = (headline, emphasis) => words(headline)
+  + (emphasis ? ` <span class="accent emphasis">${words(emphasis)}</span>` : '');
+
+const eyebrow = (text) => (text ? `<div class="eyebrow">${esc(text)}</div>` : '');
+
+/** Initials for a sender avatar: first letters of the first two words. */
+const initials = (name) => String(name).trim().split(/\s+/).slice(0, 2)
+  .map((w) => w[0]).join('').toUpperCase();
+
+module.exports = { esc, words, wordmark, headlineWords, eyebrow, initials };

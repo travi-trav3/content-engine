@@ -38,6 +38,43 @@ html, body { background: transparent; }
 }
 
 .headline .accent { color: var(--accent); }
+.headline .emphasis { display: block; }
+
+.eyebrow {
+  font-size: 24px;
+  font-weight: var(--fw-body);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+
+/* Main content region between the wordmark and the footer. */
+.region {
+  position: absolute;
+  left: 81px;
+  right: 81px;
+  top: 220px;
+  bottom: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.foot {
+  position: absolute;
+  left: 81px;
+  right: 81px;
+  bottom: 88px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 22px;
+  color: var(--ink-muted);
+}
+.foot .rule { flex: 1; height: 1px; background: var(--line); }
+.foot .nowrap { white-space: nowrap; }
 
 .body-copy {
   font-weight: var(--fw-body);
@@ -49,3 +86,9 @@ html, body { background: transparent; }
 
 /* One span per word so the renderer can find single-word lines. */
 .w { display: inline; }
+
+/* Let the browser avoid orphans before the fitter has to shrink type:
+   balanced headline lines, and no lone last word in running text. */
+.headline { text-wrap: balance; }
+[data-lines] { text-wrap: pretty; }
+.headline[data-lines] { text-wrap: balance; }

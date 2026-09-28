@@ -61,4 +61,4 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
 - Not built yet: generation (OpenAI), photo library, Buffer client, feedback loop, source mode,
-  scheduled workflows, layouts 2 to 15.
+  scheduled workflows, layouts 9 to 15.

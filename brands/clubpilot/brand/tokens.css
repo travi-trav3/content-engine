@@ -45,6 +45,19 @@
   --cp-slate-muted: #95a0b3;
   --cp-azure-top: #009ee8;
   --cp-azure-bottom: #006fa7;
+
+  /* ---- Device and message thread (same on every surface) ---- */
+  --device: #05080f;
+  --device-edge: rgba(255, 255, 255, 0.14);
+  --device-screen: #070b13;
+  --device-header: #0b1019;
+  --device-ink: #ffffff;
+  --device-muted: var(--cp-slate-muted);
+  --avatar-bg: #1c2533;
+  --avatar-ink: var(--cp-green-confirm);
+  --bubble-out: linear-gradient(180deg, var(--cp-azure-top), var(--cp-azure-bottom));
+  --bubble-in: var(--cp-slate);
+  --bubble-ink: #ffffff;
 }
 
 /* Dark: the primary Club Pilot surface. */

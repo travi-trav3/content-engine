@@ -1,0 +1,12 @@
+{
+  "headline": "Every channel your members use.",
+  "emphasis": "One place to answer them.",
+  "channels": [
+    { "label": "Email", "icon": "email" },
+    { "label": "Text", "icon": "text" },
+    { "label": "Mobile app", "icon": "app" },
+    { "label": "AI Assist", "icon": "assistant" }
+  ],
+  "hubLabel": "One inbox",
+  "hubDetail": "One history for every member"
+}

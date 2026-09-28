@@ -60,16 +60,59 @@ function loadLayout(id) {
   return require(file);
 }
 
+/**
+ * Prop specs:
+ *   { required, maxChars }                          text (the default type)
+ *   { type: 'enum', values: [...] }                 one of a fixed set
+ *   { type: 'list', item: 'text', maxChars,         array of strings
+ *     minItems, maxItems }
+ *   { type: 'list', item: { field: spec, ... },     array of objects
+ *     minItems, maxItems }
+ */
+function checkValue(name, spec, value, errors) {
+  const type = spec.type || 'text';
+  const empty = value === undefined || value === null
+    || (type !== 'list' && String(value).trim() === '')
+    || (type === 'list' && Array.isArray(value) && value.length === 0);
+  if (empty) {
+    if (spec.required) errors.push(`${name} is required`);
+    return;
+  }
+  if (type === 'text') {
+    if (typeof value !== 'string') errors.push(`${name} must be text`);
+    else if (spec.maxChars && value.length > spec.maxChars) {
+      errors.push(`${name} is ${value.length} characters; the layout allows ${spec.maxChars}`);
+    }
+  } else if (type === 'enum') {
+    if (!spec.values.includes(value)) errors.push(`${name} must be one of: ${spec.values.join(', ')}`);
+  } else if (type === 'list') {
+    if (!Array.isArray(value)) { errors.push(`${name} must be a list`); return; }
+    if (spec.minItems && value.length < spec.minItems) errors.push(`${name} needs at least ${spec.minItems} items`);
+    if (spec.maxItems && value.length > spec.maxItems) errors.push(`${name} allows at most ${spec.maxItems} items`);
+    value.forEach((item, i) => {
+      if (spec.item === 'text') {
+        checkValue(`${name}[${i}]`, { required: true, maxChars: spec.maxChars }, item, errors);
+      } else {
+        checkObject(`${name}[${i}]`, spec.item, item, errors);
+      }
+    });
+  }
+}
+
+function checkObject(name, fields, value, errors) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    errors.push(`${name} must be an object`);
+    return;
+  }
+  for (const [key, spec] of Object.entries(fields)) checkValue(`${name}.${key}`, spec, value[key], errors);
+  for (const key of Object.keys(value)) {
+    if (!(key in fields)) errors.push(`${name}.${key} is not an allowed field`);
+  }
+}
+
 function validateProps(layout, props) {
   const errors = [];
-  for (const [key, spec] of Object.entries(layout.props)) {
-    const value = props[key];
-    const empty = value === undefined || value === null || String(value).trim() === '';
-    if (spec.required && empty) errors.push(`${key} is required`);
-    if (!empty && spec.maxChars && String(value).length > spec.maxChars) {
-      errors.push(`${key} is ${String(value).length} characters; the layout allows ${spec.maxChars}`);
-    }
-  }
+  for (const [key, spec] of Object.entries(layout.props)) checkValue(key, spec, props[key], errors);
   for (const key of Object.keys(props)) {
     if (!(key in layout.props)) errors.push(`${key} is not a prop of ${layout.id}`);
   }
@@ -109,9 +152,12 @@ function documentFor({ layout, props, surface, brand }) {
 }
 
 /**
- * Runs in the page. Loads every brand font weight, then steps through each
- * [data-fit] element's font sizes together (largest first) until nothing
- * overflows and no [data-lines] line holds a single word.
+ * Runs in the page. Loads every brand font weight, then fits each
+ * [data-fit-box] on its own: the [data-fit] elements inside a box step down
+ * through their font sizes together (largest first) until the box does not
+ * overflow and no [data-lines] line in it holds a single word. Elements
+ * outside any box fit as one more group. Boxes are independent so that a
+ * long chat bubble cannot shrink the headline above the phone.
  */
 async function fitAndCheck({ family, weights }) {
   const issues = [];
@@ -129,19 +175,22 @@ async function fitAndCheck({ family, weights }) {
   const canvas = document.getElementById('canvas').getBoundingClientRect();
   const fitEls = [...document.querySelectorAll('[data-fit]')]
     .map((el) => ({ el, sizes: JSON.parse(el.dataset.fit) }));
-  const boxes = [...document.querySelectorAll('[data-fit-box]')];
   const lineEls = [...document.querySelectorAll('[data-lines]')];
-  const steps = Math.max(1, ...fitEls.map((f) => f.sizes.length));
   const label = (el) => `.${[...el.classList].join('.')}`;
+  const boxOf = (el) => el.closest('[data-fit-box]');
+  const groups = [...document.querySelectorAll('[data-fit-box]'), null].map((box) => ({
+    box,
+    fits: fitEls.filter((f) => boxOf(f.el) === box),
+    lines: lineEls.filter((el) => boxOf(el) === box),
+  })).filter((g) => g.box || g.fits.length || g.lines.length);
 
-  const measure = () => {
+  const measure = (group) => {
     const problems = [];
-    for (const box of boxes) {
-      if (box.scrollHeight > box.clientHeight + 1 || box.scrollWidth > box.clientWidth + 1) {
-        problems.push({ rule: 'render.overflow', detail: `${label(box)} holds ${box.scrollHeight}px of content in ${box.clientHeight}px.` });
-      }
+    const { box } = group;
+    if (box && (box.scrollHeight > box.clientHeight + 1 || box.scrollWidth > box.clientWidth + 1)) {
+      problems.push({ rule: 'render.overflow', detail: `${label(box)} holds ${box.scrollHeight}px of content in ${box.clientHeight}px.` });
     }
-    for (const el of lineEls) {
+    for (const el of group.lines) {
       const lines = new Map();
       for (const w of el.querySelectorAll('.w')) {
         const r = w.getBoundingClientRect();
@@ -152,6 +201,9 @@ async function fitAndCheck({ family, weights }) {
         if (!lines.has(top)) lines.set(top, []);
         lines.get(top).push(w.textContent);
       }
+      // data-lines="orphans": a one-line element may hold one word ("Yes
+      // please" bubbles, short list items); only a wrapped last word fails.
+      if (el.dataset.lines === 'orphans' && lines.size < 2) continue;
       for (const words of lines.values()) {
         if (words.length === 1) {
           problems.push({ rule: 'render.singleWordLine', detail: `"${words[0]}" sits alone on a line in ${label(el)}.` });
@@ -161,17 +213,24 @@ async function fitAndCheck({ family, weights }) {
     return problems;
   };
 
-  let step = -1;
-  let problems = [];
-  for (let i = 0; i < steps; i += 1) {
-    for (const f of fitEls) f.el.style.fontSize = `${f.sizes[Math.min(i, f.sizes.length - 1)]}px`;
-    problems = measure();
-    if (!problems.length) { step = i; break; }
+  // A group that cannot fit keeps its smallest sizes and reports why.
+  const fitSteps = [];
+  for (const group of groups) {
+    const steps = Math.max(1, ...group.fits.map((f) => f.sizes.length));
+    let step = -1;
+    let problems = [];
+    for (let i = 0; i < steps; i += 1) {
+      for (const f of group.fits) f.el.style.fontSize = `${f.sizes[Math.min(i, f.sizes.length - 1)]}px`;
+      problems = measure(group);
+      if (!problems.length) { step = i; break; }
+    }
+    fitSteps.push(step);
+    issues.push(...problems);
   }
-  issues.push(...problems);
   return {
     issues,
-    fitStep: step,
+    // Largest step any group needed, or -1 when some group could not fit.
+    fitStep: fitSteps.includes(-1) ? -1 : Math.max(0, ...fitSteps),
     fontSizes: fitEls.map((f) => ({ element: label(f.el), px: parseFloat(f.el.style.fontSize) })),
   };
 }
