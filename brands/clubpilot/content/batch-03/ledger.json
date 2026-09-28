@@ -1,0 +1,566 @@
+{
+  "batch": "club-pilot-batch-03",
+  "window": "2026-08-13 to 2026-08-31",
+  "buffer": {
+    "organizationId": "6a138b7d82bb2ed009fed356",
+    "organizationName": "Applied Intelligence Co.",
+    "timezone": "America/Los_Angeles",
+    "anchoredTo": "get_account currentTime 2026-08-11T21:54:40-07:00",
+    "channels": {
+      "instagram": {
+        "id": "6a6141c7e2638b94d7b88ba3",
+        "name": "club.pilot.app"
+      },
+      "linkedin_page": {
+        "id": "6a6113cde2638b94d7b6d917",
+        "name": "Club Pilot (company page)"
+      },
+      "linkedin_byron_locked": {
+        "id": "6a6113cde2638b94d7b6d916",
+        "name": "Byron White (API-locked, cannot post)"
+      }
+    }
+  },
+  "hosting": {
+    "repo": "travi-trav3/clubpilot-social-assets",
+    "urlBase": "https://raw.githubusercontent.com/travi-trav3/clubpilot-social-assets/main/batch-03"
+  },
+  "context": "First batch generated under the capability boundary landed 2026-08-12. Every concept either names the club document its answer comes from or stops at the staff handoff. The three posts Byron flagged on Aug 6 were deleted by the operator, leaving Instagram empty from Aug 12 to Aug 18; this batch fills that gap and runs to month end. Pre-existing and untouched: LI founder post Aug 14, IG walkthrough ask Aug 18.",
+  "inherited": [
+    {
+      "bufferId": "6a6408c612fafbaf49cc9321",
+      "channel": "linkedin_page",
+      "dueAt": "2026-08-14T12:35:00-07:00",
+      "note": "b2-founder, scheduled, capability-clean, untouched"
+    },
+    {
+      "bufferId": "6a6408cd12fafbaf49cc9369",
+      "channel": "instagram",
+      "dueAt": "2026-08-18T18:15:00-07:00",
+      "note": "b2-single-ask, scheduled, capability-clean, untouched"
+    }
+  ],
+  "posts": [
+    {
+      "post": 1,
+      "id": "b3-01-escalation-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "template": "b3-escalation-li",
+      "dueAt": "2026-08-13T08:10:00-07:00",
+      "file": "b3-escalation-li.png",
+      "dimensions": "1200x1500",
+      "headline": "It does not guess. It gets a person.",
+      "subhead": "The handoff is the feature, not the fallback.",
+      "caption": "Most demos show the assistant answering everything. The more useful moment is the one where it does not.\n\nWhen a member asks something the club has not published, the assistant says so, offers to route the question to staff, and marks the thread for a human. A person picks it up from there and answers in their own voice.\n\nAn assistant that admits the edge of what it knows is the one an operator can put in front of members.",
+      "firstComment": "This is the part operators ask about first, usually phrased as a worry: what happens when it does not know? It says it does not know. That is the whole answer, and it is the reason the rest of it gets trusted.",
+      "altText": "Dark card with a phone thread. A member asks whether the locker room renovation is finished. The assistant replies that it does not have that one and offers to send the question to the team, then confirms it was sent.",
+      "thread": [
+        {
+          "from": "member",
+          "text": "Is the locker room renovation finished?"
+        },
+        {
+          "from": "assistant",
+          "text": "I don't have that one. Want me to send it to the team?"
+        },
+        {
+          "from": "member",
+          "text": "Yes please"
+        },
+        {
+          "from": "assistant",
+          "text": "Sent. Someone will get back to you shortly."
+        }
+      ],
+      "assets": [
+        {
+          "source": "batch-03/b3-escalation-li.png",
+          "altText": "Dark card with a phone thread. A member asks whether the locker room renovation is finished. The assistant replies that it does not have that one and offers to send the question to the team, then confirms it was sent."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "escalation",
+      "endsAtHandoff": true,
+      "sourceDocument": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c06ebb9bf3c9a99f6af7f",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "thread",
+      "earnsItsPlace": "Reproduces Club Pilot's own escalation script verbatim, including the 'Escalate to human' status marker from the product. No competitor can show this thread because it is our product behaving.",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 2,
+      "id": "b3-02-dawn-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "template": "b3-dawn-ig",
+      "dueAt": "2026-08-13T19:05:00-07:00",
+      "file": "b3-dawn-ig-v2.png",
+      "dimensions": "1080x1350",
+      "headline": "She asked at 6:12am. The club answered at 6:12am.",
+      "subhead": "The hours were already posted. Reaching them at 6am is the new part.",
+      "caption": "Early risers do not wait for the pro shop to open to find out when the pro shop opens.\n\nThe hours were already written down. What changed is that a member can reach them at six in the morning, over text, without waiting for someone to unlock a door.\n\nThat is the whole trick. Not a smarter club. A reachable one.",
+      "firstComment": "The unglamorous truth about member experience: most of it is information the club already has, arriving at the moment a member actually needs it.",
+      "altText": "Early morning light through cypress trees on an empty golf course; headline She asked at 6:12am. The club answered at 6:12am.",
+      "assets": [
+        {
+          "source": "batch-03/b3-dawn-ig-v2.png",
+          "altText": "Early morning light through cypress trees on an empty golf course; headline She asked at 6:12am. The club answered at 6:12am."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "facility hours sheet",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c06f88fc995b827b09965",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "revisionNote": "v1 subhead read 'Straight from the hours the club already published.' Operator flagged it as unclear: it stated the source-document rule instead of saying what changed for the member. Rewritten and reshipped as v2 under a new filename, per the CLAUDE.md rule that raw.githubusercontent keeps serving stale bytes for an overwritten path.",
+      "format": "photo",
+      "earnsItsPlace": "The claim is specific to how our assistant works: it answers from a document the club uploaded, at an hour nobody is staffing. A generic SMS tool cannot make the from-your-own-hours claim.",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 4,
+      "id": "b3-04-list-ig",
+      "channel": "instagram",
+      "pillar": "Operator POV, day in the life",
+      "template": "b3-list-ig",
+      "dueAt": "2026-08-17T07:40:00-07:00",
+      "file": "b3-list-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Five things your club already wrote down.",
+      "subhead": "All five get asked again this week.",
+      "text": "The dress code. The guest policy. Holiday hours. Aeration dates. Junior access.",
+      "caption": "Your club has already answered these. They live in a policy PDF, a board letter, a seasonal notice, and somewhere in last spring's email.\n\nMembers are not going to dig for any of it. So the questions come back to the same two people at the front desk, every week, all season.\n\nThe work is not writing the answers. It is making them reachable.",
+      "firstComment": "Worth an audit at your own club: pick the five questions your team answers most, then find where each answer already exists in writing. The overlap is usually total.",
+      "altText": "Dark card with a numbered list of five club documents: the dress code, the guest policy, holiday hours, aeration dates, junior access. Headline Five things your club already wrote down.",
+      "assets": [
+        {
+          "source": "batch-03/b3-list-ig.png",
+          "altText": "Dark card with a numbered list of five club documents: the dress code, the guest policy, holiday hours, aeration dates, junior access. Headline Five things your club already wrote down."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c0fb432a67c68e33fa3fa",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "list",
+      "earnsItsPlace": "Names the five club document classes our assistant is actually trained on. It is the front-desk-leak thesis stated as an inventory, which is our argument, not a general one.",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 5,
+      "id": "b3-05-math-li",
+      "channel": "linkedin_page",
+      "pillar": "The front desk leak",
+      "template": "b3-math-li",
+      "dueAt": "2026-08-19T09:20:00-07:00",
+      "file": "b3-math-li.png",
+      "dimensions": "1200x1500",
+      "headline": "Two minutes each. Four hundred a week.",
+      "subhead": "THE MATH NOBODY RUNS",
+      "text": "Thirteen hours of someone's week, spent saying things the club has already written down.",
+      "caption": "Time one of the routine questions your front desk answers. It runs about two minutes start to finish, including the pause while someone looks it up.\n\nNow count them. Most clubs land north of four hundred a week in season. That is roughly thirteen hours, most of a role, spent repeating what the club already published.\n\nThis is not a staffing problem and the fix is not a bigger desk. It is making the written answers reachable without a person in the middle.",
+      "firstComment": "The number that lands hardest is usually not the hours. It is what the team would rather be doing with them, which is almost always the members standing in front of them.",
+      "altText": "Dark card, headline Two minutes each. Four hundred a week, with the line about thirteen hours spent repeating what the club already published.",
+      "assets": [
+        {
+          "source": "batch-03/b3-math-li.png",
+          "altText": "Dark card, headline Two minutes each. Four hundred a week, with the line about thirteen hours spent repeating what the club already published."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c0fc81b970aa73b3ba656",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "data",
+      "earnsItsPlace": "Puts a number on the labour cost of repeated questions, which is the specific problem we sell against and the one Byron built the company around.",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 6,
+      "id": "b3-06-docs-list-ig",
+      "channel": "instagram",
+      "pillar": "Intelligent communication",
+      "template": "b3-docs-list-ig",
+      "dueAt": "2026-08-20T18:35:00-07:00",
+      "file": "b3-docs-list-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Three questions. Three documents.",
+      "caption": "Three questions your club has already answered, in writing, somewhere.\n\nThe guest policy covers Saturday guests. The holiday schedule covers the 4th. The seasonal notice covers aeration. All three were written weeks or months before anyone asked.\n\nThe assistant answers from those documents, in the club's own wording, at whatever hour the question arrives. The work was never writing the answers. It was making them reachable.",
+      "firstComment": "Which is also why the setup work matters. What the club uploads is what the assistant can answer. Clubs that put real documents in get real answers out.",
+      "altText": "Dark card mapping three member questions to the club document that answers each one: guest policy, holiday hours, seasonal notice. Headline Three questions. Three documents.",
+      "assets": [
+        {
+          "source": "batch-03/b3-docs-list-ig.png",
+          "altText": "Dark card mapping three member questions to the club document that answers each one: guest policy, holiday hours, seasonal notice. Headline Three questions. Three documents."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "guest policy, holiday hours, seasonal operations notice",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c0fd2c3d422e62bd8ffe8",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "list",
+      "subhead": null,
+      "text": "\"How many guests can I bring Saturday?\" Guest policy. \"Is the pool open on the 4th?\" Holiday hours. \"When do the greens get punched?\" Seasonal notice.",
+      "rotationNote": "Re-cut from thread to list on 2026-08-12. Intelligent communication already runs a thread on Aug 13, and rotation-gate.js hard-fails a pillar using the same format twice in one batch.",
+      "earnsItsPlace": "Maps each member question to the club document that answers it. That mapping IS the product mechanism, and it is the thing capability-boundary.md exists to protect.",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 7,
+      "id": "b3-07-tomorrow-thread-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "template": "b3-tomorrow-thread-ig",
+      "dueAt": "2026-08-22T11:50:00-07:00",
+      "file": "b3-tomorrow-thread-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Asked in the parking lot. Answered in the parking lot.",
+      "subhead": null,
+      "caption": "Nobody wants to end a good round standing at a counter, waiting to find out whether tomorrow is cart path only.\n\nThe conditions were posted that afternoon. The member just needed a way to reach them without a phone call, at the exact moment they were thinking about it.\n\nElevated is not a bigger gesture. It is a shorter distance between the question and the answer.",
+      "firstComment": "Retention rarely turns on one grand moment. It turns on a hundred small ones where the club was easy to deal with. This is one of them.",
+      "altText": "Phone thread on a dark card. A member asks whether the course is cart path only tomorrow and the assistant answers from the conditions posted that afternoon.",
+      "assets": [
+        {
+          "source": "batch-03/b3-tomorrow-thread-ig.png",
+          "altText": "Phone thread on a dark card. A member asks whether the course is cart path only tomorrow and the assistant answers from the conditions posted that afternoon."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "published course conditions",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c0fdb62c0df440d7f2387",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "thread",
+      "thread": [
+        {
+          "from": "member",
+          "text": "Are we cart path only tomorrow?"
+        },
+        {
+          "from": "assistant",
+          "text": "Cart path only until noon, then open. Posted this afternoon."
+        }
+      ],
+      "rotationNote": "Re-cut from photo to thread on 2026-08-12. Member experience had run as a photograph in every batch to date, which rotation-gate.js flags as a stuck pillar. Frees david-goldsbury.jpg for the Humor post.",
+      "earnsItsPlace": "Shows the assistant answering from conditions the club posted that afternoon, in the club's own wording. The source-document framing is ours.",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 8,
+      "id": "b3-08-founder-li",
+      "channel": "linkedin_page",
+      "pillar": "Operator POV, day in the life",
+      "template": "b3-founder-li",
+      "dueAt": "2026-08-24T08:05:00-07:00",
+      "file": "b3-founder-li.png",
+      "dimensions": "1200x1500",
+      "headline": "The feature I was most nervous about shipping.",
+      "subhead": "It was the assistant saying I do not have that.",
+      "text": "It was the assistant saying I do not have that. Admitting a gap felt like admitting the product was thin. I had it backwards. Operators do not fear an assistant that does not know something. They fear one that invents something in front of a member. The moment we showed the handoff instead of hiding it, the room relaxed.",
+      "caption": "I pushed back on it internally. Admitting a gap felt like admitting the product was thin.\n\nI had it backwards. Operators do not fear an assistant that does not know something. They fear one that invents something in front of a member. The moment we showed the handoff instead of hiding it, the room relaxed.\n\nSaying I do not have that, and routing the question to a person, turned out to be the most persuasive thing the product does.\n\nCheers, Byron White, Founder, Club Pilot",
+      "firstComment": "If you are building anything with AI in it for a conservative industry, my one lesson is this: trust comes from the edges you draw, not the capability you claim.",
+      "altText": "Byron White headshot on a dark card; headline The feature I was most nervous about shipping.",
+      "assets": [
+        {
+          "source": "batch-03/b3-founder-li.png",
+          "altText": "Byron White headshot on a dark card; headline The feature I was most nervous about shipping."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "Byron first-person on the LinkedIn COMPANY page, same pattern as the Aug 14 post. His personal profile is API-locked in Buffer, so the company page is the only option. Flagged for the operator: first-person founder copy on a company page is a known open item, not a new one.",
+      "bufferId": "6a7c0fe532a67c68e33fa6b8",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "portrait",
+      "earnsItsPlace": "Byron's own account of resisting, then shipping, the handoff. Nobody else has this story and nobody else can tell it.",
+      "territory": "learning",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 9,
+      "id": "b3-09-stat-ig",
+      "channel": "instagram",
+      "pillar": "Proof and results",
+      "template": "b3-stat-ig",
+      "dueAt": "2026-08-25T12:15:00-07:00",
+      "file": "b3-stat-ig-v2.png",
+      "dimensions": "1080x1350",
+      "headline": "A text gets answered in about ninety seconds. An email takes about ninety minutes.",
+      "subhead": "THE PROOF",
+      "text": "90 seconds to answer the average text. 90 minutes to answer the average email. So the closure goes by text. The newsletter still goes by email. Source: industry benchmark.",
+      "caption": "Two numbers worth sitting with. The average text gets a reply in roughly ninety seconds. The average email takes roughly ninety minutes.\n\nThat is not an argument against email. Club event emails still open well, and the newsletter belongs there.\n\nIt is an argument for sending each thing down the channel it is actually good at. The course closure goes by text because it is worthless in an hour. That routing is the whole job.",
+      "firstComment": "Both figures are industry benchmarks, not Club Pilot results, and we keep them attributed that way on purpose. The point is about routing, not about us.",
+      "altText": "Dark card contrasting two figures, 90 seconds for a text reply against 90 minutes for an email reply, closing with the line So the closure goes by text, the newsletter still goes by email. Attributed to an industry benchmark.",
+      "assets": [
+        {
+          "source": "batch-03/b3-stat-ig-v2.png",
+          "altText": "Dark card contrasting two figures, 90 seconds for a text reply against 90 minutes for an email reply, closing with the line So the closure goes by text, the newsletter still goes by email. Attributed to an industry benchmark."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "Stat pair taken from BRAND.md section 8, the ~90-second text response versus ~90-minute email response. Attributed on-image as an industry benchmark, never as a Club Pilot or client outcome, and never fused with the separate 98 percent open-rate and 3-minute read stats.",
+      "bufferId": "6a7c0ff4c3d422e62bd9024f",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "data",
+      "earnsItsPlace": "Uses the benchmark to argue our one-system position, that each channel carries the traffic it is good at, rather than arguing text beats email. The conclusion on the card is Club Pilot's category framing from BRAND.md.",
+      "revisionNote": "v1 put a bare industry benchmark on the card with the line 'Same question, different channel.' Any SMS vendor could have posted it verbatim, so it failed the earns-its-place bar even though it passed every gate. v2 puts our one-system conclusion on the card itself: the closure goes by text, the newsletter still goes by email. Caught while writing the earnsItsPlace sentence, which is what the field is for.",
+      "territory": "learning",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 10,
+      "id": "b3-10-pulse-ig",
+      "channel": "instagram",
+      "pillar": "Industry pulse",
+      "template": "b3-pulse-ig",
+      "dueAt": "2026-08-27T17:55:00-07:00",
+      "file": "b3-pulse-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "The most predictable question of the year.",
+      "subhead": "Answered from the notice you already sent.",
+      "caption": "Every club sends the aeration notice. Every club then answers the same question for six days straight.\n\nThe dates were in the notice. The notice was in an email in March. The member is standing on the course in August wondering what happened to the greens.\n\nSeasonal operations are the easiest thing to get ahead of, because the answer is written long before the question arrives.",
+      "firstComment": "A good test for any seasonal notice: could a member find the answer six weeks later without searching their inbox? If not, the notice went out but the information did not land.",
+      "altText": "Putter and ball on a close-cut green at dusk; headline The most predictable question of the year.",
+      "assets": [
+        {
+          "source": "batch-03/b3-pulse-ig.png",
+          "altText": "Putter and ball on a close-cut green at dusk; headline The most predictable question of the year."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "seasonal operations notice",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c0ffe32a67c68e33fa94a",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "photoNote": "Uses mick-de-paola.jpg. edwin-compton.jpg was rejected: the inherited Aug 18 ask post already runs it, and reusing it 9 days later on the same channel would read as a repeat.",
+      "format": "photo",
+      "earnsItsPlace": "Aeration is the club-operations question our assistant answers from a seasonal notice. The specificity to club ops and to a document class is ours.",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 11,
+      "id": "b3-11-compare-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "template": "b3-compare-li",
+      "dueAt": "2026-08-28T08:45:00-07:00",
+      "file": "b3-compare-li.png",
+      "dimensions": "1200x1500",
+      "headline": "A channel is not a system.",
+      "text": "Channels: text, email, app. Each one more place to check. One system: the right message, to the right member, through the channel they already answer.",
+      "caption": "Most clubs solve communication by adding another channel. Text was going to fix it. Then the app. Then a different email tool.\n\nEvery addition is another place for staff to check and another place for a member to miss something. Three channels with no system is not three times the reach. It is three times the surface area.\n\nThe goal was never more channels. It is every member getting the right information through the one they actually answer.",
+      "firstComment": "The tell that a club has channels and not a system: nobody can say with confidence which members saw the last important message.",
+      "altText": "Dark card split in two. On the left, three separate channels labeled text, email and app. On the right, one system routing to the channel a member answers.",
+      "assets": [
+        {
+          "source": "batch-03/b3-compare-li.png",
+          "altText": "Dark card split in two. On the left, three separate channels labeled text, email and app. On the right, one system routing to the channel a member answers."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c100762c0df440d7f25de",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "compare",
+      "earnsItsPlace": "States the category spine straight from BRAND.md, that competitors sell channels and clubs need an ecosystem. This is the position, not an observation.",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 12,
+      "id": "b3-12-ask-ig",
+      "channel": "instagram",
+      "pillar": "The ask",
+      "template": "b3-ask-ig",
+      "dueAt": "2026-08-30T12:40:00-07:00",
+      "file": "b3-ask-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Watch it answer a real member question.",
+      "subhead": "No sales call required.",
+      "text": "CTA button: Watch the walkthrough. Eyebrow: See it in three minutes.",
+      "caption": "If you have read along this month and wondered what this actually looks like, the fastest answer is three minutes of watching it work.\n\nThe walkthrough shows a member question answered from club documents, a text campaign going out, and the handoff to staff when the assistant does not have something.\n\nWatch the 3 minute walkthrough: clubpilot.com/interactive-demo",
+      "firstComment": "No login required to watch it. If your club runs on documents nobody can find, the second half is the part worth your attention.",
+      "altText": "Dark card, headline Watch it answer a real member question, with a Watch the walkthrough button.",
+      "assets": [
+        {
+          "source": "batch-03/b3-ask-ig.png",
+          "altText": "Dark card, headline Watch it answer a real member question, with a Watch the walkthrough button."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "bufferId": "6a7c102273b5399abc765d80",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "format": "type-card",
+      "earnsItsPlace": "Points at our own walkthrough and describes what it shows, including the handoff to staff. Only we have that artefact.",
+      "territory": "promote",
+      "territoryBackfilled": true
+    }
+  ],
+  "cadence_check": {
+    "weekday_coverage": "Thu(1,2), Sat(3), Mon(4), Wed(5), Thu(6), Sat(7), Mon(8), Tue(9), Thu(10), Fri(11), Sun(12), plus inherited Fri(Aug 14 LI) and Tue(Aug 18 IG). All 7 weekdays covered across channels.",
+    "pillar_adjacency": "no two same-pillar posts adjacent per channel",
+    "dayparts": "early morning, mid morning, lunch, late afternoon, evening; irregular non-repeating minutes",
+    "instagram_order": "2 member -> 4 operator -> [Aug 18 inherited ask] -> 6 intel-comm -> 7 member -> 9 proof -> 10 pulse -> 12 ask",
+    "linkedin_order": "1 intel-comm -> [Aug 14 inherited founder] -> 5 front-desk -> 8 operator -> 11 intel-comm",
+    "give_to_ask": "12 posts, 1 soft ask (post 12). With the inherited Aug 18 ask that is 2 asks across 14 posts.",
+    "note": "Two Humor posts withdrawn, Aug 15 and Aug 16, both after publishing. The Humor pillar is out of batch-03 entirely and does not return until a concept is approved as text first. Aug 16 stays empty; filling a slot is what produced the second failure."
+  },
+  "rules": "sentence-case headlines; no em dashes; no single-word headline lines; intelligence-first; benchmarks attributed and never @clubpilot-tagged; Trusted By frozen pending Heather's written club list; named testimonials GATED; capability boundary enforced by capability-gate.js against brand/capability-boundary.md",
+  "photos_used": {
+    "b3-dawn-ig": "gd/bobby-jones.jpg (first use)",
+    "b3-dusk-ig": "gd/david-goldsbury.jpg (first use)",
+    "b3-pulse-ig": "gd/mick-de-paola.jpg (first use)",
+    "b3-founder-li": "byron-profile.jpeg (reused; it is the founder's face)",
+    "note": "The other 8 posts are type, thread, or data cards with no photograph. gd/marina-dusk.jpg and gd/tennis-serve.jpg were skipped because batch-02 already used them."
+  },
+  "withdrawn": [
+    {
+      "post": 3,
+      "id": "b3-03-humor-ig",
+      "channel": "instagram",
+      "pillar": "Humor",
+      "template": "b3-humor-ig",
+      "dueAt": "2026-08-15T10:25:00-07:00",
+      "file": "b3-humor-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "\"What time does the pool close?\"",
+      "subhead": "Asked at 9:58pm. From the pool.",
+      "caption": "We say this with affection. Every club has one.\n\nThe joke is never that the question is silly. It is that it arrives at 9:58pm, and someone has to be awake to answer it. Give it a faster path and nobody has to be.\n\nThe pool hours were on the website the whole time.",
+      "firstComment": "The serious note underneath: late questions are not a nuisance, they are a signal that members want to get it right. Make them easy to answer and everybody wins.",
+      "altText": "Clean dark type card, large quote What time does the pool close? with the line Asked at 9:58pm. From the pool.",
+      "assets": [
+        {
+          "source": "batch-03/b3-humor-ig.png",
+          "altText": "Clean dark type card, large quote What time does the pool close? with the line Asked at 9:58pm. From the pool."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "depictsAssistant is false. The card renders the member's question and a narrated punchline, not the club's answer. The joke sits in the question, per capability-boundary.md section 7.",
+      "bufferId": "6a7c0faa202c8e34aa5e6616",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "withdrawn": {
+        "on": "2026-08-12",
+        "by": "Travis Enos",
+        "action": "deleted from Buffer by the operator after it published; template, render and hosted asset removed",
+        "why": "The joke had no mechanism. Standing at the pool does not tell you when the pool closes, so the parenthetical named a location instead of supplying evidence, and there was no gap between what the member could see and what they asked. Three compounding faults: the 9:58pm timestamp made the member look considerate rather than oblivious; the card carried a footer explaining itself; and that footer blamed the member for not checking the website, which argues the club's communication was fine and sells against the product.",
+        "rootCause": "Same failure mode as the Aug 6 capability incident. The Humor pillar documented a shape (type card, question, parenthetical) and an example, but never the mechanism that made the example work. The generator reproduced the shape. capability-gate.js passed it because nothing about it was a false product claim.",
+        "fix": "brand/humor-standard.md plus editorial-gate.js, which now hard-fails this post on all three faults."
+      },
+      "format": "type-card"
+    },
+    {
+      "post": 3,
+      "id": "b3-03-humor-dusk-ig",
+      "channel": "instagram",
+      "pillar": "Humor",
+      "template": "b3-humor-dusk-ig",
+      "format": "photo",
+      "dueAt": "2026-08-16T18:40:00-07:00",
+      "file": "b3-humor-dusk-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Nobody is coming in until they cannot see the ball.",
+      "subhead": "Every club has one. Most clubs have nine.",
+      "caption": "Every club has the group that tees off knowing full well they are not finishing in daylight.\n\nThey are not confused about the time. They know exactly what time it is. They have simply decided that the round ends when the ball becomes genuinely invisible, and not one hole sooner.\n\nSunday evenings are for them.",
+      "firstComment": "No product pitch on this one. Some posts are just for the people who run the place and know exactly which foursome this is.",
+      "altText": "A golfer silhouetted mid swing against a deep orange sunset; headline Nobody is coming in until they cannot see the ball.",
+      "assets": [
+        {
+          "source": "batch-03/b3-humor-dusk-ig.png",
+          "altText": "A golfer silhouetted mid swing against a deep orange sunset; headline Nobody is coming in until they cannot see the ball."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "humorMechanism": "recognition and devotion. The photograph is the setup and the operator recognises the foursome that plays past last light, so the line only has to name what they are already seeing.",
+      "standsWithoutFooter": true,
+      "bufferId": "6a80bf29d809833434b4dd26",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true,
+      "rotationNote": "Humor as a photograph. The pillar had only ever run as a type card. No product claim on this post at all, which the pillar permits.",
+      "withdrawn": {
+        "on": "2026-08-17",
+        "by": "Travis Enos",
+        "action": "PUBLISHED to Instagram on 2026-08-16 and deleted from Instagram by the operator. Buffer shows it as sent, so it cannot be recalled there. Template, render and hosted asset removed.",
+        "why": "Failed the editorial bar before it failed as a joke. Nothing in it touches member communication, the assistant, the front desk or anything Club Pilot does, so any golf account could have posted it word for word. Three further faults: the pun did not resolve, because a reader parses 'most clubs have nine' as a larger count of members before reaching the nine-holes reading; recognition without a sharp turn is just an observation, and 'some people play until dark' is flat; and a magazine-grade sunset signals reverence, so the reader is set up for something moving and gets a mild joke.",
+        "rootCause": "Process, not craft. The Aug 15 Humor post had already been rejected. A second joke was written, rendered, hosted, scheduled and published without any human reading the line. Two rejections in a row is evidence that generated humor for this brand is not calibrated, and the right response to the first was to stop shipping the category unsupervised.",
+        "fix": "brand/editorial-standard.md, which adds the only-we-could-post-this bar on every pillar and puts Humor on review-first. editorial-gate.js hard-fails any Humor post without approvedBy, so this cannot be repeated by a future session."
+      }
+    }
+  ],
+  "gates": [
+    "capability-gate.js (capability + asset provenance)",
+    "editorial-gate.js (earns-its-place, member respect, humor)",
+    "rotation-gate.js (pillar and format rotation)"
+  ]
+}

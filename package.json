@@ -1,0 +1,22 @@
+{
+  "name": "content-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plans, writes, renders and drafts on-brand social posts to Buffer inside a client's own accounts.",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/gates-regression.js && node test/render.test.js",
+    "test:gates": "node test/gates-regression.js",
+    "test:render": "node test/render.test.js",
+    "render": "node engine/render/cli.js",
+    "check": "node engine/gates/check-batch.js"
+  },
+  "dependencies": {
+    "playwright-core": "1.56.1",
+    "sharp": "0.34.5"
+  }
+}

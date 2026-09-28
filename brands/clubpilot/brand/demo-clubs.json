@@ -1,0 +1,10 @@
+{
+  "_comment": "Rotating fictional demo clubs for message-thread senders. The sender is never ClubPilot, never Aimi, never 'Club Concierge', never a character avatar; brand comes from the small 'powered by Club Pilot' microline near the thread. Fictional names must not resemble any real approved club (brand-gate.js checks this against approved-clubs.json at load). Roster imported from the design system's documented fictional set (BRAND.md, sender-identity rule).",
+  "_rule": "Rotate senders across a batch; never use the same demo club twice in one batch. The avatar is the club's two-letter initials, not a monogram of the product.",
+  "clubs": [
+    { "name": "Fairhaven Country Club", "short": "Fairhaven CC", "initials": "FC" },
+    { "name": "Elmwood Country Club", "short": "Elmwood CC", "initials": "EC" },
+    { "name": "Oakcrest Country Club", "short": "Oakcrest CC", "initials": "OC" },
+    { "name": "Stonebridge Country Club", "short": "Stonebridge CC", "initials": "SC" }
+  ]
+}

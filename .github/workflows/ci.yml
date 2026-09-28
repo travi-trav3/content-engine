@@ -1,0 +1,36 @@
+name: ci
+
+# The anti-drift suite: every push runs the gate regression tests and renders
+# every layout at every size against its golden. A loosened gate or a broken
+# layout fails here instead of reaching Buffer.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Chromium build pinned by playwright-core in package.json.
+      - run: npx playwright-core install --with-deps chromium
+
+      - run: npm test
+
+      - name: Keep renders for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: renders
+          path: test/output/
+          if-no-files-found: ignore

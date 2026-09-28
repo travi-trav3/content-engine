@@ -10,8 +10,12 @@ under license, in their own GitHub organization.
 ## Layout
 
 ```
+engine/     gates (checks), render (layout + props to PNG), lib
+layouts/    the layout kit; see layouts/README.md
+brands/     brand fixtures; brands/clubpilot is Club Pilot property (see its README)
+test/       gate regression suite and render tests (run on every push)
 internal/   Applied Intelligence only. Plans, SOWs, client notes. Never copied into a client instance.
 ```
 
-The engine itself (`engine/`, `layouts/`, `brand/` template, workflows) lands here during the Club
-Pilot build. See `internal/PLAN-clubpilot-handoff.md`.
+`npm ci && npm test` runs everything CI runs. Working rules for people and coding agents are in
+[AGENTS.md](AGENTS.md). The build plan is `internal/PLAN-clubpilot-handoff.md`.

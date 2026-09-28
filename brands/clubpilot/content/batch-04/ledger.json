@@ -1,0 +1,343 @@
+{
+  "batch": "club-pilot-batch-04",
+  "window": "2026-08-28 to 2026-09-04",
+  "plan": "content/batch-04/plan.json",
+  "buffer": {
+    "organizationId": "6a138b7d82bb2ed009fed356",
+    "organizationName": "Applied Intelligence Co.",
+    "timezone": "America/Los_Angeles",
+    "anchoredTo": "get_account currentTime 2026-08-26T14:00:30-07:00",
+    "channels": {
+      "instagram": {
+        "id": "6a6141c7e2638b94d7b88ba3",
+        "name": "club.pilot.app"
+      },
+      "linkedin_page": {
+        "id": "6a6113cde2638b94d7b6d917",
+        "name": "Club Pilot (company page)"
+      },
+      "linkedin_byron_locked": {
+        "id": "6a6113cde2638b94d7b6d916",
+        "name": "Byron White (API-locked, cannot post)"
+      }
+    }
+  },
+  "hosting": {
+    "repo": "travi-trav3/clubpilot-social-assets",
+    "urlBase": "https://raw.githubusercontent.com/travi-trav3/clubpilot-social-assets/main/batch-04"
+  },
+  "context": "First batch generated under the Aug 26 correction: plan-gated (plan.json approved before a word of copy), Byron's editorial brief in force. No CTA post; the batch-3 drafts stay parked in Buffer untouched. Humor deliberately absent (review-first, no line read yet). Founder slots wait on Byron's locked channel. Photography: two fresh pulls from the Drive library (james-ambron aerial course, j-schiemann club tennis, valeriia-neganova marina aerial); no photo reused from a published post.",
+  "posts": [
+    {
+      "post": 1,
+      "id": "b4-01-question-li",
+      "channel": "linkedin_page",
+      "pillar": "The front desk leak",
+      "territory": "thinking",
+      "template": "b4-01-question-li",
+      "format": "type-card",
+      "dueAt": "2026-08-28T08:20:00-07:00",
+      "file": "b4-01-question-li.png",
+      "dimensions": "1200x1500",
+      "headline": "What's the question your staff answers 20 times a week?",
+      "subhead": "Every club seems to have one.",
+      "text": "No wrong answers.",
+      "caption": "Every club seems to have one. Pool hours. Guest policy. When the range closes. What is happening Friday night.\n\nWe are curious which one it is at your club. The answer usually surprises nobody on the team and everybody outside it.\n\nNo wrong answers. The comments could build a pretty good list.",
+      "firstComment": "The one we hear most from operators is pool hours, with guest policy close behind. Curious whether that holds at your club.",
+      "altText": "Dark card asking what question your staff answers twenty times a week, with the line Every club seems to have one.",
+      "assets": [
+        {
+          "source": "batch-04/b4-01-question-li.png",
+          "altText": "Dark card asking what question your staff answers twenty times a week, with the line Every club seems to have one."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "earnsItsPlace": "Invites GMs to name the routine question their team answers most, which is the exact workload our assistant absorbs; the comment thread doubles as our research and nobody selling apparel would ask it.",
+      "bufferId": "6a8f59375250c8066d3ea15d",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 2,
+      "id": "b4-02-cartpath-ig",
+      "channel": "instagram",
+      "pillar": "Intelligent communication",
+      "territory": "seeing",
+      "template": "b4-02-cartpath-ig",
+      "format": "photo",
+      "dueAt": "2026-08-29T11:40:00-07:00",
+      "file": "b4-02-cartpath-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "The most read message a club sends. \"Cart path only.\"",
+      "subhead": null,
+      "caption": "Some messages have a natural way of getting read. This one is decided the morning of play, from overnight rain and how much the ground absorbed, and every member sees it before their first coffee.\n\nOthers have to work a little harder.\n\nUrgency, relevance and timing can matter as much as the words. What is the one message your members always seem to notice?",
+      "firstComment": "A superintendent makes this call the morning of play, never the night before. Which is exactly why it lands: it arrives at the moment it matters.",
+      "altText": "Aerial photograph of a golf course in early morning light with cart paths winding between holes; headline The most read message a club sends, cart path only.",
+      "assets": [
+        {
+          "source": "batch-04/b4-02-cartpath-ig.png",
+          "altText": "Aerial photograph of a golf course in early morning light with cart paths winding between holes; headline The most read message a club sends, cart path only."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-cart-path: decided the day of play from rain and absorption; the post observes the message's reach and depicts no next-day certainty",
+      "photoNote": "james-ambron.jpg, first use. Aerial with cart paths visible in morning light; art direction matches the message per the plan's artDirectionMatch.",
+      "earnsItsPlace": "Turns Byron's own observation about the most read club message into a post, with the operational truth (decided day-of from rain) carried in the copy; a generic golf account would get that detail wrong.",
+      "bufferId": "6a8f593ffc9be67b86d2ffed",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 3,
+      "id": "b4-03-better-answers-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "territory": "seeing",
+      "template": "b4-03-better-answers-ig",
+      "format": "type-card",
+      "dueAt": "2026-08-30T17:35:00-07:00",
+      "file": "b4-03-better-answers-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Members don't want more information. They want better answers.",
+      "subhead": null,
+      "text": "What time does dinner start. Whether guests can play Saturday. One small piece, at one specific moment.",
+      "caption": "Clubs produce a remarkable amount of useful information. The challenge is that a member usually needs one small piece of it at one very specific moment.\n\nWhat time dinner starts. Whether the pool heater is on yet. Which nights are family nights.\n\nMaking the right answer easy to reach at that moment feels like a pretty good design principle for club communication.",
+      "firstComment": "The 6pm question about tonight's menu is not a failure of the newsletter. It is a question that did not exist at newsletter time.",
+      "altText": "Dark type card reading Members don't want more information, they want better answers.",
+      "assets": [
+        {
+          "source": "batch-04/b4-03-better-answers-ig.png",
+          "altText": "Dark type card reading Members don't want more information, they want better answers."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "earnsItsPlace": "States our design principle for club communication, the one the product is built around: the right answer at the right moment beats more information. Byron's brief names this the interesting shift.",
+      "bufferId": "6a8f5983a35e3b8c4e81ec45",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 4,
+      "id": "b4-04-time-back-li",
+      "channel": "linkedin_page",
+      "pillar": "Operator POV, day in the life",
+      "territory": "learning",
+      "template": "b4-04-time-back-li",
+      "format": "photo",
+      "dueAt": "2026-08-31T09:05:00-07:00",
+      "file": "b4-04-time-back-li.png",
+      "dimensions": "1200x1500",
+      "headline": "The interesting part of AI is what happens after the answer.",
+      "subhead": null,
+      "caption": "Dining hours. Dress code. Event details. AI can increasingly answer the routine questions quickly. Useful, and not the interesting part.\n\nThe interesting part is what the team does with the hour it gets back. A longer welcome for a new member. An unhurried conversation on the first tee. Helping someone plan an event instead of reciting its date.\n\nThe best use of AI in clubs may turn out to be surprisingly human.",
+      "firstComment": "From the operators we talk with, the first hour reclaimed rarely goes to admin. It goes to the member standing in front of them, which was the point all along.",
+      "altText": "A doubles match on the club tennis courts, a player mid serve toss; headline The interesting part of AI is what happens after the answer.",
+      "assets": [
+        {
+          "source": "batch-04/b4-04-time-back-li.png",
+          "altText": "A doubles match on the club tennis courts, a player mid serve toss; headline The interesting part of AI is what happens after the answer."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "photoNote": "j-schiemann.jpg, first use. Peopled club tennis moment per the plan artDirectionMatch; the lesli-whitecotton pull was rejected in QA because it reads as a public park, not a club (the D17 lesson applied).",
+      "earnsItsPlace": "Carries our position that AI matters when it creates time for human relationships, stated as a lesson rather than a feature; a platform selling automation for its own sake could not close on the human line.",
+      "bufferId": "6a8f598c7d5ccfc5ff2e2140",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 5,
+      "id": "b4-05-evening-answer-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "territory": "seeing",
+      "template": "b4-05-evening-answer-ig",
+      "format": "thread",
+      "dueAt": "2026-09-01T18:50:00-07:00",
+      "file": "b4-05-evening-answer-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "An evening answer from the club.",
+      "subhead": null,
+      "text": "No one needed to be at a desk.",
+      "caption": "It is 8:52 on a Tuesday and a member wants to know whether her son can wear sneakers to dinner tomorrow.\n\nNobody is at the desk, and nobody needs to be. The dress code answers, in the club's words, and bedtime carries on.\n\nSmall moments like this are most of what good service is made of.",
+      "firstComment": "The quiet part: questions like this used to wait until morning, then interrupt whoever opened the shop.",
+      "altText": "Phone thread from Oakcrest Country Club, powered by Club Pilot. A member asks at 8:52pm whether her son can wear sneakers to dinner tomorrow and the assistant answers from the dress code.",
+      "thread": [
+        {
+          "from": "member",
+          "text": "Can my son wear sneakers to dinner tomorrow?"
+        },
+        {
+          "from": "assistant",
+          "text": "Yes. Smart casual in the dining room, and clean sneakers are fine for juniors, per the dress code."
+        }
+      ],
+      "sender": "Oakcrest Country Club",
+      "assets": [
+        {
+          "source": "batch-04/b4-05-evening-answer-ig.png",
+          "altText": "Phone thread from Oakcrest Country Club, powered by Club Pilot. A member asks at 8:52pm whether her son can wear sneakers to dinner tomorrow and the assistant answers from the dress code."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "dress code",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-question-timing: the dress-code question lands the night before dinner because that is when it becomes relevant",
+      "earnsItsPlace": "Shows the assistant answering from the club's own dress code at an hour nobody staffs, sender and microline per the locked thread rules; the from-your-own-document claim is ours alone.",
+      "bufferId": "6a8f59955250c8066d3ea78f",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 6,
+      "id": "b4-06-reply-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "territory": "seeing",
+      "template": "b4-06-reply-li",
+      "format": "thread",
+      "dueAt": "2026-09-02T10:25:00-07:00",
+      "file": "b4-06-reply-li.png",
+      "dimensions": "1200x1500",
+      "headline": "Announcements were one way. Members reply now.",
+      "subhead": null,
+      "caption": "For years club communication ran in one direction. Write it, send it, hope it lands.\n\nThe change is on the member's side. They treat every message as the start of a conversation. They reply, they ask, and they expect the club to answer.\n\nThat is not more work for the team when the answer lives in the tournament notice the club sent out. It is a better relationship with the same message.",
+      "firstComment": "The reply rate is the tell. An announcement that can be answered gets read differently than one that ends the conversation.",
+      "altText": "Phone thread from Elmwood Country Club, powered by Club Pilot. The club sends a Member Guest reminder, a member replies asking if it is a shotgun start, and the assistant confirms 9am per the notice.",
+      "thread": [
+        {
+          "from": "assistant",
+          "text": "Reminder: the Member Guest starts Saturday. Full details are in the tournament notice."
+        },
+        {
+          "from": "member",
+          "text": "Is it a shotgun start?"
+        },
+        {
+          "from": "assistant",
+          "text": "Yes, 9am shotgun, per the notice posted last week."
+        }
+      ],
+      "sender": "Elmwood Country Club",
+      "assets": [
+        {
+          "source": "batch-04/b4-06-reply-li.png",
+          "altText": "Phone thread from Elmwood Country Club, powered by Club Pilot. The club sends a Member Guest reminder, a member replies asking if it is a shotgun start, and the assistant confirms 9am per the notice."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "tournament notice",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-question-timing: the member replies to the reminder about a published detail; the answer quotes the tournament notice as published, no live systems implied",
+      "earnsItsPlace": "Shows two-way communication as the product does it: a campaign message, a member reply, an answer from the published notice. The reply-and-get-answered loop is the thing we sell and competitors' one-way blasts cannot show.",
+      "bufferId": "6a8f599e889ee45e84cfb1c2",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 7,
+      "id": "b4-07-ngf-li",
+      "channel": "linkedin_page",
+      "pillar": "Proof and results",
+      "territory": "learning",
+      "template": "b4-07-ngf-li",
+      "format": "data",
+      "dueAt": "2026-09-03T08:45:00-07:00",
+      "file": "b4-07-ngf-li.png",
+      "dimensions": "1200x1500",
+      "headline": "$100M+ a year on routine member phone calls.",
+      "subhead": null,
+      "text": "What clubs collectively spend answering the same questions by phone, industry wide. Source: NGF",
+      "caption": "The National Golf Foundation puts the figure above one hundred million dollars a year, industry wide, spent answering routine member phone calls.\n\nNot complaints. Not emergencies. Pool hours and guest policies, one call at a time.\n\nWorth knowing what a single club's share of that looks like, and what the desk would do with the hours instead.",
+      "firstComment": "The NGF figure is industry wide, not any one club's bill. The useful local exercise: count a week of routine calls, time one of them, and do the math for your own desk.",
+      "altText": "Dark card with a large one hundred million dollar plus figure, described as what clubs collectively spend each year answering routine member phone calls, attributed to NGF.",
+      "assets": [
+        {
+          "source": "batch-04/b4-07-ngf-li.png",
+          "altText": "Dark card with a large one hundred million dollar plus figure, described as what clubs collectively spend each year answering routine member phone calls, attributed to NGF."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "statNote": "ngf-100m from brand/approved-stats.json, attributed to NGF on the card and in the caption. No second stat shares the post; the local math is left to the reader rather than invented (the Aug 19 lesson).",
+      "earnsItsPlace": "The NGF number is the labor cost our product exists to absorb, attributed and unfused; the first comment turns it into an exercise a GM can run without us.",
+      "bufferId": "6a8f59a601def2bdf43b411c",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 8,
+      "id": "b4-08-next-chapter-ig",
+      "channel": "instagram",
+      "pillar": "Industry pulse",
+      "territory": "seeing",
+      "template": "b4-08-next-chapter-ig",
+      "format": "photo",
+      "dueAt": "2026-09-17T11:55:00-07:00",
+      "file": "b4-08-next-chapter-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Club operations modernized. Communication is next.",
+      "subhead": null,
+      "caption": "The operations side of running a club went digital over the last decade, quietly and completely. Software runs the back office now, and nobody misses the paper.\n\nMember communication is having its moment next. It is becoming its own discipline: part service, part hospitality, and increasingly part AI.\n\nIt feels like the next interesting chapter for the club industry.",
+      "firstComment": "Operations software runs the club. Communications software connects the club to its members. Byron White has been making that case for a while, and the industry is starting to catch up.",
+      "altText": "Aerial photograph of a dark marina at dusk with yachts in their slips; headline Club operations modernized, communication is next.",
+      "assets": [
+        {
+          "source": "batch-04/b4-08-next-chapter-ig.png",
+          "altText": "Aerial photograph of a dark marina at dusk with yachts in their slips; headline Club operations modernized, communication is next."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "photoNote": "valeriia-neganova.jpg, first use. Marina aerial signals the club world beyond golf per the plan's artDirectionMatch.",
+      "earnsItsPlace": "States the category spine as an industry observation with the founder's own operations-versus-communications line in the first comment; the marina widens the frame past golf, which is our market and not a golf account's.",
+      "bufferId": "6a8f5a3b5250c8066d3eb387",
+      "bufferStatus": "scheduled (automatic, customScheduled); found in draft on 2026-09-09 having never published on Sep 4, restored to Sep 17 11:55am PT via editPost with image, caption and first comment carried forward",
+      "firstCommentSet": true,
+      "rescheduledFrom": "2026-09-04T12:10:00-07:00"
+    }
+  ],
+  "cadence_check": {
+    "weekday_coverage": "Fri(1), Sat(2), Sun(3), Mon(4), Tue(5), Wed(6), Thu(7), Fri(8): all 7 weekdays across channels",
+    "channels": "LinkedIn 4 of 8 (posts 1, 4, 6, 7), Instagram 4 of 8 (posts 2, 3, 5, 8)",
+    "territory_mix": "seeing 5, thinking 1, learning 2, promote 0; within plan-gate tolerance",
+    "surfaces": "dark-type 3, photo-full-bleed 3, thread 2; no two adjacent per channel",
+    "give_to_ask": "8 posts, 0 asks. The promote band rests this week; the drafted batch-3 walkthrough ask stays parked in Buffer",
+    "dayparts": "early morning, late morning, evening, mid morning, early evening, mid morning, early morning, midday; irregular minutes"
+  },
+  "rules": "sentence-case headlines; no em dashes; no single-word headline lines; plan-gated per content/batch-04/plan.json; benchmarks attributed and never @clubpilot-tagged; capability boundary enforced; thread senders from brand/demo-clubs.json with the powered-by microline; gates: node check-batch.js 04"
+}

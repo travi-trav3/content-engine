@@ -1,0 +1,374 @@
+{
+  "batch": "club-pilot-batch-02",
+  "buffer": {
+    "organizationId": "6a138b7d82bb2ed009fed356",
+    "organizationName": "Applied Intelligence Co.",
+    "timezone": "America/Los_Angeles",
+    "channels": {
+      "instagram": {
+        "id": "6a6141c7e2638b94d7b88ba3",
+        "name": "club.pilot.app"
+      },
+      "linkedin_page": {
+        "id": "6a6113cde2638b94d7b6d917",
+        "name": "Club Pilot (company page)"
+      }
+    }
+  },
+  "hosting": {
+    "repo": "travi-trav3/clubpilot-social-assets",
+    "urlBase": "https://raw.githubusercontent.com/travi-trav3/clubpilot-social-assets/main/batch-02",
+    "status": "all 8 image files verified HTTP 200 (triad carousel 5 slides + trusted-by + 7 b2-* renders)"
+  },
+  "status": "COMPLETE — all 9 posts SCHEDULED (automatic, customScheduled) with images + alt text + first comments. Anchored to get_account currentTime 2026-07-24T17:30-07:00. Deduped 5 phantom copies left by an interrupted earlier run (createdAt ~00:19-00:24Z) that never wrote this ledger.",
+  "capability_backfill": {
+    "addedOn": "2026-08-12",
+    "why": "Byron flagged three posts on 2026-08-06 (court booked, guest located, unapproved logo wall). Root cause was a missing positive definition of what the product does, not a copywriting miss. Per-post capability attestations and the visible copy are recorded here so capability-gate.js can run against a historical batch and so the batch is auditable after the fact.",
+    "readableCopySource": "copy.md in this directory. Copy fields below are the shipped text, transcribed so the gate can read what a viewer actually sees. Where a post shipped a different option than copy.md recommended, the SHIPPED version is recorded.",
+    "nullPolicy": "null means the value could not be determined from the existing copy. It is not a default and it is not an assertion. A null sourceDocument on an answer post is itself the finding: the depicted answer cannot be produced from any club-uploaded document.",
+    "boundary": "../../brand/capability-boundary.md"
+  },
+  "posts": [
+    {
+      "post": 1,
+      "id": "b2-01-triad-carousel",
+      "channel": "instagram",
+      "pillar": "The triad",
+      "template": "triad-carousel (5 slides)",
+      "bufferId": "6a63ee2922bc282b88659dfd",
+      "dueAt": "2026-08-06T11:20:00-07:00",
+      "file": "triad-carousel-1..5.png",
+      "headline": "Three ways to reach every member.",
+      "subhead": "THE TRIAD OF POWER. Three pillars: AI Assist, Text Messaging, Member App.",
+      "caption": "Most clubs have one reliable way to reach members, and it is the one members ignore.\n\nClub Pilot gives you three connected channels working together. An intelligent assistant that answers routine questions instantly. Text messaging, the channel members actually open. And a member app that puts the whole club in their pocket.\n\nNot three more logins for your staff. One system, three ways for the right message to reach the right member through the channel they prefer.",
+      "firstComment": "The point isn't more channels for their own sake. A tee time change, a weather closure, and a dining reservation each want a different path to the member. One system routes them.",
+      "altText": "Dark card, headline Three ways to reach every member, with three labeled pillars for AI Assist, Text Messaging, and Member App.",
+      "assets": [
+        {
+          "source": "batch-02/triad-carousel-1.png",
+          "altText": "Dark card, headline Three ways to reach every member, with three labeled pillars for AI Assist, Text Messaging, and Member App."
+        },
+        {
+          "source": "batch-02/triad-carousel-2.png"
+        },
+        {
+          "source": "batch-02/triad-carousel-3.png"
+        },
+        {
+          "source": "batch-02/triad-carousel-4.png"
+        },
+        {
+          "source": "batch-02/triad-carousel-5.png"
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "carousel",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 2,
+      "id": "b2-02-thread-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "template": "b2-thread-li",
+      "bufferId": "6a640108351863828cdf4a59",
+      "dueAt": "2026-08-07T09:15:00-07:00",
+      "file": "b2-thread-li.png",
+      "headline": "The answer was already in your systems.",
+      "subhead": "It knows the calendar, the booking system, and the member. That is the intelligence part.",
+      "caption": "A member asks to move a dinner reservation from the parking lot on their way out. They get a yes in seconds, not a callback tomorrow.\n\nNothing was invented to answer that. The system already knew the dining calendar, the reservation, and the member. Intelligent communication is not a chatbot bolted on the side. It is your existing systems, finally able to answer in the club's own voice.",
+      "firstComment": "Where the intelligence comes from: it is grounded in what your club already runs and already knows. Members text the club, not a product. The club just happens to answer instantly now.",
+      "altText": "Phone mockup of a member texting the club to move a dinner reservation; headline The answer was already in your systems.",
+      "thread": [
+        {
+          "from": "member",
+          "text": "Can I move our dinner reservation to 7:30?"
+        },
+        {
+          "from": "assistant",
+          "text": "Done, table for four at 7:30. See you Friday."
+        }
+      ],
+      "assets": [
+        {
+          "source": "batch-02/b2-thread-li.png",
+          "altText": "Phone mockup of a member texting the club to move a dinner reservation; headline The answer was already in your systems."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "sourceDocument is null because no club-uploaded document can produce this answer. The thread depicts the assistant changing a dining reservation and confirming the outcome, which is out of scope under capability-boundary.md §3. NOT among the three Byron flagged on Aug 6, and it is scheduled. Surfaced by the gate, not by review.",
+      "format": "thread",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 3,
+      "id": "b2-03-member-yacht",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "template": "b2-member-yacht",
+      "bufferId": "6a640881351863828cdf918b",
+      "dueAt": "2026-08-08T18:40:00-07:00",
+      "file": "b2-member-yacht.png",
+      "note": "on-image theme SATURDAY 7:48PM — publish day aligned to a Saturday evening",
+      "headline": "The regatta moved up an hour. Every member knew.",
+      "subhead": "By the time they reached the dock, they were already ready.",
+      "caption": "The start got moved up an hour. At a lot of clubs that means a scramble of phone calls and a few members who never got the word and showed up late.\n\nHere, one message went out the moment the change was made. Every member who needed to know, knew. They arrived ready.\n\nGolf clubs, yacht clubs, tennis and city clubs. The building changes. The communication problem does not.",
+      "firstComment": "This is the quiet part of member experience: not the amenities themselves, but whether members can trust that the club will reach them when something changes. That trust is what renews memberships.",
+      "altText": "Yacht club marina at dusk with boats at the dock; headline The regatta moved up an hour. Every member knew.",
+      "assets": [
+        {
+          "source": "batch-02/b2-member-yacht.png",
+          "altText": "Yacht club marina at dusk with boats at the dock; headline The regatta moved up an hour. Every member knew."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "photo",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 4,
+      "id": "b2-04-trusted-by",
+      "channel": "instagram",
+      "pillar": "Proof and results",
+      "template": "trusted-by",
+      "bufferId": "6a63ee389d853f39877d028d",
+      "dueAt": "2026-08-11T17:45:00-07:00",
+      "file": "trusted-by.png",
+      "headline": "The clubs setting the standard are already on board.",
+      "subhead": "TRUSTED BY",
+      "caption": "A quiet thank you to the clubs already communicating with their members through Club Pilot. Different clubs, different traditions, one thing in common: they decided member communication was worth doing well.",
+      "firstComment": "We keep this list at the roster level on purpose. No club here is a testimonial or a claim. It is simply the company we are proud to keep.",
+      "altText": "Dark card, Trusted by eyebrow, a bar of member-club logos in mono/white.",
+      "assets": [
+        {
+          "source": "batch-02/trusted-by.png",
+          "altText": "Dark card, Trusted by eyebrow, a bar of member-club logos in mono/white."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [
+        "Salem Country Club",
+        "Sleepy Hollow",
+        "St. Andrews CC Boca Raton",
+        "Worcester",
+        "Lost City Golf Club",
+        "Willowbend",
+        "Breakers West",
+        "Essex County",
+        "bb-monogram",
+        "tc-monogram",
+        "flag",
+        "headdress"
+      ],
+      "boosted": false,
+      "capabilityNote": "Twelve marks render on this post per logos-manifest.json. The last four are recorded by asset slug because the manifest labels them only 'monogram mark', 'flag mark', and 'headdress mark' and the owning club could not be determined from the repo. They are listed rather than omitted so they fail closed: an unidentified rendered club mark is by definition not on the written approved list. 'Lost City Golf Club' is the name as it renders here; approved-clubs.json approves 'Lost City'. Those are not the same string and the gate does not treat them as the same mark. See the summary for the open naming question.",
+      "format": "logo-wall",
+      "territory": "promote",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 5,
+      "id": "b2-05-front-desk",
+      "channel": "linkedin_page",
+      "pillar": "The front desk leak",
+      "template": "b2-front-desk",
+      "bufferId": "6a64088412fafbaf49cc912d",
+      "dueAt": "2026-08-10T08:25:00-07:00",
+      "file": "b2-front-desk.png",
+      "cta": "soft: clubpilot.com/interactive-demo (in caption)",
+      "headline": "Five questions, a hundred times a week.",
+      "subhead": "THE MATH NOBODY RUNS",
+      "text": "What time do we open. Is the pool heated. Can I bring guests. Where do I pay. What's the dress code. Multiply by every member, every week, every season. That is a salary answering a search engine.",
+      "caption": "Pick the five questions your front desk answers most. Now count how many times a week each one comes in, and multiply by what you pay the person answering.\n\nThat number is the cost of not having a better way. It is not a staffing problem. It is a communication problem, and it is one of the few line items you can shrink without anyone losing a job. Your team just goes back to the work that actually needs a person.",
+      "firstComment": "The fix is not a bigger front desk. It is letting the routine questions answer themselves, instantly, over the channel members already use, so your team's hours go to the members standing in front of them.",
+      "altText": "Dark card, headline Five questions, a hundred times a week, with the cost-of-repetition framing.",
+      "assets": [
+        {
+          "source": "batch-02/b2-front-desk.png",
+          "altText": "Dark card, headline Five questions, a hundred times a week, with the cost-of-repetition framing."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "type-card",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 6,
+      "id": "b2-06-humor",
+      "channel": "instagram",
+      "pillar": "Humor",
+      "template": "b2-humor",
+      "bufferId": "6a6408c022bc282b8866afc9",
+      "dueAt": "2026-08-12T12:25:00-07:00",
+      "file": "b2-humor.png",
+      "headline": "\"Did my guest arrive yet?\"",
+      "subhead": "They are standing next to you.",
+      "caption": "We say this with love. Every club has the member who calls the front desk to ask a question the club has already answered, or is about to answer in person.\n\nIt is not that the questions are silly. It is that they all land in the same place, at the same time, on the same two people. Give those questions a faster path and the front desk gets to be gracious again instead of frazzled.",
+      "firstComment": "The serious version: most \"annoying\" member questions are just members trying to reach the club and not having a good way to do it. Fix the reaching, and the questions stop feeling like interruptions.",
+      "altText": "Clean dark type card, quote Did my guest arrive yet? with the line They are standing next to you.",
+      "assets": [
+        {
+          "source": "batch-02/b2-humor.png",
+          "altText": "Clean dark type card, quote Did my guest arrive yet? with the line They are standing next to you."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "FLAGGED BY BYRON 2026-08-06. Held in Buffer draft. depictsAssistant is true because the card renders a member question and the club's answer to it, which is the product's voice. sourceDocument is null and cannot be filled: whether a guest has physically arrived is live state, never a club-uploaded document. Out of scope under capability-boundary.md §3, real-time human or physical tracking.",
+      "format": "type-card",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 7,
+      "id": "b2-07-founder",
+      "channel": "linkedin_page",
+      "pillar": "Operator POV, day in the life",
+      "template": "b2-founder",
+      "bufferId": "6a6408c612fafbaf49cc9321",
+      "dueAt": "2026-08-14T12:35:00-07:00",
+      "file": "b2-founder.png",
+      "headline": "The mistake I made early: I led with the technology.",
+      "subhead": "Operators don't want AI. They want their Monday back.",
+      "caption": "Early on I pitched the technology. The intelligence, the automation, the channels. Operators would nod politely and move on.\n\nWhat actually landed was smaller and more human. A general manager gets their Saturday back because the club answered members without her. A membership director stops apologizing for slow replies. The technology only matters because of the day it hands back.\n\nIf you are building for operators, lead with the relief, not the machine.\n\nCheers, Byron White, Founder, Club Pilot",
+      "firstComment": "This is also why we lead with intelligent communication, not AI. The operators who need this most are not shopping for AI. They are trying to get through the week.",
+      "altText": "Byron White headshot; headline The mistake I made early: I led with the technology.",
+      "assets": [
+        {
+          "source": "batch-02/b2-founder.png",
+          "altText": "Byron White headshot; headline The mistake I made early: I led with the technology."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "portrait",
+      "territory": "learning",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 8,
+      "id": "b2-08-tennis",
+      "channel": "instagram",
+      "pillar": "Intelligent communication",
+      "template": "b2-tennis",
+      "bufferId": "6a6408c89d853f39877e0c66",
+      "dueAt": "2026-08-16T08:35:00-07:00",
+      "file": "b2-tennis.png",
+      "note": "on-image theme SUNDAY 8:02AM — publish day aligned to a Sunday morning",
+      "headline": "Sunday's court was booked from the car.",
+      "caption": "A member wanted a Sunday court and did not want to call during dinner to get it. One text, a few seconds, done.\n\nThe racquet club, the yacht club, the golf club: members expect the same instant, effortless answer they get everywhere else in their lives. Meeting that expectation is not a luxury feature anymore. It is the baseline of a modern club.",
+      "firstComment": "Worth noting: none of this asks members to download or learn anything new. It works over the text messaging already on their phone. The club does the adapting, not the member.",
+      "altText": "Tennis courts at golden hour; headline Sunday's court was booked from the car.",
+      "assets": [
+        {
+          "source": "batch-02/b2-tennis.png",
+          "altText": "Tennis courts at golden hour; headline Sunday's court was booked from the car."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "FLAGGED BY BYRON 2026-08-06. Held in Buffer draft. Shipped as copy.md Option B, the photo treatment, so the Option A thread ('Booked. See you Sunday.') never rendered and is not transcribed here. depictsAssistant is true because the post's whole subject is the product completing a court reservation by text. sourceDocument is null and cannot be filled: booking a court is an action, not a document lookup. Out of scope under capability-boundary.md §3.",
+      "format": "photo",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 9,
+      "id": "b2-09-single-ask",
+      "channel": "instagram",
+      "pillar": "The ask",
+      "template": "b2-single-ask",
+      "bufferId": "6a6408cd12fafbaf49cc9369",
+      "dueAt": "2026-08-18T18:15:00-07:00",
+      "file": "b2-single-ask.png",
+      "cta": "THE ASK — painted button, clubpilot.com/interactive-demo",
+      "headline": "The fastest way to get it is to watch it work.",
+      "subhead": "No sales call required.",
+      "caption": "If you are curious what intelligent member communication actually looks like, the quickest answer is not a sales call. It is three minutes of watching it work.\n\nThe walkthrough shows the assistant answering a real member question, a text campaign going out, and the member app, end to end. If it looks like it would help your club, the demo is one click after that.\n\nWatch the 3 minute walkthrough: clubpilot.com/interactive-demo",
+      "firstComment": "No pressure and no login required to watch. If you want to go deeper afterward, book a demo and we will tailor it to your club and your systems.",
+      "altText": "Dark card, headline The fastest way to get it is to watch it work, with a Watch the walkthrough button.",
+      "assets": [
+        {
+          "source": "batch-02/b2-single-ask.png",
+          "altText": "Dark card, headline The fastest way to get it is to watch it work, with a Watch the walkthrough button."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "photo",
+      "territory": "promote",
+      "territoryBackfilled": true
+    }
+  ],
+  "cadence_check": {
+    "weekday_coverage": "Mon(5), Tue(4,9), Wed(6), Thu(1), Fri(2,7), Sat(3), Sun(8) — all 7 covered across channels",
+    "pillar_adjacency": "no two same-pillar posts adjacent per channel; the ask (9) lands last",
+    "dayparts": "morning / late-morning / lunch / evening mixed; irregular non-repeating minutes",
+    "instagram_order": "1 triad -> 3 member -> 4 proof -> 6 humor -> 8 intel-comm -> 9 ask",
+    "linkedin_order": "2 intel-comm -> 5 front-desk -> 7 founder"
+  },
+  "content_pillar_tags": {
+    "intent": "Tag every post in Buffer with its content pillar so clients + operator can filter by tag in the Buffer UI.",
+    "status": "BLOCKED — the Buffer OAuth connector is not authorized for the tags resource. createTag, the tags query, and tag read all return 'Not authorized to access this resource', though the org plan allows tags (limit 250). createPost/editPost DO accept tagIds, so once tag IDs exist the whole batch can be tagged in one editPost pass (carry assets+metadata+text forward).",
+    "fix": "Operator to (a) re-authorize / reconnect the Buffer connector with tag (admin) scope, or (b) create the pillar tags once in the Buffer UI (Settings -> Tags). Then a resumed session reads tag IDs and applies tagIds to all 9 posts.",
+    "taxonomy": [
+      "the triad",
+      "intelligent communication",
+      "member experience",
+      "proof and results",
+      "front desk leak",
+      "humor",
+      "founder / operator POV",
+      "the ask"
+    ]
+  },
+  "slack_alerts": {
+    "status": "NOT SCHEDULED — deferred per operator in batch-01 ('slack we can do last'); no team channel id recorded yet. Pending operator go-ahead + channel id.",
+    "spec": "On each post's dueAt: platform - first caption line - post/profile link - 'Like, comment, save - the first 30 minutes matter most.' Record returned scheduled-message id per post as slackAlert."
+  },
+  "rules": "sentence-case headlines; no em dashes; no single-word headline lines; intelligence-first; give-to-ask ~8:1 (post 9 is the ask, post 5 a soft nudge); benchmarks attributed + never @clubpilot-tagged; Trusted By roster-level only + headdress organic-only; named testimonials GATED; capability boundary enforced by capability-gate.js against brand/capability-boundary.md"
+}

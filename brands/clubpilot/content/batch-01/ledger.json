@@ -1,0 +1,363 @@
+{
+  "batch": "club-pilot-batch-01",
+  "buffer": {
+    "organizationId": "6a138b7d82bb2ed009fed356",
+    "organizationName": "Applied Intelligence Co.",
+    "timezone": "America/Los_Angeles",
+    "channels": {
+      "instagram": {
+        "id": "6a6141c7e2638b94d7b88ba3",
+        "name": "club.pilot.app"
+      },
+      "linkedin_page": {
+        "id": "6a6113cde2638b94d7b6d917",
+        "name": "Club Pilot (company page)"
+      },
+      "linkedin_byron_locked": {
+        "id": "6a6113cde2638b94d7b6d916",
+        "name": "Byron White (API-locked)"
+      }
+    }
+  },
+  "hosting": {
+    "status": "RESOLVED - operator created public repo travi-trav3/clubpilot-social-assets; 9 PNGs pushed; all URLs 200",
+    "urlBase": "https://raw.githubusercontent.com/travi-trav3/clubpilot-social-assets/main/batch-01"
+  },
+  "buffer_scheduled": {
+    "note": "COMPLETE: all 9 SCHEDULED (automatic, customScheduled) with images + alt text + first comments. LinkedIn requires automatic (rejects notification). First comments set via execute_mutation editPost metadata.{instagram,linkedin}.firstComment (not exposed by the typed create/edit_post tools). Slack engagement alerts deferred per operator ('slack we can do last').",
+    "instagram": {
+      "member-moment-ig": {
+        "id": "6a639c043a50867cfaaa8daf",
+        "dueAt": "2026-07-24T19:20:00-07:00"
+      },
+      "ig-stat": {
+        "id": "6a639c305e68493498582a41",
+        "dueAt": "2026-07-26T10:35:00-07:00"
+      },
+      "humor-ig": {
+        "id": "6a639c3512fafbaf49c8126d",
+        "dueAt": "2026-07-28T12:40:00-07:00"
+      },
+      "ig-press": {
+        "id": "6a639c373a50867cfaaa8f67",
+        "dueAt": "2026-07-30T18:50:00-07:00",
+        "status": "SENT 2026-07-30T18:50:10-07:00",
+        "permalink": "https://www.instagram.com/p/DbcH5FJEa0Y/",
+        "imageryIssue": "PUBLISHED WITH THE FLAWED CARD. The 230px photo band clipped the golfer's head off at the bottom edge and showed ~90% empty sky; press row mixed a real Golf Digest logo with plain text. Template + corrected render are fixed (ig-press-v2.png) but the post was already sent, so Buffer returns 403 on updatePost and the live image cannot be swapped. Operator decision needed: leave it, or delete and repost with ig-press-v2.png."
+      },
+      "single-ask-ig": {
+        "id": "6a639c3b22bc282b88622b0c",
+        "dueAt": "2026-08-05T12:25:00-07:00"
+      }
+    },
+    "linkedin_page": {
+      "front-desk-li": {
+        "id": "6a623be530a895a253e0b2ca",
+        "dueAt": "2026-07-24T16:40:00-07:00"
+      },
+      "thread-li": {
+        "id": "6a623c8c52781d9f6aad8ff3",
+        "dueAt": "2026-07-25T09:15:00-07:00"
+      },
+      "operator-pov-li": {
+        "id": "6a623c8f30a895a253e0b86c",
+        "dueAt": "2026-07-27T08:10:00-07:00"
+      },
+      "founder-byron": {
+        "id": "6a623ca2febdf6a63bb19ef7",
+        "dueAt": "2026-08-01T17:40:00-07:00"
+      }
+    }
+  },
+  "rules": "sentence-case headlines; no em dashes; no single-word headline lines; intelligence-first; give-to-ask 8:1; benchmark stats never fused/never @clubpilot-tagged; no gated testimonials or real club logos; capability boundary enforced by capability-gate.js against brand/capability-boundary.md",
+  "capability_backfill": {
+    "addedOn": "2026-08-12",
+    "why": "Byron flagged three batch-02 posts on 2026-08-06. Root cause was a missing positive definition of what the product does, not a copywriting miss. Batch-01 is backfilled with the same attestations so the historical batch is auditable and the gate can run against it.",
+    "readableCopySource": "copy.md in this directory. Copy fields below are the shipped text, transcribed so the gate can read what a viewer actually sees.",
+    "nullPolicy": "null means the value could not be determined from the existing copy. It is not a default and it is not an assertion.",
+    "schemaNote": "The per-post numeric key moved from `id` to `post`, and `id` now carries a slug, matching batch-02. The gate reports findings by `id`, so a slug makes the audit trail readable. No other field changed.",
+    "boundary": "../../brand/capability-boundary.md"
+  },
+  "posts": [
+    {
+      "post": 1,
+      "id": "b1-01-front-desk-li",
+      "channel": "linkedin_page",
+      "pillar": "The front desk leak",
+      "template": "front-desk-li",
+      "dueAt": "2026-07-23T08:05:00-07:00",
+      "status": "pending-render",
+      "file": "front-desk-li.png",
+      "headline": "Your team didn't take the job to be a search engine.",
+      "subhead": "The same five questions, all day, every day.",
+      "caption": "Count the questions your front desk fielded today. What time does the pool open. Is the course cart-path only. Can I bring two guests Saturday. Now multiply that by every day this season, and by what you pay the person answering.\n\nThat is not a staffing problem. It is a communication problem.\n\nWhen members can get those answers instantly, through the channel they already use, your team gets their hours back for the work that actually needs a person. Operations software runs the club. Communication software connects the club to its members.",
+      "firstComment": "The part that surprises most operators: this sits on top of what you already run. It reads your tee sheet, your calendar, and your member list, and answers in the club's own voice. Nothing gets ripped out, and members don't download anything new.",
+      "altText": "Dark card, headline reading \"Your team didn't take the job to be a search engine,\" Club Pilot wordmark top-left.",
+      "assets": [
+        {
+          "source": "batch-01/front-desk-li.png",
+          "altText": "Dark card, headline reading \"Your team didn't take the job to be a search engine,\" Club Pilot wordmark top-left."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "The first comment claims the product 'reads your tee sheet'. capability-boundary.md §3 puts live integration with a tee sheet out of scope. This post is SCHEDULED, not draft, and was never among the three Byron flagged. Surfaced by the gate.",
+      "format": "type-card",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 2,
+      "id": "b1-02-member-moment-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "template": "member-moment-ig",
+      "dueAt": "2026-07-24T19:20:00-07:00",
+      "status": "rendered",
+      "file": "member-moment-ig.png",
+      "headline": "She texted the club at 9pm. The club answered.",
+      "subhead": "By renewal season, nobody in that house is weighing what the membership is worth.",
+      "caption": "A member texted the club at 9pm about Saturday's tournament. She had an answer in seconds, not by 10am the next day. So she showed up.\n\nBy renewal season, nobody in that house is doing the math on what the membership is worth. They already know.\n\nThat is what elevated communication actually buys you. Members who feel seen, and a club they have no reason to leave.",
+      "firstComment": "This is the quiet version of retention. Not a discount, not a win-back email. A hundred small moments where the club answered before the member had to wait. Multiply that across a season and it stops being a nice-to-have.",
+      "altText": "Night driving range under lights, golf bag in foreground, headline \"She texted the club at 9pm. The club answered.\"",
+      "assets": [
+        {
+          "source": "batch-01/member-moment-ig.png",
+          "altText": "Night driving range under lights, golf bag in foreground, headline \"She texted the club at 9pm. The club answered.\""
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "events and calendar (published tournament schedule)",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "sourceDocument is inferred, not stated in copy.md. The member's question is about Saturday's tournament, and tournament details as published fall under capability-boundary.md §2, events and calendar. Recorded as an inference so a reviewer can confirm or correct it.",
+      "format": "photo",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 3,
+      "id": "b1-03-thread-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "template": "thread-li",
+      "dueAt": "2026-07-25T09:15:00-07:00",
+      "status": "rendered",
+      "file": "thread-li.png",
+      "headline": "Answered in the club's voice. Not a bot's.",
+      "subhead": "It knows the tee sheet, the calendar, and the member. That's the intelligence part.",
+      "caption": "A member asks if the simulator is open Saturday morning. The answer isn't a menu, a phone tree, or a \"we'll get back to you.\" It's a real answer, in seconds, in the club's own voice, because the system knows the tee sheet, the calendar, and the member.\n\nThat is the difference between adding a channel and building intelligent communication. Text is a channel. Email is a channel. The app is a channel. The goal was never more channels. It is every member getting the right answer through the one they actually use.",
+      "firstComment": "Where the intelligence comes from: it is trained on your club's knowledge and connected to the systems you already run. Members text the club, not a product. The club just happens to answer instantly now.",
+      "altText": "Phone mockup showing a member texting a club concierge about simulator times, headline \"Answered in the club's voice. Not a bot's.\"",
+      "assets": [
+        {
+          "source": "batch-01/thread-li.png",
+          "altText": "Phone mockup showing a member texting a club concierge about simulator times, headline \"Answered in the club's voice. Not a bot's.\""
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "facility hours and schedules (simulator hours)",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "The depicted question, simulator hours, is squarely in scope. The framing around it is not: the on-image footer and the caption both claim the system 'knows the tee sheet', which capability-boundary.md §3 rules out as live integration. This post is SCHEDULED and was never flagged. Surfaced by the gate.",
+      "format": "thread",
+      "territory": "building",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 4,
+      "id": "b1-04-ig-stat",
+      "channel": "instagram",
+      "pillar": "Proof and results",
+      "template": "ig-stat",
+      "dueAt": "2026-07-26T10:35:00-07:00",
+      "status": "rendered",
+      "file": "ig-stat.png",
+      "headline": "of members opt in to text, including members over 60.",
+      "subhead": "The channel members prefer isn't the one clubs use most.",
+      "text": "67%. Source line: Industry benchmark.",
+      "caption": "67% of members opt in to text, and that includes members over 60.\n\nThe \"our members are older, they won't use it\" worry doesn't hold up. Members already live on text with their family, their doctor, and their bank. The club is often the last place still leading with an email blast and hoping.\n\nMeeting members where they already answer isn't chasing a trend. It is catching up to how they already communicate.",
+      "firstComment": "Worth saying plainly: email isn't going anywhere, and club event emails still open at 50 to 70%. This was never email versus text. It is using each for what it does best, from one place.",
+      "altText": "Dark card with an oversized \"67%\" numeral, subtext about members opting in to text including members over 60.",
+      "assets": [
+        {
+          "source": "batch-01/ig-stat.png",
+          "altText": "Dark card with an oversized \"67%\" numeral, subtext about members opting in to text including members over 60."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "data",
+      "territory": "learning",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 5,
+      "id": "b1-05-operator-pov-li",
+      "channel": "linkedin_page",
+      "pillar": "Operator POV, day in the life",
+      "template": "operator-pov-li",
+      "dueAt": "2026-07-27T08:10:00-07:00",
+      "status": "pending-render",
+      "file": "operator-pov-li.png",
+      "headline": "It's 9am. You have three updates and no good way to send them.",
+      "subhead": "Every comms manager knows this Monday.",
+      "caption": "It is Monday, 9am. The greens are aerating and the back nine is closed. A pipe let go in the men's locker room. Tonight's wine dinner moved to the terrace.\n\nThree things every member needs to know before they show up. Your options: an email most won't open in time, a phone tree, or hoping the front desk catches people on the way in.\n\nThis is the job nobody describes in the interview. It is also the exact job intelligent communication was built to take off your plate.",
+      "firstComment": "The fix isn't working harder on Monday. It is the club being able to reach the right members, on the channel they answer, in the time it takes to type the message once.",
+      "altText": "Dark card, headline \"It's 9am. You have three updates and no good way to send them,\" Operator POV eyebrow.",
+      "assets": [
+        {
+          "source": "batch-01/operator-pov-li.png",
+          "altText": "Dark card, headline \"It's 9am. You have three updates and no good way to send them,\" Operator POV eyebrow."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "type-card",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 6,
+      "id": "b1-06-humor-ig",
+      "channel": "instagram",
+      "pillar": "Humor",
+      "template": "humor-ig",
+      "dueAt": "2026-07-28T12:40:00-07:00",
+      "status": "pending-render",
+      "file": "humor-ig.png",
+      "headline": "\"Is the course open today?\"",
+      "subhead": "Asked during a snowstorm. Again.",
+      "caption": "Every club has this member. And honestly, we love them.\n\nThe point isn't that the question is funny. It is that it always comes through the same channel, at the same time, and someone always has to stop what they're doing to answer it.\n\nWhat if \"open, see you soon\" or \"closed today, stay warm\" just went out the second you knew? Fewer interruptions for your team, a faster answer for the member who genuinely wasn't sure.",
+      "firstComment": "Humor aside, weather calls are some of the highest-value texts a club sends. Members plan their whole day around them, and getting the word out in seconds is worth more than it sounds.",
+      "altText": "Clean dark type card, large quote \"Is the course open today?\" with the line \"Asked during a snowstorm. Again.\"",
+      "assets": [
+        {
+          "source": "batch-01/humor-ig.png",
+          "altText": "Clean dark type card, large quote \"Is the course open today?\" with the line \"Asked during a snowstorm. Again.\""
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "depictsAssistant is false: the card renders the member's question and a narrated punchline, not the club's answer. Contrast batch-02 post 6, where the subhead IS the answer. The joke sits in the question, which is what capability-boundary.md §7 asks for.",
+      "format": "type-card",
+      "territory": "seeing",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 7,
+      "id": "b1-07-ig-press",
+      "channel": "instagram",
+      "pillar": "Proof and results",
+      "template": "ig-press",
+      "dueAt": "2026-07-30T18:50:00-07:00",
+      "status": "sent",
+      "file": "ig-press-v3.png",
+      "fileNote": "ig-press-v3.png is the current correct render: reframed photo, real on-dark press logos, and the LOCKED verbatim Golf Digest quote. v2 is superseded (it carried a paraphrase Golf Digest never wrote). The SENT post still points at the original ig-press.png and cannot be changed. Each fix ships on a fresh filename because raw.githubusercontent keeps serving stale bytes for an overwritten path.",
+      "headline": "\"The coolest stuff we saw at the 2026 PGA Merchandise Show.\"",
+      "subhead": "Golf Digest, 2026. Club Pilot featured.",
+      "caption": "A quick and genuine thank you. Club Pilot was recognized among the standout new products at the 2026 PGA Show.\n\nWe didn't build this to win anything. We built it because too many clubs were losing hours, and members, to communication that hasn't kept up. Recognition like this mostly tells us the problem is real and widely felt.",
+      "firstComment": "The PGA Show is where the club industry decides what's worth paying attention to for the year. Being part of that conversation, next to names clubs have trusted for decades, is not something we take lightly.",
+      "altText": "Dark card with the Golf Digest mark and text recognizing Club Pilot as a standout new product at the 2026 PGA Show.",
+      "assets": [
+        {
+          "source": "batch-01/ig-press-v3.png",
+          "altText": "Dark card with the Golf Digest mark and text recognizing Club Pilot as a standout new product at the 2026 PGA Show."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "clubMarks is empty because the marks on this card are press outlets (Golf Digest, Golf Bizz Review, CMAA, PGA Show), not club marks. approved-clubs.json governs club marks only. Press-logo provenance is handled separately in CLAUDE.md.",
+      "format": "type-card",
+      "territory": "promote",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 8,
+      "id": "b1-08-founder-byron",
+      "channel": "linkedin_page",
+      "pillar": "Operator POV, day in the life",
+      "template": "founder-byron",
+      "dueAt": "2026-08-01T17:40:00-07:00",
+      "status": "pending-render",
+      "file": "founder-byron.png",
+      "headline": "The best clubs aren't adding more systems.",
+      "subhead": "They're finally connecting the ones they already run.",
+      "caption": "I've had close to 300 conversations with club leaders this past year. The ones who feel behind almost always assume the fix is another platform to buy and another login for their staff to learn.\n\nIt rarely is. The clubs pulling ahead on retention aren't the ones with the most software. They're the ones whose members can actually reach them, and hear back, through the channel they already use.\n\nCommunication isn't the soft part of running a club. It is the part members feel every single week.\n\nCheers, Byron White, Founder, Club Pilot",
+      "firstComment": "One pattern from those conversations: the objection is almost never \"we don't need this.\" It is \"we can't take on one more thing.\" Which is exactly why this sits on top of what you already run instead of adding to it.",
+      "altText": "Dark card with Byron White's headshot, headline \"The best clubs aren't adding more systems. They're finally connecting the ones they already run.\"",
+      "assets": [
+        {
+          "source": "batch-01/founder-byron.png",
+          "altText": "Dark card with Byron White's headshot, headline \"The best clubs aren't adding more systems. They're finally connecting the ones they already run.\""
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "format": "portrait",
+      "territory": "learning",
+      "territoryBackfilled": true
+    },
+    {
+      "post": 9,
+      "id": "b1-09-single-ask-ig",
+      "channel": "instagram",
+      "pillar": "The ask",
+      "template": "single-ask-ig",
+      "dueAt": "2026-08-05T12:25:00-07:00",
+      "status": "pending-render",
+      "file": "single-ask-ig.png",
+      "headline": "Member communication, handled. Without the long rollout.",
+      "subhead": "LIVE IN DAYS, NOT A QUARTER",
+      "text": "CTA button: Book a demo",
+      "caption": "If member communication has been on your list for a while, the reason it stalls is usually the fear of a long, painful rollout.\n\nThis isn't that. Club Pilot sits on top of the systems you already run, so most clubs are live in days, not a quarter.\n\nIf you want to see what that looks like for your club, book a short demo. No pressure and no long sales cycle, just a look at how it works. clubpilot.com/demo",
+      "firstComment": "Happy to answer questions right here too. The most common one: do our members have to download anything? No. It works over the text messaging they already use.",
+      "altText": "Dark card, headline \"Member communication, handled. Without the long rollout,\" with a \"Book a demo\" button.",
+      "assets": [
+        {
+          "source": "batch-01/single-ask-ig.png",
+          "altText": "Dark card, headline \"Member communication, handled. Without the long rollout,\" with a \"Book a demo\" button."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "capabilityNote": "The CTA 'book a demo' trips the blocked lexicon. It is a sales CTA, not a product-capability claim. The headline word 'handled' sits in BLOCKED_WHEN_ASSISTANT and does not fire here because depictsAssistant is false. Copy recorded verbatim rather than reworded: the lexicon's precision on 'book' is a decision for the operator, not something to paper over in the ledger.",
+      "format": "type-card",
+      "territory": "promote",
+      "territoryBackfilled": true
+    }
+  ],
+  "note": "Captions + first comments in copy.md. First-comment scheduling: Buffer create_post has no first-comment field; investigate execute_mutation, else add at Buffer review. dueAt anchored to get_account currentTime 2026-07-22T23:44-07:00; all future, 7-weekday coverage, no adjacent same-pillar per channel."
+}

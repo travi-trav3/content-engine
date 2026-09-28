@@ -1,0 +1,93 @@
+{
+  "_comment": "The only numbers allowed in copy without an estimate label. Every entry carries a non-empty source: a stat with no source is not usable, even if it is true (Byron, Aug 26: use credible, sourced statistics selectively; never force generic marketing data onto private clubs). All benchmark entries are attributed as industry benchmarks, never as a Club Pilot or client outcome, and never fused with each other. Enforced by stat-gate.js.",
+  "_bannedTreatmentGlossary": {
+    "fuse-with-speed": "An open-rate figure and a time window in the same sentence. '98% opened within 3 minutes' exists in no source, including Trinity's own line, which is flagged in the open questions.",
+    "email-comparison": "Setting this stat against an email figure. Channel-versus-channel framing was retired 2026-08-26; email is part of the platform.",
+    "email-failure-implication": "Using this stat to imply club emails fail. Club event emails open at 50 to 70%."
+  },
+  "stats": [
+    {
+      "id": "sms-open-rate",
+      "claim": "~98% SMS open rate",
+      "pattern": "98\\s?(%|percent)|ninety.?eight\\s?(%|percent)",
+      "attribution": "industry benchmark",
+      "source": "Industry SMS benchmark set, compiled in BRAND.md section 8 (underlying citation not pinned; flagged in open questions)",
+      "bannedTreatments": ["fuse-with-speed", "email-comparison", "email-failure-implication"],
+      "comparisonAllowed": false
+    },
+    {
+      "id": "email-marketing-open-20-25",
+      "claim": "roughly 20 to 25% open rate for standard email marketing",
+      "pattern": "20\\s?(to|-|\\u2013)\\s?25\\s?%|2[05]\\s?% (open|for standard email)",
+      "attribution": "industry benchmark",
+      "source": "Industry email-marketing benchmark, BRAND.md section 8",
+      "bannedTreatments": ["email-failure-implication"],
+      "comparisonAllowed": false,
+      "_note": "Exists in the locked stat set only as the old comparison half. With comparisonAllowed false on both this and sms-open-rate, the 98-vs-25 treatment now fails the pair rule."
+    },
+    {
+      "id": "sms-read-3-minutes",
+      "claim": "up to 90% of texts read within 3 minutes",
+      "pattern": "90\\s?(%|percent)[^.!?\\n]{0,40}(3|three)\\s?minutes?|(read|texts)[^.!?\\n]{0,30}90\\s?(%|percent)",
+      "attribution": "industry benchmark",
+      "source": "Industry SMS benchmark set, compiled in BRAND.md section 8 (underlying citation not pinned; flagged in open questions)",
+      "bannedTreatments": ["fuse-with-speed", "email-comparison"],
+      "comparisonAllowed": false
+    },
+    {
+      "id": "text-response-90-seconds",
+      "claim": "~90-second average text response",
+      "pattern": "(90|ninety)[ -]?seconds?",
+      "attribution": "industry benchmark",
+      "source": "Industry response-time benchmark, BRAND.md section 8 (underlying citation not pinned; flagged in open questions)",
+      "bannedTreatments": ["email-comparison"],
+      "comparisonAllowed": false,
+      "_note": "The contrast pair with the 90-minute email figure was retired 2026-08-26 (BRAND.md changelog 4.3). Each half survives alone."
+    },
+    {
+      "id": "email-response-90-minutes",
+      "claim": "~90-minute average email response",
+      "pattern": "(90|ninety)[ -]?minutes?",
+      "attribution": "industry benchmark",
+      "source": "Industry response-time benchmark, BRAND.md section 8 (underlying citation not pinned; flagged in open questions)",
+      "bannedTreatments": ["email-comparison", "email-failure-implication"],
+      "comparisonAllowed": false
+    },
+    {
+      "id": "member-optin-67",
+      "claim": "67% member text opt-in, including members over 60",
+      "pattern": "67\\s?(%|percent)",
+      "attribution": "Byron's published blog; usable without benchmark attribution, never as 'Club Pilot member data'",
+      "source": "Byron White, Club Pilot blog (published)",
+      "bannedTreatments": [],
+      "comparisonAllowed": true
+    },
+    {
+      "id": "ngf-100m",
+      "claim": "clubs collectively spend over $100M annually answering routine member phone calls",
+      "pattern": "\\$\\s?100\\s?m|(one )?hundred million|100 million|\\$100M\\+?",
+      "attribution": "NGF",
+      "source": "National Golf Foundation",
+      "bannedTreatments": [],
+      "comparisonAllowed": true
+    },
+    {
+      "id": "club-email-open-50-70",
+      "claim": "club event emails open at 50 to 70%",
+      "pattern": "50\\s?(to|-|\\u2013)\\s?70\\s?%",
+      "attribution": "industry figure, defensive use only: club email is not a failing channel",
+      "source": "Club email benchmark, BRAND.md section 8 stat guardrails",
+      "bannedTreatments": [],
+      "comparisonAllowed": true
+    },
+    {
+      "id": "golf-digest-2026",
+      "claim": "Golf Digest, 2026 PGA Merchandise Show roundup, locked wording in BRAND.md section 8",
+      "pattern": "golf digest[^.!?\\n]{0,40}2026|2026[^.!?\\n]{0,50}pga merchandise show",
+      "attribution": "Golf Digest, 2026",
+      "source": "https://www.golfdigest.com/story/best-new-golf-products-2026-pga-show",
+      "bannedTreatments": [],
+      "comparisonAllowed": true
+    }
+  ]
+}

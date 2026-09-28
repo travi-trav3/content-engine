@@ -1,0 +1,10 @@
+{
+  "name": "Club Pilot",
+  "fontFamily": "Montserrat",
+  "fontWeights": [300, 400, 500, 600, 700],
+  "wordmark": {
+    "dark": "assets/wordmark-on-dark.svg",
+    "light": "assets/wordmark-on-light.svg",
+    "alt": "clubpilot"
+  }
+}

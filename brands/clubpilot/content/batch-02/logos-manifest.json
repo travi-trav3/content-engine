@@ -1,0 +1,19 @@
+{
+  "note": "Approved-for-social Trusted By club logos (Byron written approval 2026-07-24). Source: operator Google Drive folder. Pull via Google_Drive download_file_content (uncapped). Roster-level language only; headdress = ORGANIC placements only, never paid/boosted.",
+  "driveFolderId": "1DaxH1YQoTf8Bdvy78RDPASK-hOkotAk8",
+  "targetDir": "clubpilot/design-system/assets/img/clublogos/",
+  "logos": {
+    "salem":            {"fileId": "12UlrEgCJ_wPpK6i8FpZeKAgRZ6L6XDeo", "club": "Salem Country Club", "roster": true},
+    "sleepy-hollow":    {"fileId": "1W6QCPWuALYU1t65oBtjRLC-PBrxwQHx8", "club": "Sleepy Hollow", "roster": true},
+    "st-andrews-boca":  {"fileId": "1Dp271TmiFjRpqbuHJBahI_rZu3Ps2pr6", "club": "St. Andrews CC Boca Raton", "roster": true},
+    "worcester":        {"fileId": "1npN_3sCcrvVlfMetYrRyhlSxv_hFiMAV", "club": "Worcester", "roster": true},
+    "lost-city":        {"fileId": "10xAJj0STyA0yQEtYL1dUt_K1VDyhWrkh", "club": "Lost City Golf Club", "roster": true},
+    "willowbend":       {"fileId": "1kwkckZKrR7hzsRSmzaM0z8qWFsflO2Zq", "club": "Willowbend", "roster": true},
+    "breakers-west":    {"fileId": "1MM42Zz2w-OyNQI03u2wbWg9-3j3Lfm_r", "club": "Breakers West", "roster": true},
+    "essex-county":     {"fileId": "1k_-51ZeYri9KZDBWD1C8AthR43JPzNbv", "club": "Essex County", "roster": true},
+    "bb-monogram":      {"fileId": "177_TcN1CiMqrjb_Qq0G45w4X6Vm63PlV", "club": "monogram mark", "roster": true},
+    "tc-monogram":      {"fileId": "1O-VrtLvA9azf-vldyzHv5Itc76iJoHRE", "club": "monogram mark", "roster": true},
+    "flag":             {"fileId": "1qm81gFMFOQiw8xazow95qwg4r1YJLI4H", "club": "flag mark", "roster": true},
+    "headdress":        {"fileId": "10F-pbADeApMhyYJauWQch2ng658cVlJO", "club": "headdress mark", "roster": true, "organicOnly": true}
+  }
+}

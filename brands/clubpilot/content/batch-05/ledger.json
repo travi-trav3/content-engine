@@ -1,0 +1,354 @@
+{
+  "batch": "club-pilot-batch-05",
+  "window": "2026-09-10 to 2026-09-16",
+  "plan": "content/batch-05/plan.json",
+  "buffer": {
+    "organizationId": "6a138b7d82bb2ed009fed356",
+    "organizationName": "Applied Intelligence Co.",
+    "timezone": "America/Los_Angeles",
+    "anchoredTo": "get_account currentTime 2026-09-09T12:49:47-07:00",
+    "channels": {
+      "instagram": {
+        "id": "6a6141c7e2638b94d7b88ba3",
+        "name": "club.pilot.app"
+      },
+      "linkedin_page": {
+        "id": "6a6113cde2638b94d7b6d917",
+        "name": "Club Pilot (company page)"
+      },
+      "linkedin_byron_locked": {
+        "id": "6a6113cde2638b94d7b6d916",
+        "name": "Byron White (API-locked, cannot post)"
+      }
+    }
+  },
+  "hosting": {
+    "repo": "travi-trav3/clubpilot-social-assets",
+    "urlBase": "https://raw.githubusercontent.com/travi-trav3/clubpilot-social-assets/main/batch-05",
+    "commit": "1a7f202 (v2 cards for posts 1 and 2); 85ff845 (original eight)",
+    "verified": "every URL curl 200 on 2026-09-09 with sha256 matching the local render"
+  },
+  "context": "Second batch under the Aug 26 correction, plan-gated. Ordered by Travis in-session on 2026-09-09; the queue was empty after Sep 4. Uses the voice-reference posts not yet drawn on (02, 09, 10) plus the escalation path from the capability boundary, Operator POV question capture, and the 67% opt-in figure. One promote post (the interactive tour). Humor absent (review-first, no line read). Founder absent (channel locked). Photography: three fresh pulls from the Drive library (cristina-costello first tee, gene-gallin clubhouse, bryce-wendler flag through trees); no photo reused within 30 days. The batch-4 marina post (b4-08) was found in draft and is restored to Sep 17 outside this batch.",
+  "posts": [
+    {
+      "post": 1,
+      "id": "b5-01-wrong-question-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "territory": "thinking",
+      "template": "b5-01-wrong-question-li",
+      "format": "type-card",
+      "dueAt": "2026-09-10T08:35:00-07:00",
+      "file": "b5-01-wrong-question-li-v2.png",
+      "dimensions": "1200x1500",
+      "headline": "There is no best channel. There is the one each member answers.",
+      "subhead": "Some read every email. Some answer a text in seconds. Some open the app with their coffee.",
+      "text": "Curious which it is at your club.",
+      "caption": "Clubs spend a lot of energy debating which channel is best. Email or text. App or newsletter.\n\nMembers settle it every day, one at a time. Some read every email. Some answer a text in seconds. Some open the club app with their coffee and nothing else all week.\n\nThere is no best channel. There is the one each member answers. A club that knows which one that is, member by member, has solved most of the problem.\n\nWhich one is it for your members? Curious what you see.",
+      "firstComment": "The member who reads every word of the newsletter and the member who only ever answers a text are often in the same foursome. Neither is wrong, and a club that reaches both is doing it right.",
+      "altText": "Dark type card reading There is no best channel, there is the one each member answers, with the line Some read every email, some answer a text in seconds, some open the app with their coffee.",
+      "assets": [
+        {
+          "source": "batch-05/b5-01-wrong-question-li-v2.png",
+          "altText": "Dark type card reading There is no best channel, there is the one each member answers, with the line Some read every email, some answer a text in seconds, some open the app with their coffee."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "earnsItsPlace": "States the member-choice position outright, refusing to rank channels, which is the position Club Pilot is building the platform around; a single-channel vendor cannot publish a card that says there is no best channel.",
+      "bufferId": "6aa1bdfc9bd9144d2e8e86c0",
+      "bufferStatus": "scheduled (automatic, customScheduled); edited in place to v2 on 2026-09-09",
+      "firstCommentSet": true,
+      "revision": "v2 on 2026-09-09: first version rejected by Travis as weak (a question with no answer on the card). Buffer post edited in place; image republished under a new filename per the CDN gotcha."
+    },
+    {
+      "post": 2,
+      "id": "b5-02-honest-feedback-ig",
+      "channel": "instagram",
+      "pillar": "Operator POV, day in the life",
+      "territory": "seeing",
+      "template": "b5-02-honest-feedback-ig",
+      "format": "photo",
+      "dueAt": "2026-09-11T12:05:00-07:00",
+      "file": "b5-02-honest-feedback-ig-v2.png",
+      "dimensions": "1080x1350",
+      "headline": "Every message a club sends has two audiences.",
+      "subhead": "The members who read it now. The members who ask about it later.",
+      "caption": "Every message a club sends has two audiences.\n\nThe first reads it when it lands. The second asks about it three weeks later, standing on the first tee, at the exact moment it matters to them.\n\nNeither group is wrong. Questions arrive when they become relevant, not when the message went out.\n\nThe clubs members describe as easy to deal with are the ones that can answer the second audience as easily as they reached the first.",
+      "firstComment": "The message went out. The question still comes. Club Pilot is built for the second half of that sentence.",
+      "altText": "Photograph of a club's first tee on a clear day, players on the green, a cart path and a bench nearby; headline Every message a club sends has two audiences, the members who read it now and the members who ask about it later.",
+      "assets": [
+        {
+          "source": "batch-05/b5-02-honest-feedback-ig-v2.png",
+          "altText": "Photograph of a club's first tee on a clear day, players on the green, a cart path and a bench nearby; headline Every message a club sends has two audiences, the members who read it now and the members who ask about it later."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "photoNote": "cristina-costello-firsttee.jpg, first use, cropped to the right-hand side of the frame: the starter's clock in the original carries a real club's name (Round Hill), which is not on the approved-marks list, so the clock is out of frame. The pro-shop-counter shot does not exist in the library yet.",
+      "earnsItsPlace": "Names the second audience, the member who asks after the message went out, which is exactly who the assistant answers; a broadcast-only vendor only ever counts the first audience.",
+      "bufferId": "6aa1be015d9b055479644bb1",
+      "bufferStatus": "scheduled (automatic, customScheduled); edited in place to v2 on 2026-09-09",
+      "firstCommentSet": true,
+      "operationalCheck": "ops-question-timing: the second audience asks on the first tee weeks after the message went out, because that is when it becomes relevant; neither the club nor the member is framed as wrong",
+      "revision": "v2 on 2026-09-09: first version rejected by Travis as weak ('honest feedback' was an abstraction). Buffer post edited in place; image republished under a new filename per the CDN gotcha."
+    },
+    {
+      "post": 3,
+      "id": "b5-03-one-less-call-li",
+      "channel": "linkedin_page",
+      "pillar": "The front desk leak",
+      "territory": "seeing",
+      "template": "b5-03-one-less-call-li",
+      "format": "thread",
+      "dueAt": "2026-09-12T09:50:00-07:00",
+      "file": "b5-03-one-less-call-li.png",
+      "dimensions": "1200x1500",
+      "headline": "One less call to the front desk.",
+      "subhead": null,
+      "text": "Answered from the club's own hours, by text.",
+      "caption": "Most of the calls a front desk takes are small ones. Range hours. Whether the pool is open on a holiday. Which nights the dining room takes walk-ins.\n\nNone of them are hard. They add up because each one lands on someone in the middle of something else.\n\nWhen a routine question can be answered by text from the club's published hours, that is one call the desk does not take, and the member still gets a real answer.",
+      "firstComment": "The range-hours question is one of the most common ones operators tell us about, right behind pool hours. Small, constant, and answerable from a sheet the club keeps anyway.",
+      "altText": "Phone thread from Fairhaven Country Club, powered by Club Pilot. A member asks what time the range closes tonight and the assistant answers 8pm from the facility hours. Headline One less call to the front desk.",
+      "thread": [
+        {
+          "from": "member",
+          "text": "What time does the range close tonight?"
+        },
+        {
+          "from": "assistant",
+          "text": "The range closes at 8pm tonight, per the facility hours."
+        }
+      ],
+      "sender": "Fairhaven Country Club",
+      "assets": [
+        {
+          "source": "batch-05/b5-03-one-less-call-li.png",
+          "altText": "Phone thread from Fairhaven Country Club, powered by Club Pilot. A member asks what time the range closes tonight and the assistant answers 8pm from the facility hours. Headline One less call to the front desk."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "answer",
+      "sourceDocument": "facility hours",
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-question-timing: the range-hours question arrives on a Saturday afternoon because that is when it becomes relevant; the answer quotes the published facility hours, no live state implied",
+      "earnsItsPlace": "Shows the front desk leak closing one call at a time, with the answer coming from the club's own facility hours over text; the routine-call workload is the labor cost Club Pilot exists to absorb and nobody else in the feed would show the mechanism.",
+      "bufferId": "6aa1be29f88b2a75ef09d1ec",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 4,
+      "id": "b5-04-member-choice-ig",
+      "channel": "instagram",
+      "pillar": "Intelligent communication",
+      "territory": "building",
+      "template": "b5-04-member-choice-ig",
+      "format": "list",
+      "dueAt": "2026-09-13T17:15:00-07:00",
+      "file": "b5-04-member-choice-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "Communication should adapt to the member.",
+      "subhead": "That's the idea we're building around.",
+      "text": "Text when it's urgent. Email when it needs room. The app for club news. AI Assist when a member needs an answer. More to share soon.",
+      "caption": "Text when something is urgent. Email when the message needs more room. The app for club news. AI Assist when a member simply needs an answer.\n\nWe're bringing those pieces together inside Club Pilot because we don't think the future belongs to one channel. We think it belongs to member choice.\n\nMore to share soon.",
+      "firstComment": "Nothing on this list replaces what a club already runs. The newsletter stays the newsletter. The point is that the member chooses how the club reaches them.",
+      "altText": "Dark card with the headline Communication should adapt to the member and four rows: text when it's urgent, email when it needs room, the app for club news, AI Assist when a member needs an answer.",
+      "assets": [
+        {
+          "source": "batch-05/b5-04-member-choice-ig.png",
+          "altText": "Dark card with the headline Communication should adapt to the member and four rows: text when it's urgent, email when it needs room, the app for club news, AI Assist when a member needs an answer."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "earnsItsPlace": "Names what Club Pilot is building and why, in the founder's own hedged terms from sample 09; a competitor selling one channel cannot post a list that gives every channel a job.",
+      "bufferId": "6aa1be2bf88b2a75ef09d21e",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 5,
+      "id": "b5-07-three-minutes-li",
+      "channel": "linkedin_page",
+      "pillar": "Intelligent communication",
+      "territory": "promote",
+      "template": "b5-07-three-minutes-li",
+      "format": "photo",
+      "dueAt": "2026-09-14T09:40:00-07:00",
+      "file": "b5-07-three-minutes-li.png",
+      "dimensions": "1200x1500",
+      "headline": "Three minutes is easier than three paragraphs.",
+      "subhead": "A short interactive tour of Club Pilot.",
+      "caption": "We've found that modern club communication is much easier to understand when you can see it happen.\n\nSo we built a short interactive Club Pilot tour. A member asks a question. AI Assist answers. A club sends a timely message. The conversation keeps moving.\n\nIt takes about three minutes, which is usually when the idea clicks.\n\nThe tour: clubpilot.com/interactive-demo",
+      "firstComment": "It is the product itself, walked through screen by screen, rather than a slide deck. Link is in the post.",
+      "altText": "A flag on a green seen between dark tree trunks; headline Three minutes is easier than three paragraphs, with the line A short interactive tour of Club Pilot.",
+      "assets": [
+        {
+          "source": "batch-05/b5-07-three-minutes-li.png",
+          "altText": "A flag on a green seen between dark tree trunks; headline Three minutes is easier than three paragraphs, with the line A short interactive tour of Club Pilot."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "ctaType": "website",
+      "ctaUrl": "https://www.clubpilot.com/interactive-demo",
+      "photoNote": "bryce-wendler.jpg, first use. Flag through dark trees, atmosphere rather than a scenario per the plan's artDirectionMatch; no painted button.",
+      "earnsItsPlace": "The only post this batch that points at the product, and it does so as an invitation in Byron's own sample-10 words; the tour is ours and nobody else can offer it.",
+      "bufferId": "6aa1be2e9bd9144d2e8e9129",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 6,
+      "id": "b5-06-unwritten-rules-ig",
+      "channel": "instagram",
+      "pillar": "Member experience, elevated",
+      "territory": "thinking",
+      "template": "b5-06-unwritten-rules-ig",
+      "format": "photo",
+      "dueAt": "2026-09-15T19:45:00-07:00",
+      "file": "b5-06-unwritten-rules-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "How do new members learn the unwritten rules?",
+      "subhead": null,
+      "caption": "Every club has them. Which table is spoken for on Sunday. Where the cart goes when the round ends on 18. The name everyone uses for the room the sign calls something else.\n\nNone of it is in the member handbook, and most of it is learned the same way: a member tells them.\n\nWe're curious how it works at your club. Who teaches the unwritten rules, and how long does it take?",
+      "firstComment": "Every club seems to have one member who has been teaching the unwritten rules for decades and has never needed a handbook to do it.",
+      "altText": "Photograph of a clubhouse seen across the course on a clear day; headline How do new members learn the unwritten rules?",
+      "assets": [
+        {
+          "source": "batch-05/b5-06-unwritten-rules-ig.png",
+          "altText": "Photograph of a clubhouse seen across the course on a clear day; headline How do new members learn the unwritten rules?"
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-round-ends-18th: the caption's example custom is where the cart goes after the round ends on 18, which keeps the scenario on the course rather than at a counter",
+      "photoNote": "gene-gallin.jpg, first use. Clubhouse across the course in daylight per the plan's artDirectionMatch.",
+      "earnsItsPlace": "Names the knowledge that lives outside any club document, which is the exact edge of what an assistant answering from documents can do; a golf brand would never think to ask it and the answers are research for us.",
+      "bufferId": "6aa1be3051dc7f52588b1aa8",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 7,
+      "id": "b5-05-opt-in-li",
+      "channel": "linkedin_page",
+      "pillar": "Proof and results",
+      "territory": "learning",
+      "template": "b5-05-opt-in-li",
+      "format": "type-card",
+      "dueAt": "2026-09-16T12:20:00-07:00",
+      "file": "b5-05-opt-in-li.png",
+      "dimensions": "1200x1500",
+      "headline": "67% of members opted in to texts from their club.",
+      "subhead": "Members over 60 included.",
+      "text": "Source: Byron White, Club Pilot blog",
+      "caption": "One of the quieter assumptions in club communication is that members past a certain age will not text. Byron White looked at the numbers and found 67% of members opting in to texts from their club, with the over 60 group very much included.\n\nMembers are not asking for fewer channels. They are asking for the one they answer.\n\nThe full write-up is on the Club Pilot blog.",
+      "firstComment": "Full write-up on the Club Pilot blog: clubpilot.com/blog. The detail people ask about most is the over 60 group, which is exactly the group the objection assumes will not opt in.",
+      "altText": "Dark type card reading 67% of members opted in to texts from their club, members over 60 included, sourced to Byron White's Club Pilot blog.",
+      "assets": [
+        {
+          "source": "batch-05/b5-05-opt-in-li.png",
+          "altText": "Dark type card reading 67% of members opted in to texts from their club, members over 60 included, sourced to Byron White's Club Pilot blog."
+        }
+      ],
+      "depictsAssistant": false,
+      "interactionType": null,
+      "sourceDocument": null,
+      "endsAtHandoff": null,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "statNote": "member-optin-67 from brand/approved-stats.json, attributed to Byron's published blog on the card and in the caption. Set as a sentence rather than a giant numeral so Proof and results breaks its two-batch run on the data format.",
+      "earnsItsPlace": "The 67% opt-in figure is Byron's own published number and the single best answer to the our-members-will-not-text objection; no other company in the feed owns it.",
+      "bufferId": "6aa1be339bd9144d2e8e9173",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    },
+    {
+      "post": 8,
+      "id": "b5-08-says-so-ig",
+      "channel": "instagram",
+      "pillar": "Operator POV, day in the life",
+      "territory": "seeing",
+      "template": "b5-08-says-so-ig",
+      "format": "thread",
+      "dueAt": "2026-09-16T18:35:00-07:00",
+      "file": "b5-08-says-so-ig.png",
+      "dimensions": "1080x1350",
+      "headline": "When it doesn't know, it says so.",
+      "subhead": null,
+      "text": "Marked for the team. A human answers next.",
+      "caption": "Most of what members ask, a club has an answer for somewhere. Some of it, nobody has decided yet.\n\nThe useful behavior is not pretending. The assistant says it does not have that one, offers to pass the question to the team, and the thread is marked for a person in the club's inbox. Someone on staff answers in their own words.\n\nFor an operator, that is the reassurance that matters: nothing gets made up inside a member's thread.",
+      "firstComment": "The part we care about is the second line. A straight 'I don't have that one' is what makes the answers it does give believable.",
+      "altText": "Phone thread from Stonebridge Country Club, powered by Club Pilot. A member asks whether the gym is getting new bikes this fall; the assistant says it does not have that one, offers to send the question to the team, and confirms it was sent. Headline When it doesn't know, it says so.",
+      "thread": [
+        {
+          "from": "member",
+          "text": "Is the gym getting new bikes this fall?"
+        },
+        {
+          "from": "assistant",
+          "text": "I don't have that yet. I can send your question to the team."
+        },
+        {
+          "from": "member",
+          "text": "Please do"
+        },
+        {
+          "from": "assistant",
+          "text": "Sent to the team. They will follow up shortly."
+        }
+      ],
+      "sender": "Stonebridge Country Club",
+      "assets": [
+        {
+          "source": "batch-05/b5-08-says-so-ig.png",
+          "altText": "Phone thread from Stonebridge Country Club, powered by Club Pilot. A member asks whether the gym is getting new bikes this fall; the assistant says it does not have that one, offers to send the question to the team, and confirms it was sent. Headline When it doesn't know, it says so."
+        }
+      ],
+      "depictsAssistant": true,
+      "interactionType": "escalation",
+      "sourceDocument": null,
+      "endsAtHandoff": true,
+      "capabilityClearedBy": null,
+      "clubMarks": [],
+      "operationalCheck": "ops-question-timing: the member asks about a fitness-center purchase the club has not announced, a question no document answers yet; the thread stops at the handoff and no outcome is shown",
+      "earnsItsPlace": "Shows the handoff exactly as the product does it and stops at the handoff; a company that claimed its assistant answers everything could not post this, and the honesty is the trust feature.",
+      "bufferId": "6aa1be359bd9144d2e8e91b4",
+      "bufferStatus": "scheduled (automatic, customScheduled)",
+      "firstCommentSet": true
+    }
+  ],
+  "cadence_check": {
+    "weekday_coverage": "Thu(1), Fri(2), Sat(3), Sun(4), Mon(5), Tue(6), Wed(7, 8), plus the restored b4-08 on Thu Sep 17: all 7 weekdays across channels",
+    "channels": "LinkedIn 4 of 8 (posts 1, 3, 5, 7), Instagram 4 of 8 (posts 2, 4, 6, 8) plus the restored b4-08",
+    "territory_mix": "seeing 3, thinking 2, building 1, learning 1, promote 1; within plan-gate tolerance",
+    "surfaces": "dark-type 3, photo-full-bleed 3, thread 2; no two adjacent per channel",
+    "give_to_ask": "8 posts, 1 promote (the interactive tour, website CTA on LinkedIn)",
+    "dayparts": "early morning, midday, mid morning, late afternoon, mid morning, evening, midday, evening; irregular minutes, none repeated"
+  },
+  "rules": "sentence-case headlines; no em dashes; no single-word headline lines; plan-gated per content/batch-05/plan.json; benchmarks attributed and never @clubpilot-tagged; capability boundary enforced; thread senders from brand/demo-clubs.json with the powered-by microline; gates: node check-batch.js 05"
+}

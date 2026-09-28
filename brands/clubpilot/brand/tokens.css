@@ -1,0 +1,73 @@
+/* ============================================================
+   Club Pilot design tokens for the layout kit.
+
+   Layouts read only the semantic variables below (--bg, --ink,
+   --accent, ...). Nothing in layouts/ names a Club Pilot hex, so a
+   new brand re-skins every layout by writing its own tokens.css.
+
+   Palette source: the Club Pilot design system (Club Pilot.fig,
+   confirmed against clubpilot.com), dark-surface primary.
+
+   The light surface is NEW and PROVISIONAL (2026-09-28): the
+   current Club Pilot system has no light surface. It uses the
+   brand's own canvas ink and greens on off-white paper, and needs
+   Byron's sign-off with the brand files. The on-light wordmark in
+   assets/ is derived by recoloring the white letters to canvas ink;
+   replace it with an official on-light lockup when one exists.
+   ============================================================ */
+
+:root {
+  /* ---- Type ---- */
+  --font-display: "Montserrat", sans-serif;
+  --font-body: "Montserrat", sans-serif;
+  --fw-light: 300;
+  --fw-body: 500;
+  --fw-head: 600;
+  --fw-bold: 700;
+  --lh-head: 1.16;
+  --lh-body: 1.4;
+  --ls-display: -0.02em;
+  --ls-eyebrow: 0.06em;
+
+  /* ---- Shape ---- */
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-bubble: 28px;
+  --r-pill: 999px;
+
+  /* ---- Brand palette (reference; layouts use the surface tokens) ---- */
+  --cp-canvas: #030712;
+  --cp-surface: #101828;
+  --cp-green-brand: #04ae4d;
+  --cp-green-brand-d: #004b31;
+  --cp-green-confirm: #0acb40;
+  --cp-slate: #435267;
+  --cp-slate-muted: #95a0b3;
+  --cp-azure-top: #009ee8;
+  --cp-azure-bottom: #006fa7;
+}
+
+/* Dark: the primary Club Pilot surface. */
+.surface-dark {
+  --bg: var(--cp-canvas);
+  --bg-raised: var(--cp-surface);
+  --ink: #ffffff;
+  --ink-body: rgba(255, 255, 255, 0.72);
+  --ink-muted: rgba(255, 255, 255, 0.5);
+  --accent: var(--cp-green-confirm);
+  --accent-graphic: var(--cp-green-brand);
+  --line: rgba(255, 255, 255, 0.14);
+}
+
+/* Light: provisional, see header. Headline accent uses the deep brand
+   green because the bright greens fall under 3:1 contrast on paper. */
+.surface-light {
+  --bg: #f4f5f2;
+  --bg-raised: #ffffff;
+  --ink: var(--cp-canvas);
+  --ink-body: #3a4354;
+  --ink-muted: #5f6778;
+  --accent: var(--cp-green-brand-d);
+  --accent-graphic: var(--cp-green-brand);
+  --line: rgba(3, 7, 18, 0.14);
+}

@@ -1,0 +1,51 @@
+/* Shared by every layout. Layouts are designed on a 1080 x 1350 canvas;
+   the renderer scales that to each platform size, so no layout carries
+   per-platform pixel values. Colors and type come only from the brand's
+   semantic tokens (see layouts/README.md). */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: transparent; }
+
+.canvas {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: var(--fw-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.wordmark {
+  position: absolute;
+  top: 72px;
+  left: 81px;
+  height: 94px;
+  width: auto;
+  display: block;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: var(--fw-head);
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+.headline .accent { color: var(--accent); }
+
+.body-copy {
+  font-weight: var(--fw-body);
+  line-height: var(--lh-body);
+  color: var(--ink-body);
+}
+
+.muted { color: var(--ink-muted); }
+
+/* One span per word so the renderer can find single-word lines. */
+.w { display: inline; }
