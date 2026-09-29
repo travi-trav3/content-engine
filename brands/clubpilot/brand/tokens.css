@@ -72,6 +72,24 @@
   --line: rgba(255, 255, 255, 0.14);
 }
 
+/* Photo: text set over a photograph. Layouts lay a scrim built from these
+   stops between the photo and the type, so white ink keeps its contrast on
+   any image the library allows. --bg shows only while the photo loads. */
+.surface-photo {
+  --bg: var(--cp-canvas);
+  --bg-raised: var(--cp-surface);
+  --ink: #ffffff;
+  --ink-body: rgba(255, 255, 255, 0.88);
+  --ink-muted: rgba(255, 255, 255, 0.72);
+  --accent: var(--cp-green-confirm);
+  --accent-graphic: var(--cp-green-brand);
+  --line: rgba(255, 255, 255, 0.24);
+  --scrim-strong: rgba(3, 7, 18, 0.9);
+  --scrim-mid: rgba(3, 7, 18, 0.58);
+  --scrim-soft: rgba(3, 7, 18, 0.3);
+  --scrim-clear: rgba(3, 7, 18, 0);
+}
+
 /* Light: provisional, see header. Headline accent uses the deep brand
    green because the bright greens fall under 3:1 contrast on paper. */
 .surface-light {

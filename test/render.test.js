@@ -21,6 +21,8 @@ const path = require('path');
 const sharp = require('sharp');
 const { workspace } = require('../engine/lib/workspace');
 const { createRenderer, loadLayout, validateProps, SIZES } = require('../engine/render/render');
+const { renderCarousel } = require('../engine/render/carousel');
+const photoLibrary = require('../engine/photos/library');
 
 const WS = workspace();
 const LAYOUTS_DIR = path.join(__dirname, '..', 'layouts');
@@ -41,10 +43,15 @@ const check = (label, ok, detail = '') => {
 };
 
 async function compareToGolden(png, name) {
-  const golden = path.join(GOLDENS, `${name}.png`);
+  // Goldens are lossless WebP: the same pixels as the PNG at about 60% of
+  // the size, which matters once photo layouts are in the set.
+  const golden = path.join(GOLDENS, `${name}.webp`);
+  if (!fs.existsSync(golden) && process.env.CI) {
+    return { ok: false, note: `no golden ${path.relative(WS.dir, golden)}; generate it locally and commit it` };
+  }
   if (UPDATE || !fs.existsSync(golden)) {
     fs.mkdirSync(GOLDENS, { recursive: true });
-    fs.writeFileSync(golden, png);
+    await sharp(png).webp({ lossless: true, effort: 6 }).toFile(golden);
     return { ok: true, note: UPDATE ? 'golden updated' : 'golden created' };
   }
   const [a, b] = await Promise.all([png, fs.readFileSync(golden)]
@@ -71,10 +78,35 @@ async function compareToGolden(png, name) {
   };
 }
 
+// A fixture is a props object, or { slide, props } for a layout that shows
+// its position in a carousel.
+function readFixture(id) {
+  const raw = JSON.parse(fs.readFileSync(path.join(WS.dir, 'test-props', `${id}.json`), 'utf8'));
+  const keys = Object.keys(raw).sort().join(',');
+  return keys === 'props,slide' ? raw : { props: raw };
+}
+
 function layoutsWithFixtures() {
   const dir = path.join(WS.dir, 'test-props');
   return fs.readdirSync(dir).filter((f) => f.endsWith('.json'))
-    .map((f) => ({ id: path.basename(f, '.json'), props: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) }));
+    .map((f) => ({ id: path.basename(f, '.json'), ...readFixture(path.basename(f, '.json')) }));
+}
+
+// A layout that needs assets the brand does not have yet (a product
+// screenshot) must refuse to render until the library holds one.
+function unmetRequirement(layout, lib) {
+  const tags = (layout.requires && layout.requires.photoTags) || [];
+  if (!tags.length) return null;
+  const has = lib.photos.some((p) => p.reviewed && !p.restricted && tags.every((t) => (p.tags || []).includes(t)));
+  return has ? null : tags.join(', ');
+}
+
+// A copy of the library with some entries changed, for renders that need a
+// photo in a state the real library does not have.
+function libraryWith(changes) {
+  const lib = JSON.parse(JSON.stringify(photoLibrary.load()));
+  for (const [id, patch] of Object.entries(changes)) Object.assign(lib.photos.find((p) => p.id === id), patch);
+  return lib;
 }
 
 function checkLayoutContract() {
@@ -104,12 +136,33 @@ function checkLayoutContract() {
   const renderer = await createRenderer();
   try {
     console.log('== every layout, surface and size renders clean and matches its golden ==');
-    for (const { id, props } of layoutsWithFixtures()) {
+    const lib = photoLibrary.load();
+    for (const { id, props, slide } of layoutsWithFixtures()) {
       const layout = require(path.join('..', 'layouts', id, 'index.js'));
+      const unmet = unmetRequirement(layout, lib);
+      if (unmet) {
+        let threw = null;
+        try {
+          await renderer.render({ layout: id, size: 'ig', props });
+        } catch (e) { threw = e.message; }
+        check(`${id} is refused until the library holds a photo tagged ${unmet}`,
+          new RegExp(`not tagged ${unmet}`).test(threw || ''), threw || 'rendered');
+        // The layout's mechanics still get checked, with the fixture photo
+        // standing in for the missing asset. No golden: it is not a real post.
+        const stand = libraryWith({ [props.photo]: { tags: [...lib.photos.find((p) => p.id === props.photo).tags, ...unmet.split(', ')] } });
+        for (const surface of layout.surfaces) {
+          for (const size of Object.keys(SIZES)) {
+            const r = await renderer.render({ layout: id, surface, size, props, library: stand, out: path.join(OUT, `${id}-${surface}-${size}.png`) });
+            check(`${id}-${surface}-${size} renders clean with a stand-in asset`, r.issues.length === 0,
+              r.issues.map((i) => `${i.rule}: ${i.detail}`).join(' | '));
+          }
+        }
+        continue;
+      }
       for (const surface of layout.surfaces) {
         for (const size of Object.keys(SIZES)) {
           const name = `${id}-${surface}-${size}`;
-          const r = await renderer.render({ layout: id, surface, size, props, out: path.join(OUT, `${name}.png`) });
+          const r = await renderer.render({ layout: id, surface, size, props, slide, out: path.join(OUT, `${name}.png`) });
           const meta = await sharp(r.png).metadata();
           check(`${name} is ${SIZES[size].width}x${SIZES[size].height}`,
             meta.width === SIZES[size].width && meta.height === SIZES[size].height, `${meta.width}x${meta.height}`);
@@ -148,8 +201,77 @@ function checkLayoutContract() {
     } catch (e) { threw = e.message; }
     check('an unknown prop is rejected', /not a prop/.test(threw || ''), threw || 'did not throw');
 
+    const refuses = async (label, opts, pattern) => {
+      let threw = null;
+      try {
+        await renderer.render({ size: 'ig', ...opts });
+      } catch (e) { threw = e.message; }
+      check(`refuses ${label}`, pattern.test(threw || ''), threw || 'rendered');
+    };
+
+    // A bottom-aligned box overflows upward, where scrollHeight cannot see it.
+    const tall = await renderer.render({
+      layout: 'message-thread', size: 'ig', validate: false,
+      props: { ...readFixture('message-thread').props, headline: 'One less call to the front desk. '.repeat(4), emphasis: 'And one less member left waiting. '.repeat(2) },
+    });
+    check('a headline pushed out of the top of its box is flagged (render.overflow)',
+      tall.issues.some((i) => i.rule === 'render.overflow'), tall.issues.map((i) => i.rule).join(', ') || 'clean');
+
+    console.log('== photos come only from the reviewed library ==');
+    const fb = readFixture('full-bleed-photo').props;
+    await refuses('a photo that is not in the library', { layout: 'full-bleed-photo', props: { ...fb, photo: 'not-a-photo' } }, /not in photos\/library\.json/);
+    await refuses('a restricted photo', { layout: 'photo-band', props: { ...readFixture('photo-band').props, photo: 'cardmapr-nl-au-tyt7e0lw' } }, /restricted/);
+    await refuses('a photo nobody has reviewed',
+      { layout: 'full-bleed-photo', props: fb, library: libraryWith({ [fb.photo]: { reviewed: false } }) }, /not been reviewed/);
+    await refuses('a photo too small to run full bleed',
+      { layout: 'full-bleed-photo', props: { ...fb, photo: 'aleksandr-galichkin-auae3-x-ldu' } }, /too small to run full bleed/);
+    await refuses('a stock portrait as the founder',
+      { layout: 'founder-portrait', props: { ...readFixture('founder-portrait').props, photo: 'marvin-meyer-bmgdvxn-usq' } }, /not tagged founder/);
+    const soft = await renderer.render({
+      layout: 'full-bleed-photo', size: 'li', props: { ...fb, photo: 'byron-white-founder' },
+      library: libraryWith({ 'byron-white-founder': { fullBleedOk: true } }),
+    });
+    check('a photo shown larger than its pixels is flagged (render.photoTooSmall)',
+      soft.issues.some((i) => i.rule === 'render.photoTooSmall'), soft.issues.map((i) => i.rule).join(', ') || 'clean');
+    const used = await renderer.render({ layout: 'photo-band', size: 'ig', props: readFixture('photo-band').props });
+    check('a render reports the photos it used', used.photos.join(',') === readFixture('photo-band').props.photo, used.photos.join(','));
+
+    console.log('== the proof bar only says what the registry supports ==');
+    const pb = readFixture('proof-bar').props;
+    await refuses('a logo missing from the proof registry', { layout: 'proof-bar', props: { ...pb, logos: ['golf-digest', 'forbes'] } }, /not in the brand's proof registry/);
+    await refuses('logos that mix relations under one label', { layout: 'proof-bar', props: { ...pb, logos: ['golf-digest', 'pga-show'] } }, /mix relations/);
+    const brand = renderBrand();
+    brand.proof.logos['test-club'] = { name: 'Test Club', relation: 'trusted', file: { dark: 'assets/proof/golf-digest-on-dark.png' }, height: 80 };
+    const trusted = loadLayout('proof-bar').check({ props: { ...pb, logos: ['test-club'] }, brand });
+    check('refuses a customer logo without a recorded written approval', trusted.some((e) => /written approval/.test(e)), trusted.join('; ') || 'accepted');
+
+    console.log('== carousels number their slides in order ==');
+    const cs = readFixture('carousel-step').props;
+    const spec = {
+      surface: 'dark',
+      slides: [
+        { layout: 'type-card', props: readFixture('type-card').props },
+        { layout: 'carousel-step', props: cs },
+        { layout: 'carousel-step', props: { ...cs, eyebrow: 'Launch day', headline: 'Members ask the way they already ask.' } },
+        { layout: 'question-card', props: readFixture('question-card').props },
+      ],
+    };
+    const slides = await renderCarousel(renderer, spec, { size: 'ig', outDir: OUT, name: 'carousel' });
+    check('every slide of a four-slide carousel renders clean', slides.every((r) => r.issues.length === 0),
+      slides.flatMap((r) => r.issues.map((i) => `${r.slide.index}: ${i.rule}`)).join(', '));
+    check('slides keep one surface', slides.every((r) => r.surface === 'dark'), slides.map((r) => r.surface).join(','));
+    const stepHtml = loadLayout('carousel-step').render({ props: cs, brand: renderBrand(), surface: 'dark', slide: { index: 3, total: 4 } });
+    check('a step shows its position from the carousel, not from copy', /03 \/ 04/.test(stepHtml) && /Swipe/.test(stepHtml));
+    const lastHtml = loadLayout('carousel-step').render({ props: cs, brand: renderBrand(), surface: 'dark', slide: { index: 4, total: 4 } });
+    check('the last slide has no swipe cue', !/Swipe/.test(lastHtml));
+    let one = null;
+    try {
+      await renderCarousel(renderer, { slides: [spec.slides[0]] }, { size: 'ig' });
+    } catch (e) { one = e.message; }
+    check('refuses a one-slide carousel', /2 to 10 slides/.test(one || ''), one || 'rendered');
+
     console.log('== prop validation ==');
-    const fixture = (id) => JSON.parse(fs.readFileSync(path.join(WS.dir, 'test-props', `${id}.json`), 'utf8'));
+    const fixture = (id) => readFixture(id).props;
     const rejects = (label, id, mutate, pattern) => {
       const props = fixture(id);
       mutate(props);

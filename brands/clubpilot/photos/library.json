@@ -1,0 +1,5961 @@
+{
+  "photos": [
+    {
+      "id": "50m-above-gf5xptsylnu",
+      "file": "50m-above-gf5xptsylnu.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "orientation": "landscape",
+      "luminance": 125,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 169,
+          "busyness": 71
+        },
+        "top": {
+          "luminance": 210,
+          "busyness": 15
+        },
+        "top-right": {
+          "luminance": 192,
+          "busyness": 18
+        },
+        "left": {
+          "luminance": 81,
+          "busyness": 53
+        },
+        "center": {
+          "luminance": 111,
+          "busyness": 61
+        },
+        "right": {
+          "luminance": 105,
+          "busyness": 53
+        },
+        "bottom-left": {
+          "luminance": 51,
+          "busyness": 50
+        },
+        "bottom": {
+          "luminance": 98,
+          "busyness": 54
+        },
+        "bottom-right": {
+          "luminance": 105,
+          "busyness": 27
+        }
+      },
+      "calmZones": [
+        "top",
+        "top-right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "50m Above",
+        "url": "https://unsplash.com/photos/gf5xptsYlnU",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "sailboats",
+        "docks",
+        "sun"
+      ],
+      "subject": "marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "adrian-hernandez-omtcilnwcgs",
+      "file": "adrian-hernandez-omtcilnwcgs.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 2272,
+      "sourceHeight": 3408,
+      "orientation": "portrait",
+      "luminance": 47,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 56,
+          "busyness": 31
+        },
+        "top": {
+          "luminance": 49,
+          "busyness": 28
+        },
+        "top-right": {
+          "luminance": 52,
+          "busyness": 30
+        },
+        "left": {
+          "luminance": 68,
+          "busyness": 5
+        },
+        "center": {
+          "luminance": 56,
+          "busyness": 25
+        },
+        "right": {
+          "luminance": 41,
+          "busyness": 29
+        },
+        "bottom-left": {
+          "luminance": 50,
+          "busyness": 7
+        },
+        "bottom": {
+          "luminance": 36,
+          "busyness": 20
+        },
+        "bottom-right": {
+          "luminance": 11,
+          "busyness": 15
+        }
+      },
+      "calmZones": [
+        "top",
+        "left",
+        "center",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Adrian Hernandez",
+        "url": "https://unsplash.com/photos/OMTCIlnWCGs",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "silhouette",
+        "reading-green",
+        "moody"
+      ],
+      "subject": "golfer",
+      "time": "dusk",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "adrian-hernandez-wifghghg1ny",
+      "file": "adrian-hernandez-wifghghg1ny.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 2272,
+      "sourceHeight": 3408,
+      "orientation": "portrait",
+      "luminance": 62,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 64,
+          "busyness": 10
+        },
+        "top": {
+          "luminance": 62,
+          "busyness": 10
+        },
+        "top-right": {
+          "luminance": 60,
+          "busyness": 18
+        },
+        "left": {
+          "luminance": 63,
+          "busyness": 30
+        },
+        "center": {
+          "luminance": 74,
+          "busyness": 45
+        },
+        "right": {
+          "luminance": 62,
+          "busyness": 25
+        },
+        "bottom-left": {
+          "luminance": 54,
+          "busyness": 21
+        },
+        "bottom": {
+          "luminance": 60,
+          "busyness": 25
+        },
+        "bottom-right": {
+          "luminance": 55,
+          "busyness": 9
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Adrian Hernandez",
+        "url": "https://unsplash.com/photos/wIFGHGhg1nY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "wedges",
+        "grass",
+        "top-down"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "aleksandr-galichkin-auae3-x-ldu",
+      "file": "aleksandr-galichkin-auae3-x-ldu.jpg",
+      "width": 2400,
+      "height": 1350,
+      "sourceWidth": 4032,
+      "sourceHeight": 2268,
+      "orientation": "landscape",
+      "luminance": 102,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 107,
+          "busyness": 34
+        },
+        "top": {
+          "luminance": 142,
+          "busyness": 14
+        },
+        "top-right": {
+          "luminance": 74,
+          "busyness": 35
+        },
+        "left": {
+          "luminance": 98,
+          "busyness": 37
+        },
+        "center": {
+          "luminance": 141,
+          "busyness": 13
+        },
+        "right": {
+          "luminance": 67,
+          "busyness": 31
+        },
+        "bottom-left": {
+          "luminance": 90,
+          "busyness": 38
+        },
+        "bottom": {
+          "luminance": 130,
+          "busyness": 13
+        },
+        "bottom-right": {
+          "luminance": 67,
+          "busyness": 29
+        }
+      },
+      "calmZones": [
+        "top",
+        "center",
+        "bottom"
+      ],
+      "fullBleedOk": false,
+      "bandOk": true,
+      "source": {
+        "photographer": "Aleksandr Galichkin",
+        "url": "https://unsplash.com/photos/AUae3_x_lDU",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "aerial",
+        "courts",
+        "trees"
+      ],
+      "subject": "tennis",
+      "time": "day",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "alexander-lli9yoy5cm8",
+      "file": "alexander-lli9yoy5cm8.jpg",
+      "width": 2400,
+      "height": 1798,
+      "sourceWidth": 4048,
+      "sourceHeight": 3032,
+      "orientation": "landscape",
+      "luminance": 57,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 39,
+          "busyness": 8
+        },
+        "top": {
+          "luminance": 29,
+          "busyness": 7
+        },
+        "top-right": {
+          "luminance": 32,
+          "busyness": 9
+        },
+        "left": {
+          "luminance": 64,
+          "busyness": 47
+        },
+        "center": {
+          "luminance": 58,
+          "busyness": 48
+        },
+        "right": {
+          "luminance": 68,
+          "busyness": 51
+        },
+        "bottom-left": {
+          "luminance": 74,
+          "busyness": 48
+        },
+        "bottom": {
+          "luminance": 63,
+          "busyness": 36
+        },
+        "bottom-right": {
+          "luminance": 85,
+          "busyness": 58
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Alexander",
+        "url": "https://unsplash.com/photos/Lli9yOy5cm8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "docks",
+        "boats",
+        "dark-water"
+      ],
+      "subject": "aerial-marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "allan-nygren-xvkquntohi",
+      "file": "allan-nygren-xvkquntohi.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 3991,
+      "sourceHeight": 2661,
+      "orientation": "landscape",
+      "luminance": 52,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 54,
+          "busyness": 22
+        },
+        "top": {
+          "luminance": 55,
+          "busyness": 38
+        },
+        "top-right": {
+          "luminance": 46,
+          "busyness": 29
+        },
+        "left": {
+          "luminance": 50,
+          "busyness": 24
+        },
+        "center": {
+          "luminance": 69,
+          "busyness": 29
+        },
+        "right": {
+          "luminance": 43,
+          "busyness": 22
+        },
+        "bottom-left": {
+          "luminance": 37,
+          "busyness": 22
+        },
+        "bottom": {
+          "luminance": 75,
+          "busyness": 40
+        },
+        "bottom-right": {
+          "luminance": 35,
+          "busyness": 22
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Allan Nygren",
+        "url": "https://unsplash.com/photos/-xvKQuNtOhI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "green",
+        "bunkers",
+        "long-shadows"
+      ],
+      "subject": "aerial-course",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "amauri-cruz-filho-kbnv9wpcs5k",
+      "file": "amauri-cruz-filho-kbnv9wpcs5k.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 3264,
+      "sourceHeight": 2448,
+      "orientation": "landscape",
+      "luminance": 104,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 126,
+          "busyness": 18
+        },
+        "top": {
+          "luminance": 108,
+          "busyness": 16
+        },
+        "top-right": {
+          "luminance": 112,
+          "busyness": 26
+        },
+        "left": {
+          "luminance": 152,
+          "busyness": 49
+        },
+        "center": {
+          "luminance": 125,
+          "busyness": 60
+        },
+        "right": {
+          "luminance": 84,
+          "busyness": 55
+        },
+        "bottom-left": {
+          "luminance": 69,
+          "busyness": 41
+        },
+        "bottom": {
+          "luminance": 77,
+          "busyness": 49
+        },
+        "bottom-right": {
+          "luminance": 84,
+          "busyness": 40
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Amauri Cruz Filho",
+        "url": "https://unsplash.com/photos/kBNV9WpCs5k",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunker",
+        "blue-sky",
+        "trees"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "andrew-anderson-6i0lxsa7pd4",
+      "file": "andrew-anderson-6i0lxsa7pd4.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 7039,
+      "sourceHeight": 5279,
+      "orientation": "landscape",
+      "luminance": 154,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 221,
+          "busyness": 1
+        },
+        "top": {
+          "luminance": 219,
+          "busyness": 2
+        },
+        "top-right": {
+          "luminance": 218,
+          "busyness": 2
+        },
+        "left": {
+          "luminance": 164,
+          "busyness": 55
+        },
+        "center": {
+          "luminance": 153,
+          "busyness": 52
+        },
+        "right": {
+          "luminance": 136,
+          "busyness": 51
+        },
+        "bottom-left": {
+          "luminance": 90,
+          "busyness": 32
+        },
+        "bottom": {
+          "luminance": 93,
+          "busyness": 34
+        },
+        "bottom-right": {
+          "luminance": 87,
+          "busyness": 21
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Andrew Anderson",
+        "url": "https://unsplash.com/photos/6I0LxsA7Pd4",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "coastal",
+        "links",
+        "caddie",
+        "swing"
+      ],
+      "subject": "golfers",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.45,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "andrew-anderson-ctyc2jjlhvg",
+      "file": "andrew-anderson-ctyc2jjlhvg.jpg",
+      "width": 1500,
+      "height": 2400,
+      "sourceWidth": 1982,
+      "sourceHeight": 3171,
+      "orientation": "portrait",
+      "luminance": 113,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 125,
+          "busyness": 43
+        },
+        "top": {
+          "luminance": 125,
+          "busyness": 47
+        },
+        "top-right": {
+          "luminance": 168,
+          "busyness": 38
+        },
+        "left": {
+          "luminance": 132,
+          "busyness": 41
+        },
+        "center": {
+          "luminance": 115,
+          "busyness": 41
+        },
+        "right": {
+          "luminance": 122,
+          "busyness": 42
+        },
+        "bottom-left": {
+          "luminance": 68,
+          "busyness": 34
+        },
+        "bottom": {
+          "luminance": 64,
+          "busyness": 37
+        },
+        "bottom-right": {
+          "luminance": 101,
+          "busyness": 45
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Andrew Anderson",
+        "url": "https://unsplash.com/photos/CtyC2JjLhVg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunkers",
+        "green"
+      ],
+      "subject": "aerial-course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "andrew-shelley-yu6z-fia1ls",
+      "file": "andrew-shelley-yu6z-fia1ls.jpg",
+      "width": 1350,
+      "height": 2400,
+      "sourceWidth": 3589,
+      "sourceHeight": 6380,
+      "orientation": "portrait",
+      "luminance": 137,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 168,
+          "busyness": 29
+        },
+        "top": {
+          "luminance": 202,
+          "busyness": 27
+        },
+        "top-right": {
+          "luminance": 224,
+          "busyness": 21
+        },
+        "left": {
+          "luminance": 122,
+          "busyness": 26
+        },
+        "center": {
+          "luminance": 138,
+          "busyness": 39
+        },
+        "right": {
+          "luminance": 145,
+          "busyness": 53
+        },
+        "bottom-left": {
+          "luminance": 80,
+          "busyness": 23
+        },
+        "bottom": {
+          "luminance": 77,
+          "busyness": 26
+        },
+        "bottom-right": {
+          "luminance": 79,
+          "busyness": 30
+        }
+      },
+      "calmZones": [
+        "top",
+        "top-right",
+        "left",
+        "bottom-left",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Andrew Shelley",
+        "url": "https://unsplash.com/photos/Yu6Z_Fia1Ls",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "links",
+        "dramatic-sky",
+        "sky-space-top"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "avansear-3npjk7j20hy",
+      "file": "avansear-3npjk7j20hy.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5472,
+      "sourceHeight": 3648,
+      "orientation": "landscape",
+      "luminance": 51,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 48,
+          "busyness": 36
+        },
+        "top": {
+          "luminance": 32,
+          "busyness": 16
+        },
+        "top-right": {
+          "luminance": 58,
+          "busyness": 40
+        },
+        "left": {
+          "luminance": 45,
+          "busyness": 28
+        },
+        "center": {
+          "luminance": 53,
+          "busyness": 31
+        },
+        "right": {
+          "luminance": 45,
+          "busyness": 26
+        },
+        "bottom-left": {
+          "luminance": 47,
+          "busyness": 17
+        },
+        "bottom": {
+          "luminance": 69,
+          "busyness": 23
+        },
+        "bottom-right": {
+          "luminance": 59,
+          "busyness": 42
+        }
+      },
+      "calmZones": [
+        "top",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Avansear",
+        "url": "https://unsplash.com/photos/3NpJk7j20HY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "pond",
+        "grounds",
+        "elevated-view"
+      ],
+      "subject": "clubhouse",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "benny-hassum-ejvf528gelw",
+      "file": "benny-hassum-ejvf528gelw.jpg",
+      "width": 2400,
+      "height": 1920,
+      "sourceWidth": 5111,
+      "sourceHeight": 4089,
+      "orientation": "landscape",
+      "luminance": 134,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 161,
+          "busyness": 15
+        },
+        "top": {
+          "luminance": 177,
+          "busyness": 16
+        },
+        "top-right": {
+          "luminance": 191,
+          "busyness": 22
+        },
+        "left": {
+          "luminance": 138,
+          "busyness": 64
+        },
+        "center": {
+          "luminance": 164,
+          "busyness": 55
+        },
+        "right": {
+          "luminance": 142,
+          "busyness": 74
+        },
+        "bottom-left": {
+          "luminance": 69,
+          "busyness": 38
+        },
+        "bottom": {
+          "luminance": 82,
+          "busyness": 27
+        },
+        "bottom-right": {
+          "luminance": 80,
+          "busyness": 26
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Benny Hassum",
+        "url": "https://unsplash.com/photos/eJvf528gelw",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "woman",
+        "swing",
+        "skyline",
+        "sky-space-top"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.37,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "benny-hassum-ia5vnkpapys",
+      "file": "benny-hassum-ia5vnkpapys.jpg",
+      "width": 1758,
+      "height": 2400,
+      "sourceWidth": 3683,
+      "sourceHeight": 5027,
+      "orientation": "portrait",
+      "luminance": 90,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 124,
+          "busyness": 7
+        },
+        "top": {
+          "luminance": 111,
+          "busyness": 34
+        },
+        "top-right": {
+          "luminance": 115,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 139,
+          "busyness": 32
+        },
+        "center": {
+          "luminance": 48,
+          "busyness": 44
+        },
+        "right": {
+          "luminance": 84,
+          "busyness": 39
+        },
+        "bottom-left": {
+          "luminance": 59,
+          "busyness": 29
+        },
+        "bottom": {
+          "luminance": 78,
+          "busyness": 48
+        },
+        "bottom-right": {
+          "luminance": 51,
+          "busyness": 32
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Benny Hassum",
+        "url": "https://unsplash.com/photos/ia5VNKpapys",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "woman",
+        "follow-through",
+        "range"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.45
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "bobby-jones-scq-tbv-jjs",
+      "file": "bobby-jones-scq-tbv-jjs.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "orientation": "landscape",
+      "luminance": 83,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 35,
+          "busyness": 29
+        },
+        "top": {
+          "luminance": 113,
+          "busyness": 79
+        },
+        "top-right": {
+          "luminance": 146,
+          "busyness": 76
+        },
+        "left": {
+          "luminance": 66,
+          "busyness": 42
+        },
+        "center": {
+          "luminance": 115,
+          "busyness": 60
+        },
+        "right": {
+          "luminance": 59,
+          "busyness": 29
+        },
+        "bottom-left": {
+          "luminance": 66,
+          "busyness": 24
+        },
+        "bottom": {
+          "luminance": 57,
+          "busyness": 21
+        },
+        "bottom-right": {
+          "luminance": 91,
+          "busyness": 47
+        }
+      },
+      "calmZones": [
+        "bottom-left",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Bobby Jones",
+        "url": "https://unsplash.com/photos/Scq-tbV_jjs",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "trees",
+        "mist",
+        "sunlit-fairway"
+      ],
+      "subject": "course",
+      "time": "dawn",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "brandon-williams-0kmacspzifc",
+      "file": "brandon-williams-0kmacspzifc.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 3840,
+      "sourceHeight": 5760,
+      "orientation": "portrait",
+      "luminance": 148,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 219,
+          "busyness": 11
+        },
+        "top": {
+          "luminance": 223,
+          "busyness": 9
+        },
+        "top-right": {
+          "luminance": 229,
+          "busyness": 9
+        },
+        "left": {
+          "luminance": 127,
+          "busyness": 59
+        },
+        "center": {
+          "luminance": 118,
+          "busyness": 62
+        },
+        "right": {
+          "luminance": 121,
+          "busyness": 62
+        },
+        "bottom-left": {
+          "luminance": 86,
+          "busyness": 36
+        },
+        "bottom": {
+          "luminance": 92,
+          "busyness": 35
+        },
+        "bottom-right": {
+          "luminance": 114,
+          "busyness": 38
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Brandon Williams",
+        "url": "https://unsplash.com/photos/0KmACspzIFc",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "green",
+        "flag",
+        "sky-space-top"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "bryce-wendler-b-hgk98lfo",
+      "file": "bryce-wendler-b-hgk98lfo.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 29,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 25,
+          "busyness": 6
+        },
+        "top": {
+          "luminance": 43,
+          "busyness": 19
+        },
+        "top-right": {
+          "luminance": 22,
+          "busyness": 0
+        },
+        "left": {
+          "luminance": 25,
+          "busyness": 12
+        },
+        "center": {
+          "luminance": 43,
+          "busyness": 37
+        },
+        "right": {
+          "luminance": 22,
+          "busyness": 0
+        },
+        "bottom-left": {
+          "luminance": 26,
+          "busyness": 4
+        },
+        "bottom": {
+          "luminance": 29,
+          "busyness": 11
+        },
+        "bottom-right": {
+          "luminance": 24,
+          "busyness": 2
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Bryce Wendler",
+        "url": "https://unsplash.com/photos/B__HGk98lFo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "flag",
+        "trees",
+        "moody",
+        "dark"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "bryce-wendler-ri5g7u0kwpm",
+      "file": "bryce-wendler-ri5g7u0kwpm.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 104,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 168,
+          "busyness": 28
+        },
+        "top": {
+          "luminance": 183,
+          "busyness": 30
+        },
+        "top-right": {
+          "luminance": 184,
+          "busyness": 38
+        },
+        "left": {
+          "luminance": 96,
+          "busyness": 80
+        },
+        "center": {
+          "luminance": 122,
+          "busyness": 82
+        },
+        "right": {
+          "luminance": 58,
+          "busyness": 67
+        },
+        "bottom-left": {
+          "luminance": 47,
+          "busyness": 28
+        },
+        "bottom": {
+          "luminance": 42,
+          "busyness": 27
+        },
+        "bottom-right": {
+          "luminance": 33,
+          "busyness": 19
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Bryce Wendler",
+        "url": "https://unsplash.com/photos/RI5g7U0kwpM",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "fairway",
+        "long-shadows",
+        "sky-space-top"
+      ],
+      "subject": "course",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "byron-white-founder",
+      "file": "byron-white-founder.jpg",
+      "width": 389,
+      "height": 389,
+      "sourceWidth": 389,
+      "sourceHeight": 389,
+      "orientation": "square",
+      "luminance": 43,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 2,
+          "busyness": 7
+        },
+        "top": {
+          "luminance": 37,
+          "busyness": 44
+        },
+        "top-right": {
+          "luminance": 4,
+          "busyness": 14
+        },
+        "left": {
+          "luminance": 9,
+          "busyness": 19
+        },
+        "center": {
+          "luminance": 136,
+          "busyness": 25
+        },
+        "right": {
+          "luminance": 24,
+          "busyness": 44
+        },
+        "bottom-left": {
+          "luminance": 19,
+          "busyness": 20
+        },
+        "bottom": {
+          "luminance": 139,
+          "busyness": 35
+        },
+        "bottom-right": {
+          "luminance": 19,
+          "busyness": 30
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right",
+        "left",
+        "center",
+        "bottom-left"
+      ],
+      "fullBleedOk": false,
+      "bandOk": false,
+      "source": {
+        "license": "Club Pilot headshot (from the Applied Intelligence site); confirm rights and get the original from Byron"
+      },
+      "tags": [
+        "founder",
+        "headshot",
+        "black-and-white",
+        "byron-white"
+      ],
+      "subject": "portrait",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.45
+      },
+      "reviewed": true,
+      "notes": "Byron White, founder. Only 389x389: usable as a circle up to about 320px on the canvas, never full bleed or as a band. Get a high-resolution original (and a colour one) from Byron.",
+      "reviewedBy": "Claude, initial pass",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "cardmapr-nl-au-tyt7e0lw",
+      "file": "cardmapr-nl-au-tyt7e0lw.jpg",
+      "width": 1603,
+      "height": 2400,
+      "sourceWidth": 2515,
+      "sourceHeight": 3765,
+      "orientation": "portrait",
+      "luminance": 143,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 96,
+          "busyness": 33
+        },
+        "top": {
+          "luminance": 155,
+          "busyness": 76
+        },
+        "top-right": {
+          "luminance": 122,
+          "busyness": 78
+        },
+        "left": {
+          "luminance": 142,
+          "busyness": 34
+        },
+        "center": {
+          "luminance": 154,
+          "busyness": 48
+        },
+        "right": {
+          "luminance": 136,
+          "busyness": 57
+        },
+        "bottom-left": {
+          "luminance": 175,
+          "busyness": 31
+        },
+        "bottom": {
+          "luminance": 152,
+          "busyness": 52
+        },
+        "bottom-right": {
+          "luminance": 158,
+          "busyness": 31
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Cardmapr Nl",
+        "url": "https://unsplash.com/photos/aU-tyT7E0lw",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "phone-in-hand"
+      ],
+      "subject": "phone",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "The phone shows a third-party map app. Never use it in a way that suggests it is Club Pilot's product.",
+      "restricted": true,
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "chalo-garcia-ogql4bun4e8",
+      "file": "chalo-garcia-ogql4bun4e8.jpg",
+      "width": 2400,
+      "height": 1199,
+      "sourceWidth": 3212,
+      "sourceHeight": 1605,
+      "orientation": "landscape",
+      "luminance": 72,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 35,
+          "busyness": 60
+        },
+        "top": {
+          "luminance": 36,
+          "busyness": 47
+        },
+        "top-right": {
+          "luminance": 16,
+          "busyness": 29
+        },
+        "left": {
+          "luminance": 154,
+          "busyness": 85
+        },
+        "center": {
+          "luminance": 132,
+          "busyness": 68
+        },
+        "right": {
+          "luminance": 61,
+          "busyness": 38
+        },
+        "bottom-left": {
+          "luminance": 81,
+          "busyness": 67
+        },
+        "bottom": {
+          "luminance": 80,
+          "busyness": 58
+        },
+        "bottom-right": {
+          "luminance": 57,
+          "busyness": 52
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": false,
+      "bandOk": true,
+      "source": {
+        "photographer": "Chalo Garcia",
+        "url": "https://unsplash.com/photos/ogql4bUN4E8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "framed-by-trees",
+        "sunset"
+      ],
+      "subject": "marina",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "chuttersnap-ouubzc6regi",
+      "file": "chuttersnap-ouubzc6regi.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "orientation": "landscape",
+      "luminance": 133,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 177,
+          "busyness": 64
+        },
+        "top": {
+          "luminance": 166,
+          "busyness": 60
+        },
+        "top-right": {
+          "luminance": 165,
+          "busyness": 62
+        },
+        "left": {
+          "luminance": 151,
+          "busyness": 58
+        },
+        "center": {
+          "luminance": 158,
+          "busyness": 50
+        },
+        "right": {
+          "luminance": 127,
+          "busyness": 60
+        },
+        "bottom-left": {
+          "luminance": 85,
+          "busyness": 39
+        },
+        "bottom": {
+          "luminance": 85,
+          "busyness": 38
+        },
+        "bottom-right": {
+          "luminance": 83,
+          "busyness": 37
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Chuttersnap",
+        "url": "https://unsplash.com/photos/ouubzC6RegI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "yachts",
+        "buildings"
+      ],
+      "subject": "marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "colin-chong-e0x2fobkkw8",
+      "file": "colin-chong-e0x2fobkkw8.jpg",
+      "width": 2400,
+      "height": 1133,
+      "sourceWidth": 4608,
+      "sourceHeight": 2176,
+      "orientation": "landscape",
+      "luminance": 114,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 164,
+          "busyness": 60
+        },
+        "top": {
+          "luminance": 105,
+          "busyness": 45
+        },
+        "top-right": {
+          "luminance": 68,
+          "busyness": 30
+        },
+        "left": {
+          "luminance": 166,
+          "busyness": 37
+        },
+        "center": {
+          "luminance": 108,
+          "busyness": 21
+        },
+        "right": {
+          "luminance": 98,
+          "busyness": 32
+        },
+        "bottom-left": {
+          "luminance": 127,
+          "busyness": 38
+        },
+        "bottom": {
+          "luminance": 85,
+          "busyness": 27
+        },
+        "bottom-right": {
+          "luminance": 109,
+          "busyness": 50
+        }
+      },
+      "calmZones": [
+        "center",
+        "bottom"
+      ],
+      "fullBleedOk": false,
+      "bandOk": true,
+      "source": {
+        "photographer": "Colin Chong",
+        "url": "https://unsplash.com/photos/E0X2FOBkkw8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "harbor",
+        "yachts",
+        "hills"
+      ],
+      "subject": "marina",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "courtney-cook-0s70m63bkce",
+      "file": "courtney-cook-0s70m63bkce.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "orientation": "landscape",
+      "luminance": 144,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 162,
+          "busyness": 16
+        },
+        "top": {
+          "luminance": 166,
+          "busyness": 7
+        },
+        "top-right": {
+          "luminance": 158,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 128,
+          "busyness": 56
+        },
+        "center": {
+          "luminance": 156,
+          "busyness": 42
+        },
+        "right": {
+          "luminance": 144,
+          "busyness": 49
+        },
+        "bottom-left": {
+          "luminance": 135,
+          "busyness": 30
+        },
+        "bottom": {
+          "luminance": 141,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 106,
+          "busyness": 40
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Courtney Cook",
+        "url": "https://unsplash.com/photos/0s70M63bKCE",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "conversation",
+        "two-people"
+      ],
+      "subject": "golfers",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "courtney-cook-h7avq-7ffpw",
+      "file": "courtney-cook-h7avq-7ffpw.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5760,
+      "sourceHeight": 3840,
+      "orientation": "landscape",
+      "luminance": 139,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 175,
+          "busyness": 31
+        },
+        "top": {
+          "luminance": 178,
+          "busyness": 37
+        },
+        "top-right": {
+          "luminance": 187,
+          "busyness": 12
+        },
+        "left": {
+          "luminance": 93,
+          "busyness": 46
+        },
+        "center": {
+          "luminance": 139,
+          "busyness": 51
+        },
+        "right": {
+          "luminance": 115,
+          "busyness": 60
+        },
+        "bottom-left": {
+          "luminance": 94,
+          "busyness": 54
+        },
+        "bottom": {
+          "luminance": 127,
+          "busyness": 54
+        },
+        "bottom-right": {
+          "luminance": 139,
+          "busyness": 38
+        }
+      },
+      "calmZones": [
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Courtney Cook",
+        "url": "https://unsplash.com/photos/h7aVq-7FfPw",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "swing"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.45,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "courtney-cook-jxexrf3l97s",
+      "file": "courtney-cook-jxexrf3l97s.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 148,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 139,
+          "busyness": 62
+        },
+        "top": {
+          "luminance": 136,
+          "busyness": 65
+        },
+        "top-right": {
+          "luminance": 99,
+          "busyness": 58
+        },
+        "left": {
+          "luminance": 157,
+          "busyness": 39
+        },
+        "center": {
+          "luminance": 153,
+          "busyness": 61
+        },
+        "right": {
+          "luminance": 142,
+          "busyness": 62
+        },
+        "bottom-left": {
+          "luminance": 168,
+          "busyness": 9
+        },
+        "bottom": {
+          "luminance": 168,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 170,
+          "busyness": 7
+        }
+      },
+      "calmZones": [
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Courtney Cook",
+        "url": "https://unsplash.com/photos/jxEXrF3L97s",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "green",
+        "flag-blurred"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "courtney-cook-kaz6uu54zje",
+      "file": "courtney-cook-kaz6uu54zje.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 150,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 210,
+          "busyness": 28
+        },
+        "top": {
+          "luminance": 203,
+          "busyness": 54
+        },
+        "top-right": {
+          "luminance": 215,
+          "busyness": 37
+        },
+        "left": {
+          "luminance": 120,
+          "busyness": 48
+        },
+        "center": {
+          "luminance": 96,
+          "busyness": 65
+        },
+        "right": {
+          "luminance": 112,
+          "busyness": 49
+        },
+        "bottom-left": {
+          "luminance": 138,
+          "busyness": 18
+        },
+        "bottom": {
+          "luminance": 121,
+          "busyness": 40
+        },
+        "bottom-right": {
+          "luminance": 137,
+          "busyness": 25
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "bottom-left",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Courtney Cook",
+        "url": "https://unsplash.com/photos/kaZ6Uu54ZjE",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "swing",
+        "from-behind",
+        "sky-space-top"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "courtney-cook-ssiiw-met0e",
+      "file": "courtney-cook-ssiiw-met0e.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5760,
+      "sourceHeight": 3840,
+      "orientation": "landscape",
+      "luminance": 150,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 199,
+          "busyness": 16
+        },
+        "top": {
+          "luminance": 191,
+          "busyness": 26
+        },
+        "top-right": {
+          "luminance": 179,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 140,
+          "busyness": 58
+        },
+        "center": {
+          "luminance": 145,
+          "busyness": 62
+        },
+        "right": {
+          "luminance": 171,
+          "busyness": 46
+        },
+        "bottom-left": {
+          "luminance": 107,
+          "busyness": 29
+        },
+        "bottom": {
+          "luminance": 116,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 101,
+          "busyness": 28
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Courtney Cook",
+        "url": "https://unsplash.com/photos/SsIIw_MET0E",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "swing",
+        "clouds"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.62,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "cristina-anne-costello-jyvonk1xojw",
+      "file": "cristina-anne-costello-jyvonk1xojw.jpg",
+      "width": 2400,
+      "height": 1714,
+      "sourceWidth": 6178,
+      "sourceHeight": 4413,
+      "orientation": "landscape",
+      "luminance": 135,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 144,
+          "busyness": 39
+        },
+        "top": {
+          "luminance": 152,
+          "busyness": 45
+        },
+        "top-right": {
+          "luminance": 127,
+          "busyness": 46
+        },
+        "left": {
+          "luminance": 149,
+          "busyness": 44
+        },
+        "center": {
+          "luminance": 170,
+          "busyness": 50
+        },
+        "right": {
+          "luminance": 119,
+          "busyness": 52
+        },
+        "bottom-left": {
+          "luminance": 120,
+          "busyness": 41
+        },
+        "bottom": {
+          "luminance": 138,
+          "busyness": 51
+        },
+        "bottom-right": {
+          "luminance": 101,
+          "busyness": 51
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Cristina Anne Costello",
+        "url": "https://unsplash.com/photos/JyVoNK1XOjw",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "tees",
+        "pile",
+        "texture"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "cristina-anne-costello-kazsutdalb0",
+      "file": "cristina-anne-costello-kazsutdalb0.jpg",
+      "width": 2400,
+      "height": 1597,
+      "sourceWidth": 4174,
+      "sourceHeight": 2778,
+      "orientation": "landscape",
+      "luminance": 128,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 138,
+          "busyness": 14
+        },
+        "top": {
+          "luminance": 141,
+          "busyness": 12
+        },
+        "top-right": {
+          "luminance": 135,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 121,
+          "busyness": 49
+        },
+        "center": {
+          "luminance": 120,
+          "busyness": 49
+        },
+        "right": {
+          "luminance": 104,
+          "busyness": 39
+        },
+        "bottom-left": {
+          "luminance": 131,
+          "busyness": 42
+        },
+        "bottom": {
+          "luminance": 138,
+          "busyness": 27
+        },
+        "bottom-right": {
+          "luminance": 126,
+          "busyness": 25
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Cristina Anne Costello",
+        "url": "https://unsplash.com/photos/KAZSUtdALb0",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "flags",
+        "cart",
+        "clock"
+      ],
+      "subject": "grounds",
+      "time": "day",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "Shows a real organization's flag (First Tee) and a US flag. Restricted until someone confirms it can be used or it is cropped.",
+      "restricted": true,
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "dan-congdon-gjeuscufyya",
+      "file": "dan-congdon-gjeuscufyya.jpg",
+      "width": 2400,
+      "height": 1590,
+      "sourceWidth": 4928,
+      "sourceHeight": 3264,
+      "orientation": "landscape",
+      "luminance": 125,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 218,
+          "busyness": 44
+        },
+        "top": {
+          "luminance": 235,
+          "busyness": 43
+        },
+        "top-right": {
+          "luminance": 150,
+          "busyness": 70
+        },
+        "left": {
+          "luminance": 97,
+          "busyness": 26
+        },
+        "center": {
+          "luminance": 100,
+          "busyness": 32
+        },
+        "right": {
+          "luminance": 84,
+          "busyness": 20
+        },
+        "bottom-left": {
+          "luminance": 67,
+          "busyness": 29
+        },
+        "bottom": {
+          "luminance": 92,
+          "busyness": 38
+        },
+        "bottom-right": {
+          "luminance": 82,
+          "busyness": 40
+        }
+      },
+      "calmZones": [
+        "left",
+        "right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Dan Congdon",
+        "url": "https://unsplash.com/photos/gJeusCuFyYA",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "mountains",
+        "green",
+        "trees"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "daria-magazzu-q5mgmicrowg",
+      "file": "daria-magazzu-q5mgmicrowg.jpg",
+      "width": 1625,
+      "height": 2400,
+      "sourceWidth": 3403,
+      "sourceHeight": 5025,
+      "orientation": "portrait",
+      "luminance": 144,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 218,
+          "busyness": 19
+        },
+        "top": {
+          "luminance": 218,
+          "busyness": 22
+        },
+        "top-right": {
+          "luminance": 216,
+          "busyness": 25
+        },
+        "left": {
+          "luminance": 119,
+          "busyness": 40
+        },
+        "center": {
+          "luminance": 135,
+          "busyness": 44
+        },
+        "right": {
+          "luminance": 138,
+          "busyness": 23
+        },
+        "bottom-left": {
+          "luminance": 92,
+          "busyness": 17
+        },
+        "bottom": {
+          "luminance": 79,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 78,
+          "busyness": 20
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "right",
+        "bottom-left",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Daria Magazzu",
+        "url": "https://unsplash.com/photos/q5MgmIcrowg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "fog",
+        "net",
+        "humor-candidate"
+      ],
+      "subject": "tennis",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "david-goldsbury-mdn3fphhobq",
+      "file": "david-goldsbury-mdn3fphhobq.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 3264,
+      "sourceHeight": 2448,
+      "orientation": "landscape",
+      "luminance": 113,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 132,
+          "busyness": 5
+        },
+        "top": {
+          "luminance": 142,
+          "busyness": 5
+        },
+        "top-right": {
+          "luminance": 135,
+          "busyness": 5
+        },
+        "left": {
+          "luminance": 143,
+          "busyness": 9
+        },
+        "center": {
+          "luminance": 152,
+          "busyness": 31
+        },
+        "right": {
+          "luminance": 148,
+          "busyness": 19
+        },
+        "bottom-left": {
+          "luminance": 57,
+          "busyness": 52
+        },
+        "bottom": {
+          "luminance": 72,
+          "busyness": 71
+        },
+        "bottom-right": {
+          "luminance": 37,
+          "busyness": 42
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "David Goldsbury",
+        "url": "https://unsplash.com/photos/MdN3FpHHobQ",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "silhouette",
+        "sunset",
+        "sky"
+      ],
+      "subject": "golfer",
+      "time": "golden",
+      "people": "present",
+      "focus": {
+        "x": 0.43,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "dean-5yxjpt-tcao",
+      "file": "dean-5yxjpt-tcao.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "orientation": "landscape",
+      "luminance": 72,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 61,
+          "busyness": 43
+        },
+        "top": {
+          "luminance": 65,
+          "busyness": 44
+        },
+        "top-right": {
+          "luminance": 99,
+          "busyness": 63
+        },
+        "left": {
+          "luminance": 79,
+          "busyness": 33
+        },
+        "center": {
+          "luminance": 75,
+          "busyness": 51
+        },
+        "right": {
+          "luminance": 50,
+          "busyness": 38
+        },
+        "bottom-left": {
+          "luminance": 46,
+          "busyness": 27
+        },
+        "bottom": {
+          "luminance": 95,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 76,
+          "busyness": 30
+        }
+      },
+      "calmZones": [
+        "bottom-left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Dean",
+        "url": "https://unsplash.com/photos/5yxJpt_TcAo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "golf-carts",
+        "trees"
+      ],
+      "subject": "carts",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "diego-gpkyk-92vpg",
+      "file": "diego-gpkyk-92vpg.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5184,
+      "sourceHeight": 3456,
+      "orientation": "landscape",
+      "luminance": 81,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 40,
+          "busyness": 27
+        },
+        "top": {
+          "luminance": 50,
+          "busyness": 31
+        },
+        "top-right": {
+          "luminance": 62,
+          "busyness": 42
+        },
+        "left": {
+          "luminance": 107,
+          "busyness": 23
+        },
+        "center": {
+          "luminance": 124,
+          "busyness": 52
+        },
+        "right": {
+          "luminance": 106,
+          "busyness": 38
+        },
+        "bottom-left": {
+          "luminance": 79,
+          "busyness": 46
+        },
+        "bottom": {
+          "luminance": 80,
+          "busyness": 61
+        },
+        "bottom-right": {
+          "luminance": 76,
+          "busyness": 39
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Diego",
+        "url": "https://unsplash.com/photos/GpkYK-92VPg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "floodlights",
+        "golf-bag"
+      ],
+      "subject": "range",
+      "time": "night",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "edwin-compton-z8xlmaj65im",
+      "file": "edwin-compton-z8xlmaj65im.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "orientation": "landscape",
+      "luminance": 143,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 204,
+          "busyness": 7
+        },
+        "top": {
+          "luminance": 211,
+          "busyness": 6
+        },
+        "top-right": {
+          "luminance": 201,
+          "busyness": 50
+        },
+        "left": {
+          "luminance": 72,
+          "busyness": 58
+        },
+        "center": {
+          "luminance": 103,
+          "busyness": 72
+        },
+        "right": {
+          "luminance": 78,
+          "busyness": 75
+        },
+        "bottom-left": {
+          "luminance": 121,
+          "busyness": 52
+        },
+        "bottom": {
+          "luminance": 139,
+          "busyness": 45
+        },
+        "bottom-right": {
+          "luminance": 159,
+          "busyness": 16
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Edwin Compton",
+        "url": "https://unsplash.com/photos/Z8XlmAj65iM",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunker",
+        "green",
+        "sky"
+      ],
+      "subject": "course",
+      "time": "dusk",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "eugene-chystiakov-bt-ayttmuww",
+      "file": "eugene-chystiakov-bt-ayttmuww.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5866,
+      "sourceHeight": 3911,
+      "orientation": "landscape",
+      "luminance": 132,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 214,
+          "busyness": 4
+        },
+        "top": {
+          "luminance": 181,
+          "busyness": 42
+        },
+        "top-right": {
+          "luminance": 172,
+          "busyness": 32
+        },
+        "left": {
+          "luminance": 183,
+          "busyness": 25
+        },
+        "center": {
+          "luminance": 137,
+          "busyness": 56
+        },
+        "right": {
+          "luminance": 86,
+          "busyness": 51
+        },
+        "bottom-left": {
+          "luminance": 108,
+          "busyness": 32
+        },
+        "bottom": {
+          "luminance": 58,
+          "busyness": 27
+        },
+        "bottom-right": {
+          "luminance": 51,
+          "busyness": 44
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Eugene Chystiakov",
+        "url": "https://unsplash.com/photos/bt-AYttMuww",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "superyacht",
+        "marina"
+      ],
+      "subject": "yacht",
+      "time": "dusk",
+      "people": "none",
+      "focus": {
+        "x": 0.62,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "geio-tischler-ztiyt7hhzae",
+      "file": "geio-tischler-ztiyt7hhzae.jpg",
+      "width": 2400,
+      "height": 1599,
+      "sourceWidth": 5464,
+      "sourceHeight": 3640,
+      "orientation": "landscape",
+      "luminance": 99,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 139,
+          "busyness": 45
+        },
+        "top": {
+          "luminance": 112,
+          "busyness": 37
+        },
+        "top-right": {
+          "luminance": 93,
+          "busyness": 23
+        },
+        "left": {
+          "luminance": 145,
+          "busyness": 39
+        },
+        "center": {
+          "luminance": 128,
+          "busyness": 47
+        },
+        "right": {
+          "luminance": 52,
+          "busyness": 18
+        },
+        "bottom-left": {
+          "luminance": 117,
+          "busyness": 48
+        },
+        "bottom": {
+          "luminance": 81,
+          "busyness": 55
+        },
+        "bottom-right": {
+          "luminance": 26,
+          "busyness": 5
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Geio Tischler",
+        "url": "https://unsplash.com/photos/zTiYT7HHzAE",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "coastal-town",
+        "yachts",
+        "blue-water"
+      ],
+      "subject": "aerial-marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "gene-gallin-pe5a9rehveg",
+      "file": "gene-gallin-pe5a9rehveg.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5568,
+      "sourceHeight": 3712,
+      "orientation": "landscape",
+      "luminance": 108,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 113,
+          "busyness": 73
+        },
+        "top": {
+          "luminance": 168,
+          "busyness": 51
+        },
+        "top-right": {
+          "luminance": 114,
+          "busyness": 62
+        },
+        "left": {
+          "luminance": 64,
+          "busyness": 29
+        },
+        "center": {
+          "luminance": 94,
+          "busyness": 45
+        },
+        "right": {
+          "luminance": 81,
+          "busyness": 44
+        },
+        "bottom-left": {
+          "luminance": 104,
+          "busyness": 37
+        },
+        "bottom": {
+          "luminance": 120,
+          "busyness": 32
+        },
+        "bottom-right": {
+          "luminance": 115,
+          "busyness": 29
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Gene Gallin",
+        "url": "https://unsplash.com/photos/pe5a9RehVeg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "pond",
+        "path",
+        "grounds"
+      ],
+      "subject": "clubhouse",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "j-schiemann-z4sxy1-3wdy",
+      "file": "j-schiemann-z4sxy1-3wdy.jpg",
+      "width": 2400,
+      "height": 1594,
+      "sourceWidth": 3881,
+      "sourceHeight": 2578,
+      "orientation": "landscape",
+      "luminance": 193,
+      "tone": "light",
+      "zones": {
+        "top-left": {
+          "luminance": 243,
+          "busyness": 3
+        },
+        "top": {
+          "luminance": 247,
+          "busyness": 3
+        },
+        "top-right": {
+          "luminance": 241,
+          "busyness": 5
+        },
+        "left": {
+          "luminance": 179,
+          "busyness": 71
+        },
+        "center": {
+          "luminance": 222,
+          "busyness": 40
+        },
+        "right": {
+          "luminance": 192,
+          "busyness": 64
+        },
+        "bottom-left": {
+          "luminance": 129,
+          "busyness": 54
+        },
+        "bottom": {
+          "luminance": 158,
+          "busyness": 52
+        },
+        "bottom-right": {
+          "luminance": 121,
+          "busyness": 52
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "J Schiemann",
+        "url": "https://unsplash.com/photos/Z4Sxy1_3wdY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "doubles",
+        "serve"
+      ],
+      "subject": "tennis",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.35,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "james-ambron-ay0ecicdue8",
+      "file": "james-ambron-ay0ecicdue8.jpg",
+      "width": 1800,
+      "height": 2400,
+      "sourceWidth": 2093,
+      "sourceHeight": 2791,
+      "orientation": "portrait",
+      "luminance": 103,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 128,
+          "busyness": 55
+        },
+        "top": {
+          "luminance": 138,
+          "busyness": 66
+        },
+        "top-right": {
+          "luminance": 130,
+          "busyness": 75
+        },
+        "left": {
+          "luminance": 101,
+          "busyness": 35
+        },
+        "center": {
+          "luminance": 90,
+          "busyness": 31
+        },
+        "right": {
+          "luminance": 91,
+          "busyness": 31
+        },
+        "bottom-left": {
+          "luminance": 76,
+          "busyness": 39
+        },
+        "bottom": {
+          "luminance": 78,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 97,
+          "busyness": 28
+        }
+      },
+      "calmZones": [
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "James Ambron",
+        "url": "https://unsplash.com/photos/ay0eCICdUe8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "trees",
+        "creek",
+        "bunkers"
+      ],
+      "subject": "aerial-course",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "johnny-such-xhqahufdq1e",
+      "file": "johnny-such-xhqahufdq1e.jpg",
+      "width": 2400,
+      "height": 1610,
+      "sourceWidth": 4374,
+      "sourceHeight": 2934,
+      "orientation": "landscape",
+      "luminance": 153,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 212,
+          "busyness": 5
+        },
+        "top": {
+          "luminance": 215,
+          "busyness": 4
+        },
+        "top-right": {
+          "luminance": 211,
+          "busyness": 6
+        },
+        "left": {
+          "luminance": 144,
+          "busyness": 49
+        },
+        "center": {
+          "luminance": 164,
+          "busyness": 45
+        },
+        "right": {
+          "luminance": 167,
+          "busyness": 42
+        },
+        "bottom-left": {
+          "luminance": 84,
+          "busyness": 42
+        },
+        "bottom": {
+          "luminance": 97,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 87,
+          "busyness": 34
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Johnny Such",
+        "url": "https://unsplash.com/photos/XhQahuFDq1E",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ocean",
+        "green",
+        "flag",
+        "coastal"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "May be a recognizable real course. Never name it or imply it is a client.",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "joseph-sintum-3wjr5krasdk",
+      "file": "joseph-sintum-3wjr5krasdk.jpg",
+      "width": 2400,
+      "height": 1855,
+      "sourceWidth": 4757,
+      "sourceHeight": 3676,
+      "orientation": "landscape",
+      "luminance": 140,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 223,
+          "busyness": 13
+        },
+        "top": {
+          "luminance": 206,
+          "busyness": 16
+        },
+        "top-right": {
+          "luminance": 140,
+          "busyness": 58
+        },
+        "left": {
+          "luminance": 189,
+          "busyness": 39
+        },
+        "center": {
+          "luminance": 167,
+          "busyness": 42
+        },
+        "right": {
+          "luminance": 75,
+          "busyness": 49
+        },
+        "bottom-left": {
+          "luminance": 94,
+          "busyness": 57
+        },
+        "bottom": {
+          "luminance": 93,
+          "busyness": 50
+        },
+        "bottom-right": {
+          "luminance": 72,
+          "busyness": 25
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Joseph Sintum",
+        "url": "https://unsplash.com/photos/3wjr5KraSDk",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "cliff",
+        "ocean",
+        "swing"
+      ],
+      "subject": "golfer",
+      "time": "golden",
+      "people": "present",
+      "focus": {
+        "x": 0.33,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "juan-gomez-ubqykd-ejsy",
+      "file": "juan-gomez-ubqykd-ejsy.jpg",
+      "width": 1800,
+      "height": 2400,
+      "sourceWidth": 2448,
+      "sourceHeight": 3264,
+      "orientation": "portrait",
+      "luminance": 121,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 129,
+          "busyness": 14
+        },
+        "top": {
+          "luminance": 110,
+          "busyness": 12
+        },
+        "top-right": {
+          "luminance": 102,
+          "busyness": 12
+        },
+        "left": {
+          "luminance": 145,
+          "busyness": 46
+        },
+        "center": {
+          "luminance": 158,
+          "busyness": 28
+        },
+        "right": {
+          "luminance": 158,
+          "busyness": 23
+        },
+        "bottom-left": {
+          "luminance": 88,
+          "busyness": 39
+        },
+        "bottom": {
+          "luminance": 100,
+          "busyness": 41
+        },
+        "bottom-right": {
+          "luminance": 99,
+          "busyness": 40
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "center",
+        "right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Juan Gomez",
+        "url": "https://unsplash.com/photos/uBqykD-ejsY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "blue-sky",
+        "bunker",
+        "trees",
+        "sky-space-top"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "jura-fegoaqn-4gq",
+      "file": "jura-fegoaqn-4gq.jpg",
+      "width": 1800,
+      "height": 2400,
+      "sourceWidth": 3024,
+      "sourceHeight": 4032,
+      "orientation": "portrait",
+      "luminance": 158,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 176,
+          "busyness": 22
+        },
+        "top": {
+          "luminance": 174,
+          "busyness": 13
+        },
+        "top-right": {
+          "luminance": 187,
+          "busyness": 10
+        },
+        "left": {
+          "luminance": 177,
+          "busyness": 52
+        },
+        "center": {
+          "luminance": 174,
+          "busyness": 52
+        },
+        "right": {
+          "luminance": 179,
+          "busyness": 55
+        },
+        "bottom-left": {
+          "luminance": 100,
+          "busyness": 40
+        },
+        "bottom": {
+          "luminance": 117,
+          "busyness": 46
+        },
+        "bottom-right": {
+          "luminance": 138,
+          "busyness": 44
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Jura",
+        "url": "https://unsplash.com/photos/FegOaqn_4GQ",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "palms",
+        "pond",
+        "shadows"
+      ],
+      "subject": "course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "lesli-whitecotton-uhz-w1boivy",
+      "file": "lesli-whitecotton-uhz-w1boivy.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "orientation": "landscape",
+      "luminance": 167,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 205,
+          "busyness": 16
+        },
+        "top": {
+          "luminance": 220,
+          "busyness": 12
+        },
+        "top-right": {
+          "luminance": 222,
+          "busyness": 9
+        },
+        "left": {
+          "luminance": 141,
+          "busyness": 69
+        },
+        "center": {
+          "luminance": 134,
+          "busyness": 76
+        },
+        "right": {
+          "luminance": 103,
+          "busyness": 80
+        },
+        "bottom-left": {
+          "luminance": 182,
+          "busyness": 14
+        },
+        "bottom": {
+          "luminance": 162,
+          "busyness": 25
+        },
+        "bottom-right": {
+          "luminance": 135,
+          "busyness": 21
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Lesli Whitecotton",
+        "url": "https://unsplash.com/photos/UHZ_w1bOIvY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "doubles",
+        "court"
+      ],
+      "subject": "pickleball",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.6,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "maciej-marko-s72kiq39c54",
+      "file": "maciej-marko-s72kiq39c54.jpg",
+      "width": 1800,
+      "height": 2400,
+      "sourceWidth": 3072,
+      "sourceHeight": 4096,
+      "orientation": "portrait",
+      "luminance": 135,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 220,
+          "busyness": 19
+        },
+        "top": {
+          "luminance": 220,
+          "busyness": 14
+        },
+        "top-right": {
+          "luminance": 191,
+          "busyness": 47
+        },
+        "left": {
+          "luminance": 133,
+          "busyness": 57
+        },
+        "center": {
+          "luminance": 122,
+          "busyness": 43
+        },
+        "right": {
+          "luminance": 122,
+          "busyness": 50
+        },
+        "bottom-left": {
+          "luminance": 51,
+          "busyness": 40
+        },
+        "bottom": {
+          "luminance": 84,
+          "busyness": 52
+        },
+        "bottom-right": {
+          "luminance": 75,
+          "busyness": 39
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Maciej Marko",
+        "url": "https://unsplash.com/photos/s72kIQ39C54",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "resort",
+        "cliffs",
+        "palms"
+      ],
+      "subject": "tennis",
+      "time": "day",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "Resort signage is visible (restaurant, pool). Fine as scenery; never name the resort.",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "marvin-meyer-bmgdvxn-usq",
+      "file": "marvin-meyer-bmgdvxn-usq.jpg",
+      "width": 1920,
+      "height": 2400,
+      "sourceWidth": 2695,
+      "sourceHeight": 3368,
+      "orientation": "portrait",
+      "luminance": 83,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 54,
+          "busyness": 23
+        },
+        "top": {
+          "luminance": 125,
+          "busyness": 50
+        },
+        "top-right": {
+          "luminance": 104,
+          "busyness": 37
+        },
+        "left": {
+          "luminance": 60,
+          "busyness": 19
+        },
+        "center": {
+          "luminance": 68,
+          "busyness": 36
+        },
+        "right": {
+          "luminance": 71,
+          "busyness": 21
+        },
+        "bottom-left": {
+          "luminance": 77,
+          "busyness": 30
+        },
+        "bottom": {
+          "luminance": 110,
+          "busyness": 45
+        },
+        "bottom-right": {
+          "luminance": 84,
+          "busyness": 34
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left",
+        "right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Marvin Meyer",
+        "url": "https://unsplash.com/photos/BmGdVxn_USQ",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "portrait",
+        "standing"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "matthew-mcbrayer-fzl3en4ajui",
+      "file": "matthew-mcbrayer-fzl3en4ajui.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6720,
+      "sourceHeight": 4480,
+      "orientation": "landscape",
+      "luminance": 135,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 211,
+          "busyness": 9
+        },
+        "top": {
+          "luminance": 208,
+          "busyness": 9
+        },
+        "top-right": {
+          "luminance": 174,
+          "busyness": 20
+        },
+        "left": {
+          "luminance": 130,
+          "busyness": 81
+        },
+        "center": {
+          "luminance": 143,
+          "busyness": 72
+        },
+        "right": {
+          "luminance": 88,
+          "busyness": 62
+        },
+        "bottom-left": {
+          "luminance": 74,
+          "busyness": 21
+        },
+        "bottom": {
+          "luminance": 106,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 80,
+          "busyness": 24
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Matthew Mcbrayer",
+        "url": "https://unsplash.com/photos/fZL3EN4aJUI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunkers",
+        "hills"
+      ],
+      "subject": "course",
+      "time": "dawn",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "mick-de-paola-lupjor3ofeg",
+      "file": "mick-de-paola-lupjor3ofeg.jpg",
+      "width": 2400,
+      "height": 1596,
+      "sourceWidth": 3008,
+      "sourceHeight": 2000,
+      "orientation": "landscape",
+      "luminance": 92,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 68,
+          "busyness": 37
+        },
+        "top": {
+          "luminance": 70,
+          "busyness": 33
+        },
+        "top-right": {
+          "luminance": 66,
+          "busyness": 28
+        },
+        "left": {
+          "luminance": 101,
+          "busyness": 43
+        },
+        "center": {
+          "luminance": 110,
+          "busyness": 36
+        },
+        "right": {
+          "luminance": 121,
+          "busyness": 8
+        },
+        "bottom-left": {
+          "luminance": 99,
+          "busyness": 14
+        },
+        "bottom": {
+          "luminance": 99,
+          "busyness": 14
+        },
+        "bottom-right": {
+          "luminance": 93,
+          "busyness": 14
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Mick De Paola",
+        "url": "https://unsplash.com/photos/LUPJoR3OfEg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "putter",
+        "ball",
+        "shoe"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "mick-haupt-m0ixio5ff7m",
+      "file": "mick-haupt-m0ixio5ff7m.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6163,
+      "sourceHeight": 4109,
+      "orientation": "landscape",
+      "luminance": 124,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 134,
+          "busyness": 27
+        },
+        "top": {
+          "luminance": 135,
+          "busyness": 35
+        },
+        "top-right": {
+          "luminance": 139,
+          "busyness": 23
+        },
+        "left": {
+          "luminance": 110,
+          "busyness": 67
+        },
+        "center": {
+          "luminance": 141,
+          "busyness": 63
+        },
+        "right": {
+          "luminance": 117,
+          "busyness": 61
+        },
+        "bottom-left": {
+          "luminance": 118,
+          "busyness": 31
+        },
+        "bottom": {
+          "luminance": 119,
+          "busyness": 18
+        },
+        "bottom-right": {
+          "luminance": 104,
+          "busyness": 12
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Mick Haupt",
+        "url": "https://unsplash.com/photos/m0iXio5FF7M",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "swing",
+        "blue-sky"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.37,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "mike-cox-lqw5ae8imto",
+      "file": "mike-cox-lqw5ae8imto.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 4104,
+      "sourceHeight": 2736,
+      "orientation": "landscape",
+      "luminance": 139,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 243,
+          "busyness": 17
+        },
+        "top": {
+          "luminance": 211,
+          "busyness": 40
+        },
+        "top-right": {
+          "luminance": 191,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 142,
+          "busyness": 30
+        },
+        "center": {
+          "luminance": 132,
+          "busyness": 40
+        },
+        "right": {
+          "luminance": 100,
+          "busyness": 36
+        },
+        "bottom-left": {
+          "luminance": 75,
+          "busyness": 18
+        },
+        "bottom": {
+          "luminance": 84,
+          "busyness": 14
+        },
+        "bottom-right": {
+          "luminance": 75,
+          "busyness": 17
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Mike Cox",
+        "url": "https://unsplash.com/photos/lQw5AE8ImTo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "silhouette",
+        "backlit",
+        "long-shadow"
+      ],
+      "subject": "golfer",
+      "time": "golden",
+      "people": "present",
+      "focus": {
+        "x": 0.47,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "mk-s-whf1wtnmmlu",
+      "file": "mk-s-whf1wtnmmlu.jpg",
+      "width": 2400,
+      "height": 1676,
+      "sourceWidth": 5248,
+      "sourceHeight": 3664,
+      "orientation": "landscape",
+      "luminance": 126,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 193,
+          "busyness": 14
+        },
+        "top": {
+          "luminance": 203,
+          "busyness": 14
+        },
+        "top-right": {
+          "luminance": 128,
+          "busyness": 77
+        },
+        "left": {
+          "luminance": 130,
+          "busyness": 56
+        },
+        "center": {
+          "luminance": 132,
+          "busyness": 74
+        },
+        "right": {
+          "luminance": 64,
+          "busyness": 64
+        },
+        "bottom-left": {
+          "luminance": 97,
+          "busyness": 11
+        },
+        "bottom": {
+          "luminance": 99,
+          "busyness": 12
+        },
+        "bottom-right": {
+          "luminance": 90,
+          "busyness": 9
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Mk S",
+        "url": "https://unsplash.com/photos/WHf1wtNMMLU",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "flag",
+        "fairway"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.35,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "nazar-haponov-ajb26vfpzdu",
+      "file": "nazar-haponov-ajb26vfpzdu.jpg",
+      "width": 2400,
+      "height": 1590,
+      "sourceWidth": 4928,
+      "sourceHeight": 3264,
+      "orientation": "landscape",
+      "luminance": 115,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 138,
+          "busyness": 8
+        },
+        "top": {
+          "luminance": 161,
+          "busyness": 18
+        },
+        "top-right": {
+          "luminance": 174,
+          "busyness": 15
+        },
+        "left": {
+          "luminance": 143,
+          "busyness": 17
+        },
+        "center": {
+          "luminance": 143,
+          "busyness": 37
+        },
+        "right": {
+          "luminance": 113,
+          "busyness": 53
+        },
+        "bottom-left": {
+          "luminance": 47,
+          "busyness": 36
+        },
+        "bottom": {
+          "luminance": 70,
+          "busyness": 44
+        },
+        "bottom-right": {
+          "luminance": 49,
+          "busyness": 31
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Nazar Haponov",
+        "url": "https://unsplash.com/photos/ajb26vfpzdU",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "superyacht",
+        "pink-sky"
+      ],
+      "subject": "yacht",
+      "time": "dusk",
+      "people": "none",
+      "focus": {
+        "x": 0.7,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "noah-rosenfield-njaglwiohcm",
+      "file": "noah-rosenfield-njaglwiohcm.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5472,
+      "sourceHeight": 3648,
+      "orientation": "landscape",
+      "luminance": 96,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 86,
+          "busyness": 8
+        },
+        "top": {
+          "luminance": 98,
+          "busyness": 39
+        },
+        "top-right": {
+          "luminance": 104,
+          "busyness": 50
+        },
+        "left": {
+          "luminance": 78,
+          "busyness": 13
+        },
+        "center": {
+          "luminance": 117,
+          "busyness": 57
+        },
+        "right": {
+          "luminance": 121,
+          "busyness": 36
+        },
+        "bottom-left": {
+          "luminance": 74,
+          "busyness": 9
+        },
+        "bottom": {
+          "luminance": 78,
+          "busyness": 19
+        },
+        "bottom-right": {
+          "luminance": 108,
+          "busyness": 46
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left",
+        "bottom-left",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Noah Rosenfield",
+        "url": "https://unsplash.com/photos/njAGLWiohCM",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "coastline",
+        "waves"
+      ],
+      "subject": "aerial-course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "Coastal course; may be recognizable. Never name it.",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "peter-drew-c5b3amsbep8",
+      "file": "peter-drew-c5b3amsbep8.jpg",
+      "width": 2400,
+      "height": 2256,
+      "sourceWidth": 4242,
+      "sourceHeight": 3988,
+      "orientation": "landscape",
+      "luminance": 94,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 60,
+          "busyness": 25
+        },
+        "top": {
+          "luminance": 77,
+          "busyness": 57
+        },
+        "top-right": {
+          "luminance": 36,
+          "busyness": 13
+        },
+        "left": {
+          "luminance": 131,
+          "busyness": 28
+        },
+        "center": {
+          "luminance": 90,
+          "busyness": 49
+        },
+        "right": {
+          "luminance": 106,
+          "busyness": 27
+        },
+        "bottom-left": {
+          "luminance": 108,
+          "busyness": 21
+        },
+        "bottom": {
+          "luminance": 118,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 121,
+          "busyness": 14
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Peter Drew",
+        "url": "https://unsplash.com/photos/C5B3AMsBep8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunker-shot",
+        "ball-in-flight",
+        "action"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.45,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "peter-drew-l0ttxtpyeqg",
+      "file": "peter-drew-l0ttxtpyeqg.jpg",
+      "width": 1601,
+      "height": 2400,
+      "sourceWidth": 5304,
+      "sourceHeight": 7952,
+      "orientation": "portrait",
+      "luminance": 82,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 74,
+          "busyness": 47
+        },
+        "top": {
+          "luminance": 68,
+          "busyness": 45
+        },
+        "top-right": {
+          "luminance": 38,
+          "busyness": 26
+        },
+        "left": {
+          "luminance": 86,
+          "busyness": 37
+        },
+        "center": {
+          "luminance": 104,
+          "busyness": 37
+        },
+        "right": {
+          "luminance": 115,
+          "busyness": 28
+        },
+        "bottom-left": {
+          "luminance": 94,
+          "busyness": 30
+        },
+        "bottom": {
+          "luminance": 85,
+          "busyness": 34
+        },
+        "bottom-right": {
+          "luminance": 73,
+          "busyness": 25
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Peter Drew",
+        "url": "https://unsplash.com/photos/L0TtxTPYEqg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunker-shot",
+        "sand",
+        "action"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "peter-drew-svuzx9jjtew",
+      "file": "peter-drew-svuzx9jjtew.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 3500,
+      "sourceHeight": 2333,
+      "orientation": "landscape",
+      "luminance": 132,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 194,
+          "busyness": 62
+        },
+        "top": {
+          "luminance": 220,
+          "busyness": 51
+        },
+        "top-right": {
+          "luminance": 181,
+          "busyness": 57
+        },
+        "left": {
+          "luminance": 116,
+          "busyness": 58
+        },
+        "center": {
+          "luminance": 81,
+          "busyness": 58
+        },
+        "right": {
+          "luminance": 116,
+          "busyness": 58
+        },
+        "bottom-left": {
+          "luminance": 129,
+          "busyness": 67
+        },
+        "bottom": {
+          "luminance": 65,
+          "busyness": 68
+        },
+        "bottom-right": {
+          "luminance": 89,
+          "busyness": 53
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Peter Drew",
+        "url": "https://unsplash.com/photos/SVuZX9jjtew",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "driver",
+        "tee",
+        "ball"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.65,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "peter-drew-szsnfsd3woi",
+      "file": "peter-drew-szsnfsd3woi.jpg",
+      "width": 1601,
+      "height": 2400,
+      "sourceWidth": 5304,
+      "sourceHeight": 7952,
+      "orientation": "portrait",
+      "luminance": 84,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 46,
+          "busyness": 27
+        },
+        "top": {
+          "luminance": 72,
+          "busyness": 56
+        },
+        "top-right": {
+          "luminance": 55,
+          "busyness": 38
+        },
+        "left": {
+          "luminance": 99,
+          "busyness": 41
+        },
+        "center": {
+          "luminance": 116,
+          "busyness": 60
+        },
+        "right": {
+          "luminance": 87,
+          "busyness": 37
+        },
+        "bottom-left": {
+          "luminance": 89,
+          "busyness": 9
+        },
+        "bottom": {
+          "luminance": 96,
+          "busyness": 9
+        },
+        "bottom-right": {
+          "luminance": 94,
+          "busyness": 8
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Peter Drew",
+        "url": "https://unsplash.com/photos/SzSNFsD3wOI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "hand",
+        "ball",
+        "green",
+        "dark-top"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "richard-brutyo-hqxfhq8fnj8",
+      "file": "richard-brutyo-hqxfhq8fnj8.jpg",
+      "width": 2400,
+      "height": 1348,
+      "sourceWidth": 5464,
+      "sourceHeight": 3070,
+      "orientation": "landscape",
+      "luminance": 115,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 108,
+          "busyness": 28
+        },
+        "top": {
+          "luminance": 92,
+          "busyness": 34
+        },
+        "top-right": {
+          "luminance": 96,
+          "busyness": 31
+        },
+        "left": {
+          "luminance": 129,
+          "busyness": 27
+        },
+        "center": {
+          "luminance": 122,
+          "busyness": 25
+        },
+        "right": {
+          "luminance": 113,
+          "busyness": 26
+        },
+        "bottom-left": {
+          "luminance": 122,
+          "busyness": 27
+        },
+        "bottom": {
+          "luminance": 133,
+          "busyness": 24
+        },
+        "bottom-right": {
+          "luminance": 121,
+          "busyness": 25
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "left",
+        "center",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": false,
+      "bandOk": true,
+      "source": {
+        "photographer": "Richard Brutyo",
+        "url": "https://unsplash.com/photos/HQXFhq8FNJ8",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "pattern",
+        "bunkers"
+      ],
+      "subject": "aerial-course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "robert-ruggiero-u5hmj5j6opg",
+      "file": "robert-ruggiero-u5hmj5j6opg.jpg",
+      "width": 2400,
+      "height": 1549,
+      "sourceWidth": 3849,
+      "sourceHeight": 2484,
+      "orientation": "landscape",
+      "luminance": 99,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 97,
+          "busyness": 23
+        },
+        "top": {
+          "luminance": 111,
+          "busyness": 31
+        },
+        "top-right": {
+          "luminance": 97,
+          "busyness": 20
+        },
+        "left": {
+          "luminance": 89,
+          "busyness": 27
+        },
+        "center": {
+          "luminance": 113,
+          "busyness": 56
+        },
+        "right": {
+          "luminance": 100,
+          "busyness": 20
+        },
+        "bottom-left": {
+          "luminance": 99,
+          "busyness": 27
+        },
+        "bottom": {
+          "luminance": 89,
+          "busyness": 21
+        },
+        "bottom-right": {
+          "luminance": 92,
+          "busyness": 23
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top-right",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Robert Ruggiero",
+        "url": "https://unsplash.com/photos/U5HMj5J6Opg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "wedge",
+        "ball",
+        "grass"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "ryunosuke-kikuno-rmlosshjodo",
+      "file": "ryunosuke-kikuno-rmlosshjodo.jpg",
+      "width": 1597,
+      "height": 2400,
+      "sourceWidth": 4024,
+      "sourceHeight": 6048,
+      "orientation": "portrait",
+      "luminance": 71,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 180,
+          "busyness": 36
+        },
+        "top": {
+          "luminance": 184,
+          "busyness": 33
+        },
+        "top-right": {
+          "luminance": 75,
+          "busyness": 65
+        },
+        "left": {
+          "luminance": 48,
+          "busyness": 61
+        },
+        "center": {
+          "luminance": 47,
+          "busyness": 59
+        },
+        "right": {
+          "luminance": 19,
+          "busyness": 11
+        },
+        "bottom-left": {
+          "luminance": 32,
+          "busyness": 23
+        },
+        "bottom": {
+          "luminance": 30,
+          "busyness": 20
+        },
+        "bottom-right": {
+          "luminance": 28,
+          "busyness": 18
+        }
+      },
+      "calmZones": [
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Ryunosuke Kikuno",
+        "url": "https://unsplash.com/photos/rmlosSHjODo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "trees",
+        "flag",
+        "moody"
+      ],
+      "subject": "course",
+      "time": "dusk",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "savannah-lakes-village-rnq-z2w4moy",
+      "file": "savannah-lakes-village-rnq-z2w4moy.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "orientation": "landscape",
+      "luminance": 145,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 148,
+          "busyness": 17
+        },
+        "top": {
+          "luminance": 172,
+          "busyness": 7
+        },
+        "top-right": {
+          "luminance": 149,
+          "busyness": 20
+        },
+        "left": {
+          "luminance": 132,
+          "busyness": 50
+        },
+        "center": {
+          "luminance": 171,
+          "busyness": 19
+        },
+        "right": {
+          "luminance": 119,
+          "busyness": 48
+        },
+        "bottom-left": {
+          "luminance": 130,
+          "busyness": 18
+        },
+        "bottom": {
+          "luminance": 156,
+          "busyness": 12
+        },
+        "bottom-right": {
+          "luminance": 128,
+          "busyness": 22
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "center",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Savannah Lakes Village",
+        "url": "https://unsplash.com/photos/rNQ_Z2w4MoY",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball-basket",
+        "practice"
+      ],
+      "subject": "range",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "scott-hendrickson-s2cr7wjj2mi",
+      "file": "scott-hendrickson-s2cr7wjj2mi.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 4032,
+      "sourceHeight": 3024,
+      "orientation": "landscape",
+      "luminance": 138,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 163,
+          "busyness": 39
+        },
+        "top": {
+          "luminance": 185,
+          "busyness": 47
+        },
+        "top-right": {
+          "luminance": 147,
+          "busyness": 41
+        },
+        "left": {
+          "luminance": 113,
+          "busyness": 51
+        },
+        "center": {
+          "luminance": 124,
+          "busyness": 43
+        },
+        "right": {
+          "luminance": 118,
+          "busyness": 48
+        },
+        "bottom-left": {
+          "luminance": 133,
+          "busyness": 19
+        },
+        "bottom": {
+          "luminance": 134,
+          "busyness": 24
+        },
+        "bottom-right": {
+          "luminance": 128,
+          "busyness": 16
+        }
+      },
+      "calmZones": [
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Scott Hendrickson",
+        "url": "https://unsplash.com/photos/s2Cr7Wjj2MI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "mountains",
+        "dramatic-sky"
+      ],
+      "subject": "tennis",
+      "time": "day",
+      "people": "distant",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "splash-pic-ufcdm0apebs",
+      "file": "splash-pic-ufcdm0apebs.jpg",
+      "width": 2400,
+      "height": 1858,
+      "sourceWidth": 4944,
+      "sourceHeight": 3827,
+      "orientation": "landscape",
+      "luminance": 100,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 97,
+          "busyness": 68
+        },
+        "top": {
+          "luminance": 147,
+          "busyness": 41
+        },
+        "top-right": {
+          "luminance": 74,
+          "busyness": 40
+        },
+        "left": {
+          "luminance": 67,
+          "busyness": 69
+        },
+        "center": {
+          "luminance": 119,
+          "busyness": 71
+        },
+        "right": {
+          "luminance": 76,
+          "busyness": 58
+        },
+        "bottom-left": {
+          "luminance": 121,
+          "busyness": 34
+        },
+        "bottom": {
+          "luminance": 113,
+          "busyness": 51
+        },
+        "bottom-right": {
+          "luminance": 86,
+          "busyness": 46
+        }
+      },
+      "calmZones": [],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Splash Pic",
+        "url": "https://unsplash.com/photos/ufcDM0ApEBs",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "grass",
+        "blue-sky"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.48,
+        "y": 0.7
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "stephan-louis-opzrqhsj3wa",
+      "file": "stephan-louis-opzrqhsj3wa.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 101,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 135,
+          "busyness": 67
+        },
+        "top": {
+          "luminance": 158,
+          "busyness": 69
+        },
+        "top-right": {
+          "luminance": 163,
+          "busyness": 73
+        },
+        "left": {
+          "luminance": 106,
+          "busyness": 37
+        },
+        "center": {
+          "luminance": 105,
+          "busyness": 48
+        },
+        "right": {
+          "luminance": 98,
+          "busyness": 37
+        },
+        "bottom-left": {
+          "luminance": 53,
+          "busyness": 13
+        },
+        "bottom": {
+          "luminance": 47,
+          "busyness": 10
+        },
+        "bottom-right": {
+          "luminance": 48,
+          "busyness": 15
+        }
+      },
+      "calmZones": [
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Stephan Louis",
+        "url": "https://unsplash.com/photos/oPzrqhsJ3wA",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bay",
+        "mountains",
+        "blue-water"
+      ],
+      "subject": "yacht",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "steven-shircliff-n21z4eg8akg",
+      "file": "steven-shircliff-n21z4eg8akg.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 4000,
+      "sourceHeight": 2667,
+      "orientation": "landscape",
+      "luminance": 110,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 110,
+          "busyness": 3
+        },
+        "top": {
+          "luminance": 112,
+          "busyness": 3
+        },
+        "top-right": {
+          "luminance": 95,
+          "busyness": 36
+        },
+        "left": {
+          "luminance": 117,
+          "busyness": 9
+        },
+        "center": {
+          "luminance": 133,
+          "busyness": 38
+        },
+        "right": {
+          "luminance": 104,
+          "busyness": 37
+        },
+        "bottom-left": {
+          "luminance": 121,
+          "busyness": 15
+        },
+        "bottom": {
+          "luminance": 113,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 87,
+          "busyness": 52
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "left",
+        "bottom-left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Steven Shircliff",
+        "url": "https://unsplash.com/photos/N21z4eG8aKg",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "hole",
+        "flagstick"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.4,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "stockholm-paris-studio-fww887t55gc",
+      "file": "stockholm-paris-studio-fww887t55gc.jpg",
+      "width": 2400,
+      "height": 1800,
+      "sourceWidth": 3000,
+      "sourceHeight": 2250,
+      "orientation": "landscape",
+      "luminance": 142,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 227,
+          "busyness": 1
+        },
+        "top": {
+          "luminance": 226,
+          "busyness": 1
+        },
+        "top-right": {
+          "luminance": 225,
+          "busyness": 1
+        },
+        "left": {
+          "luminance": 184,
+          "busyness": 70
+        },
+        "center": {
+          "luminance": 110,
+          "busyness": 83
+        },
+        "right": {
+          "luminance": 184,
+          "busyness": 68
+        },
+        "bottom-left": {
+          "luminance": 45,
+          "busyness": 49
+        },
+        "bottom": {
+          "luminance": 25,
+          "busyness": 1
+        },
+        "bottom-right": {
+          "luminance": 48,
+          "busyness": 51
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Stockholm Paris Studio",
+        "url": "https://unsplash.com/photos/fWW887t55gc",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "macro",
+        "dimples",
+        "light-background",
+        "abstract"
+      ],
+      "subject": "golf-detail",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "theline-04yjwamiuyi",
+      "file": "theline-04yjwamiuyi.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 5035,
+      "sourceHeight": 3357,
+      "orientation": "landscape",
+      "luminance": 89,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 68,
+          "busyness": 21
+        },
+        "top": {
+          "luminance": 120,
+          "busyness": 21
+        },
+        "top-right": {
+          "luminance": 93,
+          "busyness": 25
+        },
+        "left": {
+          "luminance": 75,
+          "busyness": 23
+        },
+        "center": {
+          "luminance": 121,
+          "busyness": 60
+        },
+        "right": {
+          "luminance": 110,
+          "busyness": 24
+        },
+        "bottom-left": {
+          "luminance": 58,
+          "busyness": 43
+        },
+        "bottom": {
+          "luminance": 61,
+          "busyness": 50
+        },
+        "bottom-right": {
+          "luminance": 94,
+          "busyness": 33
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Theline",
+        "url": "https://unsplash.com/photos/04yjWamiuyI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "phone-in-hand",
+        "cap",
+        "from-behind"
+      ],
+      "subject": "phone",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.45,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "The phone screen shows a camera view, not an app. Still never present it as Club Pilot's interface.",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "tony-pham-xh9z7-cv3zo",
+      "file": "tony-pham-xh9z7-cv3zo.jpg",
+      "width": 1800,
+      "height": 2400,
+      "sourceWidth": 3005,
+      "sourceHeight": 4006,
+      "orientation": "portrait",
+      "luminance": 162,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 156,
+          "busyness": 24
+        },
+        "top": {
+          "luminance": 156,
+          "busyness": 21
+        },
+        "top-right": {
+          "luminance": 150,
+          "busyness": 23
+        },
+        "left": {
+          "luminance": 144,
+          "busyness": 46
+        },
+        "center": {
+          "luminance": 161,
+          "busyness": 42
+        },
+        "right": {
+          "luminance": 136,
+          "busyness": 42
+        },
+        "bottom-left": {
+          "luminance": 130,
+          "busyness": 68
+        },
+        "bottom": {
+          "luminance": 220,
+          "busyness": 6
+        },
+        "bottom-right": {
+          "luminance": 202,
+          "busyness": 45
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Tony Pham",
+        "url": "https://unsplash.com/photos/Xh9z7-Cv3Zo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "pier",
+        "yachts",
+        "sky-space-top"
+      ],
+      "subject": "marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "ujan-timsina-g9p3hb5ppli",
+      "file": "ujan-timsina-g9p3hb5ppli.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6240,
+      "sourceHeight": 4160,
+      "orientation": "landscape",
+      "luminance": 123,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 160,
+          "busyness": 7
+        },
+        "top": {
+          "luminance": 181,
+          "busyness": 6
+        },
+        "top-right": {
+          "luminance": 196,
+          "busyness": 4
+        },
+        "left": {
+          "luminance": 110,
+          "busyness": 50
+        },
+        "center": {
+          "luminance": 140,
+          "busyness": 44
+        },
+        "right": {
+          "luminance": 137,
+          "busyness": 59
+        },
+        "bottom-left": {
+          "luminance": 32,
+          "busyness": 23
+        },
+        "bottom": {
+          "luminance": 62,
+          "busyness": 45
+        },
+        "bottom-right": {
+          "luminance": 90,
+          "busyness": 43
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "bottom-left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Ujan Timsina",
+        "url": "https://unsplash.com/photos/g9P3hb5PPLI",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "sunset",
+        "marina",
+        "calm-water"
+      ],
+      "subject": "yacht",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.45,
+        "y": 0.6
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "valeriia-neganova-kcnziw-vu7e",
+      "file": "valeriia-neganova-kcnziw-vu7e.jpg",
+      "width": 1350,
+      "height": 2400,
+      "sourceWidth": 2047,
+      "sourceHeight": 3639,
+      "orientation": "portrait",
+      "luminance": 44,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 46,
+          "busyness": 31
+        },
+        "top": {
+          "luminance": 60,
+          "busyness": 36
+        },
+        "top-right": {
+          "luminance": 59,
+          "busyness": 15
+        },
+        "left": {
+          "luminance": 39,
+          "busyness": 39
+        },
+        "center": {
+          "luminance": 45,
+          "busyness": 45
+        },
+        "right": {
+          "luminance": 55,
+          "busyness": 46
+        },
+        "bottom-left": {
+          "luminance": 16,
+          "busyness": 17
+        },
+        "bottom": {
+          "luminance": 29,
+          "busyness": 41
+        },
+        "bottom-right": {
+          "luminance": 44,
+          "busyness": 50
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "bottom-left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Valeriia Neganova",
+        "url": "https://unsplash.com/photos/KcNZiW_vU7E",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "docks",
+        "boats",
+        "dark-water"
+      ],
+      "subject": "aerial-marina",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "virgile-donadieu-v1ydma2l1rc",
+      "file": "virgile-donadieu-v1ydma2l1rc.jpg",
+      "width": 2400,
+      "height": 1600,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "orientation": "landscape",
+      "luminance": 132,
+      "tone": "mid",
+      "zones": {
+        "top-left": {
+          "luminance": 115,
+          "busyness": 11
+        },
+        "top": {
+          "luminance": 91,
+          "busyness": 43
+        },
+        "top-right": {
+          "luminance": 109,
+          "busyness": 31
+        },
+        "left": {
+          "luminance": 146,
+          "busyness": 32
+        },
+        "center": {
+          "luminance": 146,
+          "busyness": 57
+        },
+        "right": {
+          "luminance": 133,
+          "busyness": 43
+        },
+        "bottom-left": {
+          "luminance": 198,
+          "busyness": 61
+        },
+        "bottom": {
+          "luminance": 156,
+          "busyness": 75
+        },
+        "bottom-right": {
+          "luminance": 93,
+          "busyness": 58
+        }
+      },
+      "calmZones": [
+        "top-left"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Virgile Donadieu",
+        "url": "https://unsplash.com/photos/V1ydmA2l1Rc",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunker-shot",
+        "sand",
+        "action"
+      ],
+      "subject": "golfer",
+      "time": "day",
+      "people": "present",
+      "focus": {
+        "x": 0.65,
+        "y": 0.4
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "welcome-23iyt5hsj-c",
+      "file": "welcome-23iyt5hsj-c.jpg",
+      "width": 2400,
+      "height": 1382,
+      "sourceWidth": 3068,
+      "sourceHeight": 1767,
+      "orientation": "landscape",
+      "luminance": 75,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 69,
+          "busyness": 32
+        },
+        "top": {
+          "luminance": 86,
+          "busyness": 33
+        },
+        "top-right": {
+          "luminance": 81,
+          "busyness": 28
+        },
+        "left": {
+          "luminance": 83,
+          "busyness": 32
+        },
+        "center": {
+          "luminance": 81,
+          "busyness": 32
+        },
+        "right": {
+          "luminance": 88,
+          "busyness": 39
+        },
+        "bottom-left": {
+          "luminance": 46,
+          "busyness": 30
+        },
+        "bottom": {
+          "luminance": 66,
+          "busyness": 29
+        },
+        "bottom-right": {
+          "luminance": 75,
+          "busyness": 26
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "bottom-right"
+      ],
+      "fullBleedOk": false,
+      "bandOk": true,
+      "source": {
+        "photographer": "Welcome",
+        "url": "https://unsplash.com/photos/23Iyt5HSJ-c",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "wide",
+        "parkland"
+      ],
+      "subject": "aerial-course",
+      "time": "day",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "welcome-p15dl4d4kfo",
+      "file": "welcome-p15dl4d4kfo.jpg",
+      "width": 2400,
+      "height": 1599,
+      "sourceWidth": 5464,
+      "sourceHeight": 3640,
+      "orientation": "landscape",
+      "luminance": 43,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 15,
+          "busyness": 12
+        },
+        "top": {
+          "luminance": 44,
+          "busyness": 27
+        },
+        "top-right": {
+          "luminance": 33,
+          "busyness": 17
+        },
+        "left": {
+          "luminance": 29,
+          "busyness": 28
+        },
+        "center": {
+          "luminance": 58,
+          "busyness": 22
+        },
+        "right": {
+          "luminance": 45,
+          "busyness": 13
+        },
+        "bottom-left": {
+          "luminance": 38,
+          "busyness": 36
+        },
+        "bottom": {
+          "luminance": 67,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 53,
+          "busyness": 28
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "left",
+        "center",
+        "right",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Welcome",
+        "url": "https://unsplash.com/photos/p15dl4D4kfo",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "pond",
+        "bunker",
+        "shadows"
+      ],
+      "subject": "aerial-course",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "welcome-uytfzndlhzs",
+      "file": "welcome-uytfzndlhzs.jpg",
+      "width": 2400,
+      "height": 1599,
+      "sourceWidth": 5464,
+      "sourceHeight": 3640,
+      "orientation": "landscape",
+      "luminance": 61,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 70,
+          "busyness": 27
+        },
+        "top": {
+          "luminance": 82,
+          "busyness": 28
+        },
+        "top-right": {
+          "luminance": 64,
+          "busyness": 30
+        },
+        "left": {
+          "luminance": 59,
+          "busyness": 25
+        },
+        "center": {
+          "luminance": 78,
+          "busyness": 23
+        },
+        "right": {
+          "luminance": 48,
+          "busyness": 16
+        },
+        "bottom-left": {
+          "luminance": 48,
+          "busyness": 18
+        },
+        "bottom": {
+          "luminance": 55,
+          "busyness": 22
+        },
+        "bottom-right": {
+          "luminance": 40,
+          "busyness": 13
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "left",
+        "center",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Welcome",
+        "url": "https://unsplash.com/photos/UyTfzNdLHzs",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "bunkers",
+        "cart-path"
+      ],
+      "subject": "aerial-course",
+      "time": "golden",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "will-porada-uy5zequoscs",
+      "file": "will-porada-uy5zequoscs.jpg",
+      "width": 2400,
+      "height": 1644,
+      "sourceWidth": 6073,
+      "sourceHeight": 4160,
+      "orientation": "landscape",
+      "luminance": 68,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 62,
+          "busyness": 56
+        },
+        "top": {
+          "luminance": 49,
+          "busyness": 50
+        },
+        "top-right": {
+          "luminance": 39,
+          "busyness": 25
+        },
+        "left": {
+          "luminance": 95,
+          "busyness": 15
+        },
+        "center": {
+          "luminance": 105,
+          "busyness": 35
+        },
+        "right": {
+          "luminance": 80,
+          "busyness": 16
+        },
+        "bottom-left": {
+          "luminance": 59,
+          "busyness": 21
+        },
+        "bottom": {
+          "luminance": 64,
+          "busyness": 24
+        },
+        "bottom-right": {
+          "luminance": 58,
+          "busyness": 24
+        }
+      },
+      "calmZones": [
+        "top-right",
+        "left",
+        "right",
+        "bottom-left",
+        "bottom",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Will Porada",
+        "url": "https://unsplash.com/photos/uy5ZEqUOscs",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "tee",
+        "low-angle"
+      ],
+      "subject": "golf-detail",
+      "time": "dusk",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.55
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    },
+    {
+      "id": "wuz-nhtoelzxkdk",
+      "file": "wuz-nhtoelzxkdk.jpg",
+      "width": 1600,
+      "height": 2400,
+      "sourceWidth": 4000,
+      "sourceHeight": 6000,
+      "orientation": "portrait",
+      "luminance": 14,
+      "tone": "dark",
+      "zones": {
+        "top-left": {
+          "luminance": 0,
+          "busyness": 2
+        },
+        "top": {
+          "luminance": 0,
+          "busyness": 1
+        },
+        "top-right": {
+          "luminance": 0,
+          "busyness": 2
+        },
+        "left": {
+          "luminance": 20,
+          "busyness": 43
+        },
+        "center": {
+          "luminance": 36,
+          "busyness": 57
+        },
+        "right": {
+          "luminance": 7,
+          "busyness": 13
+        },
+        "bottom-left": {
+          "luminance": 13,
+          "busyness": 31
+        },
+        "bottom": {
+          "luminance": 39,
+          "busyness": 66
+        },
+        "bottom-right": {
+          "luminance": 6,
+          "busyness": 6
+        }
+      },
+      "calmZones": [
+        "top-left",
+        "top",
+        "top-right",
+        "right",
+        "bottom-right"
+      ],
+      "fullBleedOk": true,
+      "bandOk": true,
+      "source": {
+        "photographer": "Wuz",
+        "url": "https://unsplash.com/photos/NhtoelZxKdk",
+        "license": "Unsplash License"
+      },
+      "tags": [
+        "ball",
+        "water",
+        "splash",
+        "black-background",
+        "humor-candidate"
+      ],
+      "subject": "golf-detail",
+      "time": "night",
+      "people": "none",
+      "focus": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "reviewed": true,
+      "notes": "",
+      "reviewedBy": "Claude, initial pass from contact sheets",
+      "reviewedOn": "2026-09-29"
+    }
+  ],
+  "usage": []
+}

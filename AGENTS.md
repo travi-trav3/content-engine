@@ -11,10 +11,11 @@ it in their own GitHub organization. Club Pilot is the first brand and lives her
 ```
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
 engine/gates/      the checks; check-batch.js runs all of them for one batch
-engine/render/     render.js (library), cli.js
-layouts/           one folder per layout; _shared/ holds base.css and h.js
-brands/<name>/     a brand fixture: brand/, content/, test-props/, goldens/
-test/              gates-regression.js, render.test.js, fixtures/
+engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js
+engine/photos/     library.js (selection), ingest.js, review.js; see engine/photos/README.md
+layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
+brands/<name>/     a brand fixture: brand/, content/, photos/, test-props/, goldens/
+test/              gates-regression.js, photos.test.js, render.test.js
 internal/          Applied Intelligence planning material. Never copied into a client instance
 ```
 
@@ -26,6 +27,10 @@ npm test                                                  # everything CI runs
 CE_WORKSPACE=brands/clubpilot node engine/gates/check-batch.js 05
 CE_WORKSPACE=brands/clubpilot npm run render -- --layout type-card \
   --props brands/clubpilot/test-props/type-card.json --out /tmp/renders
+CE_WORKSPACE=brands/clubpilot npm run render:carousel -- --spec carousel.json --out /tmp/renders
+CE_WORKSPACE=brands/clubpilot npm run photos:ingest -- ~/Downloads/new-photos
+CE_WORKSPACE=brands/clubpilot npm run photos:review -- review.json --by "Name"
+node engine/render/contact-sheet.js --out sheet.png /tmp/renders/*.png   # look before you commit
 ```
 
 In a client instance `brand/` and `content/` sit at the repository root and `CE_WORKSPACE` is unset.
@@ -47,10 +52,17 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
    surface it declares at both sizes, and has goldens. Update goldens only for an intended visual change
    (`UPDATE_GOLDENS=1 npm run test:render`), and look at every changed image before committing.
 5. **A render with issues does not ship.** `render.fontMissing`, `render.imageMissing`,
-   `render.overflow`, `render.offCanvas` and `render.singleWordLine` are failures, not warnings.
-6. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
+   `render.photoTooSmall`, `render.overflow`, `render.offCanvas` and `render.singleWordLine` are
+   failures, not warnings.
+6. **Photos come only from the reviewed library.** Layouts take a library id, never a path. Never mark a
+   photo reviewed without looking at it, and never lift a restriction without the reason in its notes
+   being resolved. Never draw product UI; a product image is a real screenshot tagged
+   `product-screenshot`.
+7. **Proof logos come only from the registry** in `render.json`, with the relation that is true. A
+   customer logo (`trusted`) needs the written approval recorded in its entry before it is added.
+8. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
    or into `engine/` or `layouts/`. `internal/` never ships.
-7. Commit the render harness and tests with every change. Do not commit `node_modules/` or
+9. Commit the render harness and tests with every change. Do not commit `node_modules/` or
    `test/output/`.
 
 ## Known gaps
@@ -60,5 +72,6 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: generation (OpenAI), photo library, Buffer client, feedback loop, source mode,
-  scheduled workflows, layouts 9 to 15.
+- Not built yet: generation (OpenAI), Buffer client, feedback loop, source mode, scheduled workflows.
+- Goldens are lossless WebP, about 10 MB for Club Pilot. Every intended visual change adds a changed
+  golden to history; batch visual changes rather than regenerating goldens for each small tweak.

@@ -1,0 +1,11 @@
+{
+  "photo": "courtney-cook-0s70m63bkce",
+  "headline": "A question from the ninth green,",
+  "emphasis": "answered before the tenth tee.",
+  "sender": "Elmwood Country Club",
+  "timestamp": "Sunday · 10:12 AM",
+  "messages": [
+    { "from": "member", "text": "Is the grill open for lunch after our round?" },
+    { "from": "club", "text": "The grill serves lunch until 2:30pm today." }
+  ]
+}

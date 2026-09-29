@@ -335,3 +335,32 @@ team".
 
 Next increment: layouts 9 to 15 (product screenshot, proof bar, the four photo layouts, carousel),
 which need the photo library; then generation against the OpenAI API; then the Buffer client.
+
+### 2026-09-29, increment 3
+
+Done:
+- Photo library in `brands/clubpilot/photos`: 76 of the 87 Drive photos plus Byron's headshot, resized
+  to 2400px, measured (brightness, calm zones, full-bleed and band resolution) and reviewed (subject,
+  time, people, tags, crop focus). Two restricted, three marked never-name. `engine/photos` has ingest,
+  review and selection (reviewed and unrestricted only, 30-day reuse window, least recently used first).
+- Layouts 9 to 15: product screenshot, proof bar, full-bleed photo, photo band, photo thread, founder
+  portrait, carousel step. Fifteen layouts, 44 goldens. `engine/render/carousel.js` renders 2 to 10
+  slides and numbers them itself.
+- The renderer refuses photos that are unknown, unreviewed, restricted, under-resolution or missing a
+  required tag, and flags any photo shown above 1.1x its pixels (`render.photoTooSmall`). The founder
+  layout takes only a photo tagged `founder`; the product layout takes only a real screenshot tagged
+  `product-screenshot` and is refused for Club Pilot until one exists (tested).
+- The proof bar reads logos from a registry in `render.json` with each logo's true relation, and
+  derives its label from it, so "As featured in" cannot sit over an event Club Pilot exhibited at. A
+  customer logo needs its written approval recorded.
+- Fixed a QA blind spot: a bottom-aligned text box that overflowed upward reported clean. Found when
+  the photo thread's headline clipped under the wordmark; the check now compares children to the box.
+- Goldens are lossless WebP (17.5 MB to 9.8 MB, pixel-identical), and CI fails on a missing golden
+  instead of creating one.
+
+Needs Byron (add to the brand files review):
+- The 11 photos too large for the Drive connector, the shot list in `photos/README.md` (staff, dining,
+  interiors, members with phones), a high-resolution headshot, and real product screenshots.
+- Customer club logos: confirm the written approval (BRAND.md contradicts itself) and send transparent
+  high-resolution files. CMAA's relation, if it is to appear in a proof bar.
+- A skim of the photo review (tags and restrictions were set by Claude from contact sheets).

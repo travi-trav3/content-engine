@@ -84,6 +84,9 @@ html, body { background: transparent; }
 
 .muted { color: var(--ink-muted); }
 
+/* A library photo covering its box (see photo() in h.js). */
+.photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+
 /* One span per word so the renderer can find single-word lines. */
 .w { display: inline; }
 

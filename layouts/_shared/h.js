@@ -29,8 +29,19 @@ const headlineWords = (headline, emphasis) => words(headline)
 
 const eyebrow = (text) => (text ? `<div class="eyebrow">${esc(text)}</div>` : '');
 
+/**
+ * A library photo, resolved by the renderer (see resolvePhotos). Covers its
+ * box and keeps the photo's reviewed focus point in frame. data-photo lets
+ * the renderer flag a photo shown larger than its real pixels.
+ */
+const photo = (p, cls = '') => {
+  const x = Math.round((p.focus ? p.focus.x : 0.5) * 100);
+  const y = Math.round((p.focus ? p.focus.y : 0.5) * 100);
+  return `<img class="photo ${esc(cls)}" data-photo src="${esc(p.src)}" alt="" style="object-position: ${x}% ${y}%">`;
+};
+
 /** Initials for a sender avatar: first letters of the first two words. */
 const initials = (name) => String(name).trim().split(/\s+/).slice(0, 2)
   .map((w) => w[0]).join('').toUpperCase();
 
-module.exports = { esc, words, wordmark, headlineWords, eyebrow, initials };
+module.exports = { esc, words, wordmark, headlineWords, eyebrow, initials, photo };

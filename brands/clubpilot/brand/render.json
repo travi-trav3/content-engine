@@ -11,5 +11,35 @@
     "channelLabel": "Texting",
     "poweredBy": "powered by Club Pilot",
     "handoffStatus": "Marked for the club team"
+  },
+  "proof": {
+    "labels": {
+      "featured": "As featured in",
+      "exhibited": "Exhibited at",
+      "trusted": "Trusted by"
+    },
+    "logos": {
+      "golf-digest": {
+        "name": "Golf Digest",
+        "relation": "featured",
+        "file": { "dark": "assets/proof/golf-digest-on-dark.png" },
+        "height": 132,
+        "basis": "BRAND.md section 8: 2026 PGA Merchandise Show roundup, wording locked 2026-07-31"
+      },
+      "golf-bizz-review": {
+        "name": "Golf Bizz Review",
+        "relation": "featured",
+        "file": { "dark": "assets/proof/golf-bizz-review-on-dark.png" },
+        "height": 104,
+        "basis": "BRAND.md section 8: $100M feature and PGA Show booths feature"
+      },
+      "pga-show": {
+        "name": "PGA Show",
+        "relation": "exhibited",
+        "file": { "dark": "assets/proof/pga-show-on-dark.png" },
+        "height": 88,
+        "basis": "BRAND.md section 8: PGA Show 2026 booth"
+      }
+    }
   }
 }
