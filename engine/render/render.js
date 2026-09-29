@@ -149,6 +149,9 @@ function resolvePhotos(layout, props, lib) {
       width: p.width,
       height: p.height,
       tone: p.tone,
+      // Measured brightness per zone (0-255), so a layout can darken its
+      // scrim where the photo is bright under the wordmark or the type.
+      zones: Object.fromEntries(Object.entries(p.zones || {}).map(([k, z]) => [k, z.luminance])),
       focus: p.focus || { x: 0.5, y: 0.5 },
     };
   }

@@ -27,6 +27,9 @@ module.exports = {
 
   render({ props, brand, photos }) {
     const pos = props.position || 'bottom';
+    // A bright sky behind the wordmark gets a darker corner (most skies
+    // measure above 120; the library records each zone's brightness).
+    const brightTop = (photos.photo.zones['top-left'] || 0) > 120;
     const eyebrow = props.eyebrow ? `<div class="eyebrow fb-eyebrow">${esc(props.eyebrow)}</div>` : '';
     const emphasis = props.emphasis ? ` <span class="accent emphasis">${words(props.emphasis)}</span>` : '';
     const body = props.body
@@ -34,7 +37,7 @@ module.exports = {
       : '';
     return `
       <div class="fb-photo">${photo(photos.photo)}</div>
-      <div class="fb-scrim fb-scrim-${pos}"></div>
+      <div class="fb-scrim fb-scrim-${pos}${brightTop ? ' fb-bright-top' : ''}"></div>
       ${wordmark(brand, 'dark')}
       <div class="fb-text fb-${pos}" data-fit-box>
         ${eyebrow}
@@ -47,6 +50,11 @@ module.exports = {
         .fb-scrim-bottom {
           background:
             linear-gradient(to bottom, var(--scrim-mid) 0px, var(--scrim-clear) 300px),
+            linear-gradient(to top, var(--scrim-strong) 0%, var(--scrim-strong) 20%, var(--scrim-mid) 44%, var(--scrim-clear) 66%);
+        }
+        .fb-scrim-bottom.fb-bright-top {
+          background:
+            linear-gradient(to bottom, var(--scrim-strong) 0px, var(--scrim-mid) 190px, var(--scrim-clear) 380px),
             linear-gradient(to top, var(--scrim-strong) 0%, var(--scrim-strong) 20%, var(--scrim-mid) 44%, var(--scrim-clear) 66%);
         }
         .fb-scrim-top {
