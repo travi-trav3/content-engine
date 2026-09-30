@@ -40,7 +40,7 @@ const { brandContext } = require('./context');
 const { slotsFor, nextMonday, addDays } = require('./slots');
 const { makePlan } = require('./plan');
 const { writePost, coverPhotoSpec } = require('./write');
-const { assignVariants, validateLibrary } = require('./cta');
+const { assignVariants, assignEndCards, validateLibrary } = require('./cta');
 const { ledgerEntry } = require('./ledger');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
@@ -162,7 +162,10 @@ async function runBatch(opts = {}) {
     provider, brandDir, brand, config, catalog, library, lib: photoLib, slots, priors, batchNo,
     plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), log: note,
   });
-  if (!plan.failures.length) assignVariants(plan.entries, priors, config);
+  if (!plan.failures.length) {
+    assignVariants(plan.entries, priors, config);
+    assignEndCards(plan.entries, priors, config);
+  }
   const planDoc = {
     batch: `${config.brand || brand.name} batch ${nn}`,
     window,
@@ -316,7 +319,7 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
     const photo = p.photoMatch ? `${p.photoMatch.id}${p.photoMatch.dropped.length ? ` (dropped ${p.photoMatch.dropped.join(', ')})` : ''}` : '';
     const head = (p.headline || p.message || '').replace(/\|/g, '/');
     const shape = p.layout === 'carousel' ? `carousel, ${p.carouselKind}, ${p.slides ? p.slides.length : p.slideCount} slides` : p.layout;
-    lines.push(`| ${i + 1} | ${String(p.dueAt || p.date).slice(0, 16).replace('T', ' ')} | ${p.channel} | ${p.pillar} | ${shape} (${p.renderSurface}) | ${head} | ${photo} | ${p.ctaVariant || ''} | ${p.status || 'planned'} |`);
+    lines.push(`| ${i + 1} | ${String(p.dueAt || p.date).slice(0, 16).replace('T', ' ')} | ${p.channel} | ${p.pillar} | ${shape} (${p.renderSurface}) | ${head} | ${photo} | ${p.ctaVariant || (p.endCard ? `end card: ${p.endCard}` : '')} | ${p.status || 'planned'} |`);
   });
   lines.push('');
   if (result.unresolved) {

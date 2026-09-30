@@ -42,7 +42,7 @@ of a carousel (`engine/render/carousel.js`), and undefined otherwise.
 | 12 | `photo-band` | dark, light | copy above a photo band; any band-resolution photo |
 | 13 | `photo-thread` | photo | the message thread over a photo of club life |
 | 14 | `founder-portrait` | dark, light | the founder's point in their words, with a photo tagged `founder` |
-| 15 | carousel set: `carousel-cover`, `carousel-step`, `carousel-reveal`, `carousel-close` | cover: dark, light, photo; others: dark, light | a multi-slide post: the hook, steps or stats, the answer, the takeaway (and "try this at your club") |
+| 15 | carousel set: `carousel-cover`, `carousel-step`, `carousel-reveal`, `carousel-close`, `carousel-cta` | cover: dark, light, photo; others: dark, light | a multi-slide post: the hook, steps or stats, the answer, the takeaway (and "try this at your club"), then the end card with the ask |
 
 ## Canvas and sizes
 

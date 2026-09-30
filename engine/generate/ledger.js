@@ -147,6 +147,7 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     } : {}),
     ctaType: entry.ctaType,
     ctaVariant: entry.ctaVariant || null,
+    endCard: entry.endCard || null,
     // The ask the engine adds after the caption; postText is what Buffer gets.
     cta: entry.ctaLine || null,
     postText: entry.ctaLine ? `${post.caption}\n\n${entry.ctaLine}` : post.caption,

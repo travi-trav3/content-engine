@@ -67,6 +67,38 @@ function assignVariants(entries, priors, config) {
   return entries;
 }
 
+/**
+ * Every carousel ends on an end card (layout carousel-cta): its own ask,
+ * seen only by people who swiped to the end. Each carousel gets the least
+ * recently used card, never the same one twice in a batch. A carousel
+ * carries no caption ask as well; one ask per post. Sets endCard and
+ * endCardProps on the carousel entries.
+ */
+function assignEndCards(entries, priors, config) {
+  const cards = (config.cta && config.cta.endCards) || [];
+  const carousels = entries.filter((e) => e.layout === 'carousel')
+    .sort((a, b) => String(a.dueAt || a.date).localeCompare(String(b.dueAt || b.date)));
+  if (!carousels.length || !cards.length) return entries;
+  const lastUsed = new Map(cards.map((c) => [c.id, '']));
+  for (const p of priors.flatMap(postsOf)) {
+    if (p.endCard && lastUsed.has(p.endCard)) {
+      const at = String(p.dueAt || p.date || '');
+      if (at > lastUsed.get(p.endCard)) lastUsed.set(p.endCard, at);
+    }
+  }
+  const taken = new Set();
+  for (const e of carousels) {
+    const pick = cards.filter((c) => !taken.has(c.id))
+      .sort((a, b) => lastUsed.get(a.id).localeCompare(lastUsed.get(b.id)) || cards.indexOf(a) - cards.indexOf(b))[0];
+    if (!pick) throw new Error(`The end-card library has ${cards.length} cards for ${carousels.length} carousels`);
+    taken.add(pick.id);
+    const link = (config.cta.endCardLink || {})[String(e.channel).startsWith('linkedin') ? 'linkedin' : 'instagram'];
+    e.endCard = pick.id;
+    e.endCardProps = { headline: pick.headline, action: pick.action, link };
+  }
+  return entries;
+}
+
 /** Problems with the brand's CTA library itself, so a bad line never ships. */
 function validateLibrary(config) {
   const errors = [];
@@ -87,6 +119,19 @@ function validateLibrary(config) {
     if (v.linkedin && !v.linkedin.includes(cta.link)) errors.push(`${v.id}: the LinkedIn line needs the link`);
     if (v.instagram && !/link in bio/i.test(v.instagram)) errors.push(`${v.id}: the Instagram line should point to the link in bio`);
   }
+  for (const c of cta.endCards || []) {
+    for (const k of ['headline', 'action']) {
+      const line = String(c[k] || '');
+      if (!line) { errors.push(`end card ${c.id}: no ${k}`); continue; }
+      if (/[—–]/.test(line)) errors.push(`end card ${c.id} (${k}): dash`);
+      if (/!/.test(line)) errors.push(`end card ${c.id} (${k}): exclamation mark`);
+      const sales = SALES_WORDS.filter((w) => line.toLowerCase().includes(w));
+      if (sales.length) errors.push(`end card ${c.id} (${k}): reads as a sales push (${sales.join(', ')})`);
+    }
+  }
+  if ((cta.endCards || []).length && !(cta.endCardLink && cta.endCardLink.linkedin && cta.endCardLink.instagram)) {
+    errors.push('cta.endCardLink needs a linkedin and an instagram form');
+  }
   return errors;
 }
 
@@ -101,4 +146,4 @@ function ownAsk(caption, config) {
   return found;
 }
 
-module.exports = { ctaTypesOf, ctaRange, ctaLine, assignVariants, validateLibrary, ownAsk, SALES_WORDS };
+module.exports = { ctaTypesOf, ctaRange, ctaLine, assignVariants, assignEndCards, validateLibrary, ownAsk, SALES_WORDS };

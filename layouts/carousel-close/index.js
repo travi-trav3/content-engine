@@ -3,8 +3,8 @@
  *
  * The takeaway, and optionally a "try this at your club" box: the same
  * technique turned into something the reader can use with their own
- * members. Calls to action stay in the caption; this slide gives, it does
- * not ask.
+ * members. This slide gives, it does not ask: in a generated carousel the
+ * ask is the end card after it (carousel-cta).
  */
 
 'use strict';

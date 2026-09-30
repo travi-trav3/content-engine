@@ -422,3 +422,6 @@ Open:
   for (the Google service account) moves into the build.
 - The recorded batch now has 3 carousels, 2 humor posts and 2 asks, and passes every gate. The
   per-slide brand checks caught three real defects in the stand-in copy on the first run.
+- Every carousel ends on an end card (carousel-cta) after its close: one ask per carousel, in the
+  brand's words from `cta.endCards`, rotated least recently used; carousels never also ask in the
+  caption. Caption asks stay at one in four across the other posts.

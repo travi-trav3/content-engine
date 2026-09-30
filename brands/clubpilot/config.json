@@ -122,6 +122,42 @@
         "linkedin": "Have a question about your club's communication? Book a call and ask the team directly. https://www.clubpilot.com/demo",
         "instagram": "Have a question about your club's communication? Book a call and ask the team directly. Link in bio."
       }
+    ],
+    "endCardLink": {
+      "linkedin": "clubpilot.com/demo",
+      "instagram": "Link in bio"
+    },
+    "endCards": [
+      {
+        "id": "see-it",
+        "headline": "Want to see how this would work at your club?",
+        "action": "Book twenty minutes with our team. Bring your questions."
+      },
+      {
+        "id": "meet-the-team",
+        "headline": "Curious what this looks like at your club?",
+        "action": "Meet the team for a relaxed walkthrough."
+      },
+      {
+        "id": "club-review",
+        "headline": "Wondering where your club's communication stands?",
+        "action": "Book a complimentary 20-minute review with our team."
+      },
+      {
+        "id": "ask-directly",
+        "headline": "Have a question about your club?",
+        "action": "Book a call and ask the team directly."
+      },
+      {
+        "id": "live-demo",
+        "headline": "See it with your own club's questions.",
+        "action": "Book a live demo with our team."
+      },
+      {
+        "id": "talk-it-through",
+        "headline": "Thinking about this for your club?",
+        "action": "Grab a time and we'll talk it through."
+      }
     ]
   },
   "carousel": {

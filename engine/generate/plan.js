@@ -122,7 +122,7 @@ function batchRules({ slots, pillars, config, factIds, demoClubs }) {
     cta.every
       ? `Calls to action: ${cta.min === cta.max ? cta.min : `${cta.min} to ${cta.max}`} posts set ctaType "${ctaTypesOf(config)[0]}" (one in ${cta.every}); every other post is "none". Never two asking posts in a row on the same channel. Choose posts where a relaxed invitation to meet the team follows naturally; the engine writes the ask itself.`
       : 'At most one post has a CTA, and it is the promote post. Every other ctaType is "none".',
-    ...(car.every ? [`Carousels: ${span(car)} posts use layout "carousel" (one in ${car.every}), on ${(config.carousel.channels || []).join(' or ')}, each with a carouselKind (${KINDS.join(', ')}) and a slideCount from ${config.carousel.minSlides || 4} to ${config.carousel.maxSlides || 8}. renderSurface is the cover's: dark, light, or photo with a photoSubject. A carousel never depicts the assistant. Every other post sets carouselKind and slideCount null.`] : []),
+    ...(car.every ? [`Carousels: ${span(car)} posts use layout "carousel" (one in ${car.every}), on ${(config.carousel.channels || []).join(' or ')}, each with a carouselKind (${KINDS.join(', ')}) and a slideCount from ${config.carousel.minSlides || 4} to ${config.carousel.maxSlides || 8}. renderSurface is the cover's: dark, light, or photo with a photoSubject. A carousel never depicts the assistant. Every carousel ends on an end card the engine adds (its own ask), so carousels set ctaType "none" and caption asks go on other posts. Every other post sets carouselKind and slideCount null.`] : []),
     ...(humor.every ? [`Humor: ${span(humor)} posts are the Humor pillar (one in ${humor.every}), because it is what performs best. Follow humor-standard.md: a mechanism you can name, never blaming or mocking a member, landing without a footer, and the joke is in the question or the moment, never in the assistant doing something. Any layout; photos and carousels are often funnier than type cards. Byron approves each one as a Buffer draft.`] : []),
     `Shells (from the layout menu): no shell on more than ${Math.ceil(n / 3)} posts, and no two consecutive posts on the same channel share a shell.`,
     `Formats (from the layout menu): a pillar uses a format at most once in the batch; no format other than ${car.every ? 'carousel' : 'the brand-governed ones'} on more than 3 posts; at least one pillar + format pairing that is not in the history.`,
@@ -221,6 +221,7 @@ function engineChecks(entries, { slots, catalog, pillars, library, lib, config =
       const max = car.maxSlides || 8;
       if (!(e.slideCount >= min && e.slideCount <= max)) failures.push(`${at} slideCount must be ${min} to ${max}`);
       if (e.depictsAssistant) failures.push(`${at} a carousel never depicts the assistant`);
+      if (e.ctaType && e.ctaType !== 'none') failures.push(`${at} a carousel's ask is its end card; set ctaType "none" so the post does not ask twice`);
       if (e.sender) failures.push(`${at} sender is only for thread layouts`);
       if (e.renderSurface === 'photo') {
         if (!e.photoSubject) failures.push(`${at} a photo cover needs a photoSubject`);

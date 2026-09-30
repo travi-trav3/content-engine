@@ -15,7 +15,8 @@
  *   steps         a short how-to, numbered from 01
  *
  * An inner slide is a step (carousel-step) or, when it carries an approved
- * statistic, a stat card. The cover takes a photo when the plan puts it on
+ * statistic, a stat card. After the close comes the end card (carousel-cta):
+ * the carousel's ask, in the brand's words, added by the engine. The cover takes a photo when the plan puts it on
  * the photo surface; every other slide sits on the cover's dark or light
  * surface (dark after a photo cover).
  */
@@ -112,6 +113,8 @@ function toSlides(entry, carousel, coverPhoto) {
   }
   if (carousel.reveal) slides.push({ layout: 'carousel-reveal', surface: innerSurface, props: clean(carousel.reveal) });
   slides.push({ layout: 'carousel-close', surface: innerSurface, props: clean(carousel.close) });
+  // The end card: the brand's words, filled by the engine (cta.js), never the model's.
+  if (entry.endCardProps) slides.push({ layout: 'carousel-cta', surface: innerSurface, props: { ...entry.endCardProps } });
   const total = slides.length;
   return slides.map((s, i) => ({
     layout: s.layout,

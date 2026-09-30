@@ -17,7 +17,8 @@
   complimentary 20-minute review of how it would work at the reader's club. It reads as a casual
   meet-the-team session, never a sales call. About one post in four asks, never two in a row on a
   channel, and the line rotates through the library in `config.json` (`cta.variants`). The engine adds
-  the ask as the caption's last line; generated copy never writes its own.
+  the ask as the caption's last line; generated copy never writes its own. Every carousel also ends on
+  an end card with its own ask (`cta.endCards`), and a carousel never asks in its caption as well.
 - **"Book" is the reader's word, never the assistant's (2026-09-30).** A call to action may say book.
   A post that depicts the assistant may not: it never books tee times, courts or dinner reservations,
   and never implies it. Naming the tee sheet is fine ("Rip out the tee sheet? No."); saying Club Pilot

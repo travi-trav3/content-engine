@@ -93,7 +93,7 @@ The words around the graphic:
 - earnsItsPlace: one sentence naming what makes this a post only ${brandName} could publish. "On brand" is not a reason.
 - photo (photo layouts and photo covers only): the plan's photoSubject, the time of day the copy implies, whether people are in it, and up to three tags from the library.
 
-Carousels (the plan's layout is "carousel"): fill the carousel structure for the plan's carouselKind and about its slideCount. The cover earns the swipe; each inner slide carries one thought (a step, a list item, or a statistic from approved-stats.json with its source); a reveal-flip's reveal is the answer and must reward the curiosity; the close gives the takeaway, and when it fits, a "try this at your club" technique the club can use with its own members. The close gives, it never asks.
+Carousels (the plan's layout is "carousel"): fill the carousel structure for the plan's carouselKind and about its slideCount. The cover earns the swipe; each inner slide carries one thought (a step, a list item, or a statistic from approved-stats.json with its source); a reveal-flip's reveal is the answer and must reward the curiosity; the close gives the takeaway, and when it fits, a "try this at your club" technique the club can use with its own members. The close gives, it never asks: the engine adds an end card after it with the carousel's one ask, and the caption carries none.
 
 Humor (the plan's pillar is Humor): follow humor-standard.md. Name the mechanism in humorMechanism, never blame or mock a member, and make it land without a footer. The joke is in the question or the moment, never in the assistant doing something.
 
@@ -101,7 +101,7 @@ Return only the JSON the schema asks for. Optional props you do not use are null
 
 function writeRequest({ brandText, entry, layoutInfo, revision }) {
   const plan = { ...entry };
-  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant']) delete plan[k];
+  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant', 'endCard', 'endCardProps']) delete plan[k];
   const parts = [
     brandText,
     '<layout>', layoutInfo, '</layout>',

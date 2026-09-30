@@ -63,6 +63,11 @@ layouts, so every carousel reads as one family. Every gate reads every slide, an
 goes back to its post naming the slide. A carousel's rotation format is `carousel`; its shell is the
 cover's (a photo cover counts as a photo post), so the grid still alternates.
 
+Every carousel ends on an end card (`carousel-cta`) after its close: the carousel's one ask, seen only
+by people who swiped to the end. Its words come from `cta.endCards`, least recently used first, never
+from the model, with `cta.endCardLink` for each channel (the demo address on LinkedIn, the bio on
+Instagram). A carousel carries no caption ask as well; caption asks go on other posts.
+
 `humor.every` sets how many posts are Humor (5: one in five). Humor follows `humor-standard.md`: a
 named mechanism, never blaming or mocking a member, landing without a footer, and the joke never in
 the assistant doing something. It goes to Buffer as a draft like everything else; Byron approving the

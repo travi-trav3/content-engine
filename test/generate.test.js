@@ -28,7 +28,7 @@ const { createMock } = require('../engine/generate/providers/mock');
 const { creativeFields } = require('../engine/generate/ledger');
 const { writePost } = require('../engine/generate/write');
 const { runBatch, workEntry, findingsByPost } = require('../engine/generate/batch');
-const { ctaTypesOf, assignVariants, validateLibrary, ownAsk } = require('../engine/generate/cta');
+const { ctaTypesOf, assignVariants, assignEndCards, validateLibrary, ownAsk } = require('../engine/generate/cta');
 const { checkAll } = require('../engine/gates/check-batch');
 const { loadLayout } = require('../engine/render/render');
 const photoLib = require('../engine/photos/library');
@@ -222,11 +222,28 @@ function strict(schema, at = '$') {
   console.log('== carousels: one post in three, planned as a whole ==');
   const carousels = ledger.posts.filter((p) => p.layout === 'carousel');
   check('three or four of ten posts are carousels', carousels.length >= 3 && carousels.length <= 4, String(carousels.length));
-  check('each carousel has 4 to 8 slides, every one rendered',
-    carousels.every((p) => p.slides.length >= 4 && p.slides.length <= 8 && p.slides.every((sl) => sl.render && sl.render.issues.length === 0)),
+  check('each carousel has 4 to 8 content slides plus its end card, every one rendered',
+    carousels.every((p) => p.slides.length >= 5 && p.slides.length <= 9 && p.slides.every((sl) => sl.render && sl.render.issues.length === 0)),
     carousels.map((p) => `${p.id}:${p.slides.length}`).join(', '));
-  check('a carousel opens on a cover and closes on a close',
-    carousels.every((p) => p.slides[0].layout === 'carousel-cover' && p.slides[p.slides.length - 1].layout === 'carousel-close'));
+  check('a carousel opens on a cover, gives its takeaway, then ends on the end card',
+    carousels.every((p) => p.slides[0].layout === 'carousel-cover'
+      && p.slides[p.slides.length - 2].layout === 'carousel-close' && p.slides[p.slides.length - 1].layout === 'carousel-cta'));
+  check('each carousel has a different end card', new Set(carousels.map((p) => p.endCard)).size === carousels.length,
+    carousels.map((p) => p.endCard).join(', '));
+  check('a carousel asks once: on its end card, never in the caption too', carousels.every((p) => p.ctaType === 'none' && !p.cta));
+  check('end cards point to the demo on LinkedIn and the bio on Instagram', carousels.every((p) => {
+    const card = p.slides[p.slides.length - 1].props;
+    return p.channel.startsWith('linkedin') ? card.link === config.cta.endCardLink.linkedin : card.link === config.cta.endCardLink.instagram;
+  }));
+  const { engineChecks } = require('../engine/generate/plan');
+  const doubleAsk = planDoc.posts.map((e) => (e.layout === 'carousel' ? { ...e, ctaType: 'demo' } : e));
+  check('the planner refuses a carousel that also asks in its caption',
+    engineChecks(doubleAsk, { slots: planDoc.posts.map((e, i) => ({ slot: i, date: e.date, channel: e.channel })), catalog, pillars, library, lib: photoLib, config })
+      .some((f) => /ask is its end card/.test(f)));
+  const cards = assignEndCards([
+    { id: 'x', layout: 'carousel', channel: 'instagram', dueAt: '2026-10-20T09:00:00-07:00' },
+  ], [{ posts: [{ endCard: 'see-it', dueAt: '2026-10-06T12:05:00-07:00' }] }], config);
+  check('the next end card is one not used recently', cards[0].endCard && cards[0].endCard !== 'see-it', cards[0].endCard);
   const flip = carousels.find((p) => p.carouselKind === 'reveal-flip');
   check('a reveal-flip has its reveal slide', flip && flip.slides.some((sl) => sl.layout === 'carousel-reveal'));
   const list = carousels.find((p) => p.carouselKind === 'list');
