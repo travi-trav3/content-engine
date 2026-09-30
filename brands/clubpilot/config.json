@@ -12,28 +12,124 @@
     "batchDays": 14,
     "startDay": "mon",
     "slots": [
-      { "dayOfBatch": 0, "time": "08:35", "channel": "linkedin_page" },
-      { "dayOfBatch": 1, "time": "12:05", "channel": "instagram" },
-      { "dayOfBatch": 3, "time": "09:50", "channel": "linkedin_page" },
-      { "dayOfBatch": 5, "time": "10:20", "channel": "instagram" },
-      { "dayOfBatch": 7, "time": "07:55", "channel": "linkedin_page" },
-      { "dayOfBatch": 8, "time": "19:45", "channel": "instagram" },
-      { "dayOfBatch": 9, "time": "12:20", "channel": "linkedin_page" },
-      { "dayOfBatch": 10, "time": "09:10", "channel": "linkedin_page" },
-      { "dayOfBatch": 11, "time": "18:35", "channel": "instagram" },
-      { "dayOfBatch": 13, "time": "16:40", "channel": "instagram" }
+      {
+        "dayOfBatch": 0,
+        "time": "08:35",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 1,
+        "time": "12:05",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 3,
+        "time": "09:50",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 5,
+        "time": "10:20",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 7,
+        "time": "07:55",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 8,
+        "time": "19:45",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 9,
+        "time": "12:20",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 10,
+        "time": "09:10",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 11,
+        "time": "18:35",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 13,
+        "time": "16:40",
+        "channel": "instagram"
+      }
     ]
   },
   "channels": {
-    "instagram": { "size": "ig" },
-    "linkedin_page": { "size": "li" },
-    "linkedin_byron": { "size": "li", "founderVoice": true }
+    "instagram": {
+      "size": "ig"
+    },
+    "linkedin_page": {
+      "size": "li"
+    },
+    "linkedin_byron": {
+      "size": "li",
+      "founderVoice": true
+    }
   },
   "cta": {
-    "types": ["demo", "website"],
-    "demo": "https://www.clubpilot.com/demo"
+    "every": 4,
+    "type": "demo",
+    "link": "https://www.clubpilot.com/demo",
+    "tone": "A casual meet-the-team session, not a sales call. Invite, never push.",
+    "variants": [
+      {
+        "id": "live-demo",
+        "linkedin": "Book a live demo with our team and see how it would work at your club. https://www.clubpilot.com/demo",
+        "instagram": "Book a live demo with our team and see how it would work at your club. Link in bio."
+      },
+      {
+        "id": "meet-the-team",
+        "linkedin": "Meet the team. Twenty minutes, your questions, and a look at how it fits your club. https://www.clubpilot.com/demo",
+        "instagram": "Meet the team. Twenty minutes, your questions, and a look at how it fits your club. Link in bio."
+      },
+      {
+        "id": "club-review",
+        "linkedin": "Schedule a complimentary 20-minute review of how this would work at your club. https://www.clubpilot.com/demo",
+        "instagram": "Schedule a complimentary 20-minute review of how this would work at your club. Link in bio."
+      },
+      {
+        "id": "quick-call",
+        "linkedin": "Book a quick call and bring your club's questions. We'll walk through the answers live. https://www.clubpilot.com/demo",
+        "instagram": "Book a quick call and bring your club's questions. We'll walk through the answers live. Link in bio."
+      },
+      {
+        "id": "walkthrough",
+        "linkedin": "Grab a time on our calendar for a relaxed walkthrough with your club in mind. https://www.clubpilot.com/demo",
+        "instagram": "Grab a time on our calendar for a relaxed walkthrough with your club in mind. Link in bio."
+      },
+      {
+        "id": "see-it-live",
+        "linkedin": "See it in action with your own club's questions. Book twenty minutes with the team. https://www.clubpilot.com/demo",
+        "instagram": "See it in action with your own club's questions. Book twenty minutes with the team. Link in bio."
+      },
+      {
+        "id": "talk-it-through",
+        "linkedin": "Curious how this would look at your club? Book a time and we'll talk it through. https://www.clubpilot.com/demo",
+        "instagram": "Curious how this would look at your club? Book a time and we'll talk it through. Link in bio."
+      },
+      {
+        "id": "ask-the-team",
+        "linkedin": "Have a question about your club's communication? Book a call and ask the team directly. https://www.clubpilot.com/demo",
+        "instagram": "Have a question about your club's communication? Book a call and ask the team directly. Link in bio."
+      }
+    ]
   },
-  "excludePillars": ["Humor"],
+  "excludePillars": [
+    "Humor"
+  ],
   "excludeLayouts": [],
-  "maxRevisions": { "plan": 3, "post": 2 }
+  "maxRevisions": {
+    "plan": 3,
+    "post": 2
+  }
 }

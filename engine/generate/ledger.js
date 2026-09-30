@@ -110,6 +110,10 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     operationalCheck: entry.operationalCheck || null,
     artDirectionMatch: entry.artDirectionMatch || null,
     ctaType: entry.ctaType,
+    ctaVariant: entry.ctaVariant || null,
+    // The ask the engine adds after the caption; postText is what Buffer gets.
+    cta: entry.ctaLine || null,
+    postText: entry.ctaLine ? `${post.caption}\n\n${entry.ctaLine}` : post.caption,
     founderVoice: false,
     clubMarks: [],
     review: entry.review || null,

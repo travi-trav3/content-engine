@@ -28,6 +28,7 @@ const { createMock } = require('../engine/generate/providers/mock');
 const { creativeFields } = require('../engine/generate/ledger');
 const { writePost } = require('../engine/generate/write');
 const { runBatch } = require('../engine/generate/batch');
+const { ctaTypesOf, assignVariants, validateLibrary, ownAsk } = require('../engine/generate/cta');
 const { checkAll } = require('../engine/gates/check-batch');
 const { loadLayout } = require('../engine/render/render');
 const photoLib = require('../engine/photos/library');
@@ -164,7 +165,7 @@ function strict(schema, at = '$') {
   const { planSchema } = require('../engine/generate/plan');
   const pillars = require('../engine/gates/plan-gate').PILLARS.filter((p) => !config.excludePillars.includes(p));
   const demoClubs = JSON.parse(fs.readFileSync(path.join(WS.brandDir, 'demo-clubs.json'), 'utf8')).clubs.map((c) => c.name);
-  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: config.cta.types, slotCount: 10 });
+  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: ctaTypesOf(config), slotCount: 10 });
   const planErrs = conforms(pSchema, planFixture);
   check('the recorded plan fits the plan schema', planErrs.length === 0, planErrs.slice(0, 5).join('; '));
 
@@ -213,12 +214,40 @@ function strict(schema, at = '$') {
   check('the report and contact sheet are written', fs.existsSync(path.join(batchDir, 'report.md')) && fs.existsSync(path.join(batchDir, 'contact-sheet.jpg')));
   check('renders stay out of the content folder', !fs.readdirSync(batchDir).some((f) => f.endsWith('.png')));
 
+  console.log('== calls to action: one in four, rotating, added by the engine ==');
+  const asking = ledger.posts.filter((p) => p.ctaType !== 'none');
+  check('two of ten posts ask (one in four)', asking.length === 2, String(asking.length));
+  check('no two asks in a row on one channel', ['instagram', 'linkedin_page'].every((ch) => {
+    const seq = ledger.posts.filter((p) => p.channel === ch).map((p) => p.ctaType !== 'none');
+    return !seq.some((a, i) => a && seq[i + 1]);
+  }));
+  check('each ask uses a different line from the library', new Set(asking.map((p) => p.ctaVariant)).size === asking.length);
+  check('LinkedIn asks carry the link; Instagram asks point to the bio',
+    asking.every((p) => (p.channel.startsWith('linkedin') ? p.cta.includes(config.cta.link) : /Link in bio\.$/.test(p.cta))),
+    asking.map((p) => `${p.channel}: ${p.cta}`).join(' | '));
+  check('the ask is the last line of what Buffer gets', asking.every((p) => p.postText === `${p.caption}\n\n${p.cta}`));
+  check('posts that do not ask carry no ask', ledger.posts.filter((p) => p.ctaType === 'none').every((p) => !p.cta && p.postText === p.caption));
+  check('the Club Pilot CTA library is sound (both channels, no dashes, no sales push)', validateLibrary(config).length === 0, validateLibrary(config).join('; '));
+  const history = [{ posts: [
+    { ctaVariant: 'live-demo', dueAt: '2026-09-20T09:00:00-07:00' },
+    { ctaVariant: 'meet-the-team', dueAt: '2026-09-28T09:00:00-07:00' },
+  ] }];
+  const next = assignVariants([
+    { id: 'a', channel: 'instagram', ctaType: 'demo', dueAt: '2026-10-05T09:00:00-07:00' },
+    { id: 'b', channel: 'linkedin_page', ctaType: 'demo', dueAt: '2026-10-09T09:00:00-07:00' },
+  ], history, config);
+  check('the next asks use lines not used recently', next.every((e) => !['live-demo', 'meet-the-team'].includes(e.ctaVariant)),
+    next.map((e) => e.ctaVariant).join(', '));
+  check('a caption with its own ask is caught', ownAsk('Great stuff. Link in bio.', config).length === 1 && ownAsk('Book at clubpilot.com/demo', config).length === 1);
+  check('a caption that pitches is caught', /sales/.test(ownAsk('Our sales team would love to talk.', config).join()));
+
   console.log('== a plan that fails its checks is revised ==');
   const revDir = path.join(OUT, 'revision-fixtures');
   fs.rmSync(revDir, { recursive: true, force: true });
   fs.cpSync(FIXTURES, revDir, { recursive: true });
   const bad = JSON.parse(JSON.stringify(planFixture));
-  bad.posts[0].ctaType = 'demo'; // a second CTA
+  bad.posts[1].ctaType = 'demo'; // an ask right before another ask on Instagram
+  bad.posts[5].ctaType = 'demo'; // and a fourth ask in ten posts
   fs.writeFileSync(path.join(revDir, 'plan.json'), JSON.stringify([bad, planFixture]));
   const revMock = createMock({ dir: revDir });
   const revContent = freshContent('revision');
@@ -228,7 +257,8 @@ function strict(schema, at = '$') {
   });
   const planCalls = revMock.calls.filter((c) => c.key === 'plan');
   check('the plan took two rounds', rr.ok && planCalls.length === 2, `${rr.stage}, ${planCalls.length} call(s)`);
-  check('the revision request quoted the gate failure', /plan\.ctaCount/.test(planCalls[1] ? planCalls[1].user : ''));
+  check('the revision request quoted the failures', /plan\.ctaAdjacent/.test(planCalls[1] ? planCalls[1].user : '')
+    && /call to action/.test(planCalls[1] ? planCalls[1].user : ''));
 
   console.log('== plan-approval mode stops for a person ==');
   const apContent = freshContent('approval');

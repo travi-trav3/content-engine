@@ -53,6 +53,17 @@ the brand lacks what they need (the product screenshot until a real screenshot i
 when they need a source (founder portrait and quote card belong to source mode), or when
 `excludeLayouts` turns them off.
 
+## Calls to action
+
+`cta.every` sets how often a post asks (4: one post in four, rounded either way per batch). The plan
+gate refuses more than that and any two asks in a row on one channel; the engine also refuses fewer.
+Which line each asking post gets is the engine's decision, not the model's: the least recently used
+variant from `cta.variants`, never the same one twice in a batch, in the channel's form (LinkedIn
+carries the link, Instagram points to the bio). The engine adds it as the caption's last line
+(`postText` in the ledger is what Buffer receives). A caption the model writes with its own link,
+"link in bio" or sales language is sent back. Edit the variants to change the voice of the asks; the
+library is checked for dashes, exclamation marks and sales words on every run.
+
 ## Providers
 
 `providers/openai.js` calls the OpenAI Responses API with a strict JSON schema, retries rate limits
@@ -73,7 +84,7 @@ account when the key is set up, and run one batch with `--plan-only` first.
   "provider": { "name": "openai", "model": "...", "apiKeyEnv": "OPENAI_API_KEY", "reasoningEffort": "medium" },
   "cadence": { "batchDays": 14, "slots": [ { "dayOfBatch": 0, "time": "08:35", "channel": "linkedin_page" } ] },
   "channels": { "instagram": { "size": "ig" }, "linkedin_page": { "size": "li" } },
-  "cta": { "types": ["demo", "website"], "demo": "https://..." },
+  "cta": { "every": 4, "type": "demo", "link": "https://...", "variants": [ { "id": "...", "linkedin": "... https://...", "instagram": "... Link in bio." } ] },
   "excludePillars": ["Humor"],
   "excludeLayouts": [],
   "maxRevisions": { "plan": 3, "post": 2 }

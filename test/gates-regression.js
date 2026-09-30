@@ -100,6 +100,35 @@ const b2cap = capability.checkBatch(ledgers.b2, WS.brandDir);
 for (const id of ['b2-01-triad-carousel', 'b2-02-thread-li', 'b2-06-humor']) {
   check(`capability still fails ${id}`, b2cap.failures.some((f) => f.id === id));
 }
+// Booking words are allowed in calls to action (2026-09-30) and still fail
+// any post that depicts the assistant: the court "booked from the car" is the
+// Aug 6 overreach and must keep failing on its own words.
+check('b2-08-tennis still fails for the assistant booking a court (capability.lexicon.blocked: booked)',
+  b2cap.failures.some((f) => f.id === 'b2-08-tennis' && f.rule === 'capability.lexicon.blocked' && /booked/.test(f.detail)));
+check('a call to action that books a demo no longer fails (b2-09-single-ask)',
+  !b2cap.failures.some((f) => f.id === 'b2-09-single-ask'));
+
+console.log('== capability: context decides (2026-09-30) ==');
+// A word fails where it describes the product doing something, not where the
+// industry story or a call to action uses it.
+const capPost = (over) => ({
+  id: 'ctx', depictsAssistant: false, clubMarks: [], headline: 'H', caption: '', ...over,
+});
+const capRules = (post) => capability.checkBatch({ posts: [post] }, WS.brandDir).failures.map((f) => f.rule);
+const passes = (label, post) => { const r = capRules(post); check(`passes: ${label}`, r.length === 0, r.join(', ')); };
+const fails = (label, post, rule) => { const r = capRules(post); check(`fails: ${label} (${rule})`, r.includes(rule), r.join(', ') || 'passed'); };
+passes('the partnership story names the tee sheet', capPost({ headline: 'Rip out the tee sheet? No.' }));
+passes('a channel members pay attention to', capPost({ caption: 'Text is a channel members pay attention to.' }));
+passes('in order to', capPost({ caption: 'Clubs send fewer messages in order to be heard.' }));
+passes('a call to action books a call with the team', capPost({ caption: 'Book a quick call with our team.' }));
+fails('a thread in which the assistant mentions the tee sheet',
+  capPost({ depictsAssistant: true, interactionType: 'answer', sourceDocument: 'hours', thread: [{ from: 'assistant', text: 'The tee sheet shows a gap at 9.' }] }),
+  'capability.lexicon.blocked');
+fails('members paying dues by text', capPost({ caption: 'Members can pay their dues by text.' }), 'capability.lexicon.blocked');
+fails('ordering dinner by text', capPost({ caption: 'Members order dinner by text.' }), 'capability.lexicon.blocked');
+fails('a dining reservation outside any thread', capPost({ caption: 'Move a dining reservation in seconds.' }), 'capability.lexicon.blocked');
+fails('a claim that Club Pilot syncs with the tee sheet', capPost({ caption: 'Club Pilot syncs with your tee sheet.' }), 'capability.integrationClaim');
+fails('a claim of a POS integration', capPost({ caption: 'Answers come straight from the POS integration.' }), 'capability.integrationClaim');
 
 console.log('== regression: overall gate verdicts ==');
 check('batch 3 fails the combined gates',
@@ -155,7 +184,10 @@ const mutations = [
   ['LinkedIn below half', (p) => { p.posts[0].channel = 'instagram'; p.posts[2].channel = 'instagram'; }, 'plan.linkedinWeight'],
   ['empty approvedBy', (p) => { p.posts[5].approvedBy = ''; }, 'plan.approvedBy'],
   ['territory mix off tolerance', (p) => { p.posts.forEach((x) => { x.territory = 'seeing'; }); }, 'plan.territoryMix'],
-  ['two CTA posts', (p) => { p.posts[0].ctaType = 'website'; }, 'plan.ctaCount'],
+  // Club Pilot asks on one post in four (config.json cta.every, 2026-09-30):
+  // three of these twelve may carry a CTA, four may not.
+  ['more CTA posts than one in four', (p) => { [0, 3, 6].forEach((i) => { p.posts[i].ctaType = 'demo'; }); }, 'plan.ctaCount'],
+  ['two CTA posts back to back on one channel', (p) => { p.posts[9].ctaType = 'demo'; }, 'plan.ctaAdjacent'],
   ['scenario post missing operationalCheck', (p) => { delete p.posts[1].operationalCheck; }, 'plan.operationalCheck'],
   // Also proves brand/club-operations-facts.md resolved: the gate skips this
   // check silently when the facts file cannot be found.

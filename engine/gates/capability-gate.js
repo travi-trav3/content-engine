@@ -27,9 +27,8 @@ const { workspace } = require('../lib/workspace');
 // Hard fail anywhere in the post. These describe an action or a live-state
 // lookup the product cannot perform.
 const BLOCKED = [
-  'book', 'booked', 'booking', 'books',
   'reserve', 'reserved', 'reserves', 'reservation',
-  'tee time', 'tee times', 'tee sheet', 'court time', 'table for',
+  'tee time', 'tee times', 'court time', 'table for',
   'pay', 'paid', 'payment', 'charge to', 'bill to', 'order',
   'has arrived', 'have they arrived', 'arrived yet', 'arrive yet',
   'did my guest', 'is my guest', 'on the tee', 'where is my', 'where is the',
@@ -45,6 +44,38 @@ const BLOCKED_WHEN_ASSISTANT = [
   'all set', "you're booked", 'you are booked',
   'handled', 'taken care of', 'on your behalf',
 ];
+
+// Blocked like BLOCKED, but only on a post that depicts the assistant
+// (2026-09-30, Byron via Travis: context decides). The reader books demos and
+// calls with the Club Pilot team, and the partnership story names the tee
+// sheet ("Rip out the tee sheet? No."), so these words are fine in a call to
+// action or a post about the industry. The assistant still never books
+// anything: the Aug 6 overreach was a thread showing it book a court
+// ("Sunday's court was booked from the car"), and that post still fails.
+const BLOCKED_IF_ASSISTANT = [
+  'book', 'booked', 'booking', 'books',
+  'tee sheet',
+];
+
+// Everyday phrases that contain a blocked word but describe no transaction.
+// Removed before the lexicon check, so "a channel members pay attention to"
+// passes while "members can pay their dues by text" still fails.
+const IDIOMS = [
+  /\bpay(s|ing)? (close )?attention\b/gi,
+  /\bpaid (close )?attention\b/gi,
+  /\bin order (to|for)\b/gi,
+  /\bout of order\b/gi,
+  /\bin (that|this|the same|any) order\b/gi,
+];
+const withoutIdioms = (texts) => texts.map((t) => IDIOMS.reduce((acc, re) => acc.replace(re, ' '), t));
+
+// The product has no live integration with operational systems (section 3 of
+// the capability boundary). Naming those systems is fine; saying Club Pilot
+// connects to, syncs with or reads from one is a capability claim.
+const OPS_SYSTEMS = '(tee[ -]?sheets?|reservation systems?|point[ -]of[ -]sale|pos|club management (systems?|software)|accounting (systems?|software))';
+const INTEGRATION_VERBS = '(integrat\\w*|sync\\w*|plugs? into|plugged into|pulls? (from|data from)|reads? from|writes? to|connects? (to|with)|connected (to|with)|hooks? into|talks? to)';
+const INTEGRATION_CLAIM = new RegExp(
+  `\\b${INTEGRATION_VERBS}[^.!?\\n]{0,40}\\b${OPS_SYSTEMS}\\b|\\b${OPS_SYSTEMS}\\b[^.!?\\n]{0,20}\\b(integration|sync)\\b`, 'i');
 
 // Permitted only inside interactionType === 'escalation'. Their presence is
 // what makes a blocked term survivable, with a named human clearing it.
@@ -163,7 +194,7 @@ function checkPost(post, approved) {
   }
 
   /* -- Rule 5: blocked lexicon --------------------------------------- */
-  const blocked = hits(text, BLOCKED);
+  const blocked = hits(withoutIdioms(text), depicts === true ? [...BLOCKED, ...BLOCKED_IF_ASSISTANT] : BLOCKED);
   if (blocked.length) {
     const inEscalation = depicts === true && type === 'escalation';
     if (inEscalation && hits(text, ESCALATION_PHRASES).length > 0) {
@@ -182,6 +213,13 @@ function checkPost(post, approved) {
       add(FAIL, 'capability.lexicon.blocked',
         `Out-of-scope language: ${blocked.join(', ')}. The product answers from uploaded documents and hands off what it cannot answer. It does not act.`);
     }
+  }
+
+  /* -- Rule 5b: live-integration claims ------------------------------ */
+  const claim = text.map((t) => t.match(INTEGRATION_CLAIM)).find(Boolean);
+  if (claim) {
+    add(FAIL, 'capability.integrationClaim',
+      `Claims a live integration with an operational system: "${claim[0]}". Club Pilot sits beside the tee sheet, reservations and POS; it does not connect to them. If an integration ships, add it to the capability boundary before any post names it.`);
   }
 
   /* -- Rule 6: actions attributed to the assistant -------------------- */

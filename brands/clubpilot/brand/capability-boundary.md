@@ -17,6 +17,30 @@ The mechanism must be present in the source material and absent from the output.
 
 ---
 
+## 0. The platform at launch (Club Pilot 2.0, recorded 2026-09-30)
+
+Write as if all four channels are live; the engine launches only when they are. Describe each one the
+way Club Pilot's own materials do (the 2.0 home page draft and Byron's LinkedIn About, Sep 2026), and
+no further. The AI Assist rules in sections 1 to 9 are unchanged: 2.0 adds channels, it does not give
+the assistant new powers.
+
+- **One platform.** Email, Text, Mobile App and AI Assist in one place, with one inbox for staff and
+  one communication history for each member. Members choose how they hear from the club.
+- **Email.** Created and personalized in Club Pilot, two-way (members can reply), with smarter
+  targeting, sent from the club's own domain.
+- **Text.** Timely notifications, event promotions, reminders, surveys and two-way conversations.
+  Members can RSVP to an event by replying to a text; show the club's invitation and the member's
+  reply, not the assistant arranging anything.
+- **Mobile App.** A club-branded app with AI Assist inside, USGA integration to view and post scores,
+  and live chat for members. The home page draft also lists matching members with compatible members
+  and hand-selected topics of interest: `[CONFIRM exact behavior with Byron before depicting either]`.
+- **AI Assist.** Answers routine questions 24/7 from the documents the club provides, in the club's
+  voice, and hands off to staff when a person is needed. It does not book, reserve, pay, order, look
+  up live availability or act for anyone (section 3), in any channel.
+- **Live integrations.** None with the tee sheet, reservations, POS or club management software.
+  Club Pilot sits beside those systems and hopes to partner with them; posts may say that, and may
+  not say it connects to them. USGA scores in the app are the one named integration.
+
 ## 1. Mechanism
 
 Club Pilot AI Assist answers member questions from the club's own source-of-truth database, meaning the documents and information the club uploads to the platform. It is a knowledge layer over club information, delivered through the channels members already use.

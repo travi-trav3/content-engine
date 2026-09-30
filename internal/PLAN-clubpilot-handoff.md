@@ -394,3 +394,17 @@ Open:
 - The model name in `config.json` is a starting value; confirm it when Byron's key is set up.
 - Next: publish renders to the assets repo (content-hashed names, verify 200 + sha256), Buffer
   client (drafts, first comments, notes read-back), scheduled workflows, source mode, carousels.
+
+### 2026-09-30, increment 5 (decisions from Byron via Travis)
+
+- All four channels are written as live; the engine launches when they are. BRAND.md live overrides
+  and a new capability-boundary section 0 describe Club Pilot 2.0 from Byron's own materials. Match-up
+  and topics-of-interest in the app are marked CONFIRM.
+- Capability gate, context decides: book, booked, booking, books and tee sheet fail only on posts that
+  depict the assistant (b2-08, the court "booked from the car", still fails); idioms such as "pay
+  attention" and "in order to" no longer trip pay and order; a new check fails claims that Club Pilot
+  connects to, syncs with or reads from the tee sheet, reservations, POS or club management software.
+  Historical verdicts changed only for the two demo CTAs (b1-09, b2-09) and b1-01's tee-sheet mention.
+- CTAs: one post in four (config `cta.every`), never two in a row on a channel (plan gate), from a
+  rotating library of eight soft meet-the-team lines chosen least recently used and appended by the
+  engine. Regression and generator tests cover both.

@@ -60,6 +60,15 @@ const CTA_TYPES = ['none', 'demo', 'app', 'follow', 'website'];
 const FOUNDER_CHANNEL = 'linkedin_byron';
 const REVIEW_IN_BUFFER = 'buffer-drafts';
 
+/** One CTA per this many posts, from the brand's config.json (cta.every), or null. */
+function ctaEvery() {
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(workspace().dir, 'config.json'), 'utf8'));
+    const n = cfg.cta && Number(cfg.cta.every);
+    return n > 0 ? n : null;
+  } catch { return null; }
+}
+
 // Operational fact ids from brand/club-operations-facts.md ("### <id>" headers).
 function loadFactIds() {
   try {
@@ -258,11 +267,35 @@ function checkPlan(plan, priors = []) {
       `LinkedIn has ${li} of ${posts.length} slots. LinkedIn is the demand channel where the buyer decides and carries at least half of any batch. Batch 3 shipped 5 LinkedIn against 10 Instagram.`);
   }
 
-  /* -- at most one CTA post per batch (4.5, 10% promote) ------------- */
+  /* -- CTA frequency and spacing ------------------------------------- */
+  // The brand's config sets how often a post may ask (cta.every: one post in
+  // N). Without it, the original rule holds: at most one CTA per batch (4.5,
+  // the 10% promote band). Club Pilot moved to one in four on 2026-09-30,
+  // with soft, rotating "meet the team" asks.
   const ctas = posts.filter((p) => p.ctaType && p.ctaType !== 'none');
-  if (ctas.length > 1) {
+  const every = ctaEvery();
+  const ctaMax = every ? Math.ceil(posts.length / every) : 1;
+  if (ctas.length > ctaMax) {
     add(FAIL, 'plan.ctaCount',
-      `${ctas.length} posts carry a CTA (${ctas.map(idOf).join(', ')}). At most one post per batch promotes; the other ${posts.length - 1} build trust.`);
+      every
+        ? `${ctas.length} posts carry a CTA (${ctas.map(idOf).join(', ')}). The brand asks on at most one post in ${every}: ${ctaMax} of ${posts.length} here. The rest build trust.`
+        : `${ctas.length} posts carry a CTA (${ctas.map(idOf).join(', ')}). At most one post per batch promotes; the other ${posts.length - 1} build trust.`);
+  }
+  // Two asks in a row on one channel read as a sales push.
+  const ctaByChannel = new Map();
+  for (const p of [...posts].sort((a, b) => String(a.date).localeCompare(String(b.date)))) {
+    if (!ctaByChannel.has(p.channel)) ctaByChannel.set(p.channel, []);
+    ctaByChannel.get(p.channel).push(p);
+  }
+  for (const [chan, list] of ctaByChannel) {
+    for (let i = 1; i < list.length; i += 1) {
+      const a = list[i - 1];
+      const b = list[i];
+      if (a.ctaType && a.ctaType !== 'none' && b.ctaType && b.ctaType !== 'none') {
+        add(FAIL, 'plan.ctaAdjacent',
+          `${chan}: "${idOf(a)}" and "${idOf(b)}" both carry a CTA, back to back. Space the asks out so the feed never reads as a sales push.`);
+      }
+    }
   }
 
   /* -- surface mix: none above a third, none adjacent per channel ---- */

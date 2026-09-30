@@ -8,6 +8,24 @@
 
 ## LIVE RULE OVERRIDES (operator instructions given in-session — these win)
 
+- **Club Pilot 2.0 is live (2026-09-30, Byron via Travis).** Content is written as if Email, Text,
+  Mobile App and AI Assist are all live, in one platform with one inbox and one member history. The
+  engine launches only once they are. This supersedes the Aug 26 rule that kept the unified hub in
+  the "what we're building" territory. What each channel does, and what AI Assist still never does,
+  is in `capability-boundary.md` section 0.
+- **Calls to action (2026-09-30).** The ask is to book time with the team: a live demo, a call, a
+  complimentary 20-minute review of how it would work at the reader's club. It reads as a casual
+  meet-the-team session, never a sales call. About one post in four asks, never two in a row on a
+  channel, and the line rotates through the library in `config.json` (`cta.variants`). The engine adds
+  the ask as the caption's last line; generated copy never writes its own.
+- **"Book" is the reader's word, never the assistant's (2026-09-30).** A call to action may say book.
+  A post that depicts the assistant may not: it never books tee times, courts or dinner reservations,
+  and never implies it. Naming the tee sheet is fine ("Rip out the tee sheet? No."); saying Club Pilot
+  connects to, syncs with or reads from it is not.
+- **Byron's personal LinkedIn (2026-09-30)** is being connected to the new Buffer account. Founder posts
+  are first person and come only from material Byron supplies (source mode); each is approved by him
+  before it publishes.
+
 - **Em dashes: BANNED.** No em dashes anywhere — headlines, body, chat bubbles, UI
   mockups. (Confirmed by operator in chat 2026-07-23; also matches §3 of this doc.)
 - **"Trusted By" club logos: APPROVED for social (2026-07-24).** Byron's written approval

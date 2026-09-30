@@ -117,7 +117,7 @@
    "depictsScenario": true,
    "operationalCheck": "ops-round-ends-18th: the round ends on the 18th hole, so a lunch question asked on the ninth is about after the round.",
    "sender": "Elmwood Country Club",
-   "ctaType": "none",
+   "ctaType": "demo",
    "interestingWithoutPurchase": true,
    "peerToPeer": true,
    "credibleScenario": true,

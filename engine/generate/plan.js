@@ -18,6 +18,7 @@ const planGate = require('../gates/plan-gate');
 const rotationGate = require('../gates/rotation-gate');
 const { PHOTO_VOCAB } = require('./catalog');
 const { brandContext, historySummary, photoSummary, layoutMenu } = require('./context');
+const { ctaTypesOf, ctaRange } = require('./cta');
 
 const CHECKLIST = ['interestingWithoutPurchase', 'peerToPeer', 'credibleScenario', 'oneThought',
   'captionAddsLayer', 'worksWithoutCta', 'buildsTrust', 'hasDistribution'];
@@ -106,13 +107,15 @@ function planRequest({ ctx, slots, rules, revision }) {
 
 function batchRules({ slots, pillars, config, factIds, demoClubs }) {
   const n = slots.length;
-  const ctaTypes = (config.cta && config.cta.types) || [];
+  const cta = ctaRange(n, config);
   return [
     'One entry per slot, every slot filled once. The slot fixes the date and channel.',
     `Pillars allowed in this batch: ${pillars.join('; ')}.`,
     `Territory mix for ${n} posts: ${territoryRanges(n)}.`,
     `Each message is one plain sentence, distinct from every other message in the plan and from the history. The idea that answers already exist in documents the club wrote may carry at most one post.`,
-    `At most one post has a CTA (${ctaTypes.join(' or ') || 'none configured'}), and it is the promote post. Every other ctaType is "none".`,
+    cta.every
+      ? `Calls to action: ${cta.min === cta.max ? cta.min : `${cta.min} to ${cta.max}`} posts set ctaType "${ctaTypesOf(config)[0]}" (one in ${cta.every}); every other post is "none". Never two asking posts in a row on the same channel. Choose posts where a relaxed invitation to meet the team follows naturally; the engine writes the ask itself.`
+      : 'At most one post has a CTA, and it is the promote post. Every other ctaType is "none".',
     `Shells (from the layout menu): no shell on more than ${Math.ceil(n / 3)} posts, and no two consecutive posts on the same channel share a shell.`,
     'Formats (from the layout menu): a pillar uses a format at most once in the batch; no format on more than 3 posts; at least one pillar + format pairing that is not in the history.',
     'The front desk leak runs on LinkedIn only.',
@@ -182,7 +185,7 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
 }
 
 /** The engine's own consistency rules, which no gate covers because only generated plans name layouts. */
-function engineChecks(entries, { slots, catalog, pillars, library, lib }) {
+function engineChecks(entries, { slots, catalog, pillars, library, lib, config = {} }) {
   const failures = [];
   const byId = new Map(catalog.map((c) => [c.id, c]));
   const seenSlots = entries.map((e) => e.date + e.channel);
@@ -215,6 +218,11 @@ function engineChecks(entries, { slots, catalog, pillars, library, lib }) {
       else subjectDemand.set(e.photoSubject, (subjectDemand.get(e.photoSubject) || 0) + 1);
     }
   }
+  const cta = ctaRange(entries.length, config);
+  const asking = entries.filter((e) => e.ctaType && e.ctaType !== 'none').length;
+  if (cta.every && (asking < cta.min || asking > cta.max)) {
+    failures.push(`${asking} posts carry a call to action; this batch needs ${cta.min === cta.max ? cta.min : `${cta.min} to ${cta.max}`} (one in ${cta.every})`);
+  }
   for (const [subject, n] of subjectDemand) {
     const have = lib.select(library, { tags: [subject] }).length;
     if (have < n) failures.push(`${n} posts want a "${subject}" photo and the library has ${have} available`);
@@ -239,7 +247,7 @@ function gateFailures(entries, priors, { awaitingApproval = false } = {}) {
  */
 async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, log = () => {} }) {
   const pillars = planGate.PILLARS.filter((p) => !(config.excludePillars || []).includes(p));
-  const ctaTypes = (config.cta && config.cta.types) || [];
+  const ctaTypes = ctaTypesOf(config);
   const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length });
   const ctx = {
     brand: brandContext(brandDir),
@@ -264,7 +272,7 @@ async function makePlan({ provider, brandDir, brand, config, catalog, library, l
     });
     log({ step: 'plan', round, usage });
     entries = toPlanEntries(data, { slots, catalog, batchNo, config, plannedOn });
-    failures = [...engineChecks(entries, { slots, catalog, pillars, library, lib }),
+    failures = [...engineChecks(entries, { slots, catalog, pillars, library, lib, config }),
       ...gateFailures(entries, priors, { awaitingApproval: config.review === 'plan-approval' })];
     log({ step: 'plan', round, failures });
     if (!failures.length) break;

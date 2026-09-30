@@ -22,6 +22,7 @@
 const { validateProps } = require('../render/render');
 const { propsSchema, PHOTO_VOCAB } = require('./catalog');
 const { brandContext } = require('./context');
+const { ownAsk } = require('./cta');
 
 const nullable = (schema) => ({ ...schema, type: [schema.type, 'null'], ...(schema.enum ? { enum: [...schema.enum, null] } : {}) });
 
@@ -70,7 +71,7 @@ Threads:
 - An escalation is exactly: the question, the offer to pass it to the team, the member's yes, the handoff. Nothing after the handoff.
 
 The words around the graphic:
-- caption: adds a layer the graphic does not say. Two to five short paragraphs, peer to peer, one operator talking to another. No hashtags. No call to action unless the plan's ctaType is set; then end with one plain line and the link.
+- caption: adds a layer the graphic does not say. Two to five short paragraphs, peer to peer, one operator talking to another. No hashtags. Never write a call to action, a link or "link in bio": when the post has one (<cta>), the engine adds it as the caption's last line, so end the caption where that invitation reads naturally next, without repeating it.
 - firstComment: one or two sentences that add one more thought. Not a call to action, not a restatement.
 - altText: describe the image and quote its visible words.
 - earnsItsPlace: one sentence naming what makes this a post only ${brandName} could publish. "On brand" is not a reason.
@@ -78,15 +79,15 @@ The words around the graphic:
 
 Return only the JSON the schema asks for. Optional props you do not use are null.`;
 
-function writeRequest({ brandText, entry, layoutInfo, cta, revision }) {
+function writeRequest({ brandText, entry, layoutInfo, revision }) {
   const plan = { ...entry };
-  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex']) delete plan[k];
+  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant']) delete plan[k];
   const parts = [
     brandText,
     '<layout>', layoutInfo, '</layout>',
     '<plan_entry>', JSON.stringify(plan, null, 1), '</plan_entry>',
   ];
-  if (entry.ctaType && entry.ctaType !== 'none' && cta) parts.push(`<cta>${entry.ctaType}: ${cta}</cta>`);
+  if (entry.ctaLine) parts.push(`<cta>The engine ends this caption with: ${entry.ctaLine}</cta>`);
   if (entry.channel === 'instagram') parts.push('<channel>Instagram: the caption can be short; the first line must stand alone.</channel>');
   else parts.push('<channel>LinkedIn company page: the caption can run longer and reason more; the first two lines show before "see more".</channel>');
   if (revision) {
@@ -130,7 +131,7 @@ function choosePhoto({ lib, library, request, spec, exclude, now }) {
 }
 
 /** Everything the renderer would refuse, plus the photo, found before rendering. */
-function finish({ entry, data, brand, lib, library, usedPhotos }) {
+function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
   const failures = [];
   const props = clean(data.props || {});
   if (entry.fixed.includes('sender')) props.sender = entry.sender;
@@ -156,6 +157,10 @@ function finish({ entry, data, brand, lib, library, usedPhotos }) {
   for (const k of ['caption', 'firstComment', 'altText', 'earnsItsPlace']) {
     if (!String(data[k] || '').trim()) failures.push(`${k} is empty`);
   }
+  for (const k of ['caption', 'firstComment']) {
+    const asks = ownAsk(data[k], config);
+    if (asks.length) failures.push(`${k} contains ${asks.join(' and ')}. The engine adds the only call to action; remove it.`);
+  }
   return {
     failures,
     post: {
@@ -178,7 +183,6 @@ function finish({ entry, data, brand, lib, library, usedPhotos }) {
 async function writePost({ provider, entry, brand, brandDir, config, lib, library, usedPhotos, feedback, previous, brandText, log = () => {} }) {
   const schema = postSchema(entry, brand);
   const text = brandText || brandContext(brandDir);
-  const cta = config.cta && entry.ctaType && config.cta[entry.ctaType];
   const maxRounds = 1 + ((config.maxRevisions && config.maxRevisions.post) ?? 2);
   let revision = feedback && feedback.length ? { failures: feedback, previous } : null;
   let result = null;
@@ -189,12 +193,12 @@ async function writePost({ provider, entry, brand, brandDir, config, lib, librar
     const { data, usage } = await provider.generate({
       key: `post-${entry.slotIndex}`,
       system: SYSTEM(config.brand || brand.name),
-      user: writeRequest({ brandText: text, entry, layoutInfo: entry.layoutInfo, cta, revision }),
+      user: writeRequest({ brandText: text, entry, layoutInfo: entry.layoutInfo, revision }),
       schema,
       schemaName: 'post',
     });
     raw = data;
-    result = finish({ entry, data, brand, lib, library, usedPhotos });
+    result = finish({ entry, data, brand, lib, library, usedPhotos, config });
     log({ step: 'write', id: entry.id, round, usage, failures: result.failures });
     if (!result.failures.length) break;
     revision = { failures: result.failures, previous: data };
