@@ -40,8 +40,21 @@ const photo = (p, cls = '') => {
   return `<img class="photo ${esc(cls)}" data-photo src="${esc(p.src)}" alt="" style="object-position: ${x}% ${y}%">`;
 };
 
+const pad2 = (n) => String(n).padStart(2, '0');
+
+/**
+ * The footer every carousel slide shares: its position ("02 / 06") from the
+ * carousel renderer, never from copy, and a swipe cue on every slide but the
+ * last. Empty when the layout renders as a single image.
+ */
+const slideFoot = (slide) => (slide
+  ? `<div class="foot"><span class="nowrap">${pad2(slide.index)} / ${pad2(slide.total)}</span><div class="rule"></div>${
+    slide.index < slide.total ? '<span class="nowrap slide-next">Swipe <span class="slide-arrow">&rarr;</span></span>' : ''}</div>
+    <style>.slide-next { color: var(--accent); font-weight: var(--fw-head); } .slide-arrow { display: inline-block; margin-left: 6px; }</style>`
+  : '');
+
 /** Initials for a sender avatar: first letters of the first two words. */
 const initials = (name) => String(name).trim().split(/\s+/).slice(0, 2)
   .map((w) => w[0]).join('').toUpperCase();
 
-module.exports = { esc, words, wordmark, headlineWords, eyebrow, initials, photo };
+module.exports = { esc, words, wordmark, headlineWords, eyebrow, initials, photo, slideFoot };

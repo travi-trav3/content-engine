@@ -1,0 +1,8 @@
+{
+  "slide": { "index": 5, "total": 6 },
+  "props": {
+    "eyebrow": "The answer",
+    "statement": "Whichever one the member chooses.",
+    "detail": "The answer changes by member, message and moment. Preference first, then the channel."
+  }
+}

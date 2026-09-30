@@ -25,8 +25,8 @@ const LAYOUTS_DIR = path.join(ROOT, 'layouts');
 
 // Needs words the founder or a third party actually said, from sources/.
 const SOURCE_MODE_ONLY = ['founder-portrait', 'quote-card'];
-// Rendered as slides through engine/render/carousel.js, not as one image.
-const NOT_SINGLE_IMAGE = ['carousel-step'];
+// Carousel slides: planned as a whole carousel (engine/generate/carousel.js), never as one image.
+const NOT_SINGLE_IMAGE = ['carousel-cover', 'carousel-step', 'carousel-reveal', 'carousel-close'];
 
 /** The plan gate's coarse visual shell for a rotation format. */
 function shellOf(format) {

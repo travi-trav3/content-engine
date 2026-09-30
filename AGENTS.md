@@ -64,8 +64,8 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 7. **Proof logos come only from the registry** in `render.json`, with the relation that is true. A
    customer logo (`trusted`) needs the written approval recorded in its entry before it is added.
 8. **Generation never approves or publishes.** A generated plan records `review: "buffer-drafts"` (every
-   post goes to Buffer as a draft for a person) or waits for a person's `approvedBy`. Never write a
-   name into `approvedBy` from code, and never generate Humor without a named approver.
+   post goes to Buffer as a draft for Byron) or waits for a person's `approvedBy`. Never write a name
+   into `approvedBy` from code. Humor is generated only as a Buffer draft Byron approves.
 9. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
    or into `engine/` or `layouts/`. `internal/` never ships.
 10. Commit the render harness and tests with every change. Do not commit `node_modules/` or
@@ -79,7 +79,7 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
 - Not built yet: Buffer client, publishing renders to the assets repo, feedback loop, source mode,
-  carousels in generation, scheduled workflows.
+  scheduled workflows, Drive photo sync and the weekly photo scout.
 - The full-bleed layout darkens the wordmark corner from the photo's measured top zones, which are
   measured on the whole photo; a landscape photo cropped to 4:5 shows its middle. Measure the crop
   instead when a render shows a weak wordmark.

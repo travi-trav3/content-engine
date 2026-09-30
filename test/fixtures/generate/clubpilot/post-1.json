@@ -1,21 +1,57 @@
 {
- "props": {
-  "position": "bottom",
-  "eyebrow": null,
-  "headline": "Questions come up on the first tee.",
-  "emphasis": "The answer should not wait for the clubhouse.",
-  "body": "Members ask when it matters to them. A club that answers in that moment feels easy to belong to."
+ "carousel": {
+  "cover": {
+   "eyebrow": null,
+   "headline": "Every club has these members.",
+   "emphasis": "You already know their names."
+  },
+  "inner": [
+   {
+    "eyebrow": null,
+    "headline": "The one who reads every word of the newsletter.",
+    "body": "Including the footnotes. Occasionally replies with corrections.",
+    "stat": null
+   },
+   {
+    "eyebrow": null,
+    "headline": "The one who has never opened it.",
+    "body": "Still somehow knows exactly when the pool opens.",
+    "stat": null
+   },
+   {
+    "eyebrow": null,
+    "headline": "The one who texts the golf pro directly.",
+    "body": "About everything. Including the dinner menu.",
+    "stat": null
+   },
+   {
+    "eyebrow": null,
+    "headline": "The one who asks at the bar.",
+    "body": "Every time. Because a person is right there.",
+    "stat": null
+   }
+  ],
+  "reveal": null,
+  "close": {
+   "headline": "Every one of them deserves an answer.",
+   "body": "On the channel they use, whichever one that is.",
+   "tryTitle": null,
+   "tryBody": null
+  }
  },
  "photo": {
-  "subject": "golfer",
+  "subject": "golfers",
   "time": "day",
   "people": "present",
   "tags": [
-   "swing"
+   "coastal"
   ]
  },
- "caption": "Questions come up on the first tee, not at the desk.\n\nIs the grill open after the round? What is the guest policy on Sunday? Members ask when the answer matters to them, which is rarely when the club sent the notice.\n\nA club that can answer in that moment is a club members find easy to belong to.",
- "firstComment": "Most of these questions have published answers. The gap is getting the answer to the member while they are still standing there.",
- "altText": "Photograph of a golfer on the course on a clear day, with the headline: Questions come up on the first tee. The answer should not wait for the clubhouse.",
- "earnsItsPlace": "Frames the member's question at the moment it arises on the course, which is the moment Club Pilot's answers reach members; a course or apparel brand has no stake in that gap."
+ "caption": "Every club has this cast. The newsletter reader, the member who never opens a thing, the one who texts the pro about dinner, and the one who waits to ask at the bar.\n\nNone of them are doing it wrong. They are just reachable in different places.\n\nThe clubs that answer each of them where they already are tend to be the ones members call easy.",
+ "firstComment": "Which one did you picture first?",
+ "altText": "Carousel cover: photograph of golfers on a coastal course with the headline Every club has these members. You already know their names.",
+ "earnsItsPlace": "Recognition of the members every operator knows, pointed at the problem Club Pilot solves: each of them is reachable in a different place.",
+ "humorMechanism": "Recognition: nobody is wrong, and every operator sees their own members in each slide.",
+ "observableAnswer": null,
+ "standsWithoutFooter": true
 }

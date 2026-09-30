@@ -40,8 +40,8 @@ In the core repository, prefix with `CE_WORKSPACE=brands/clubpilot`.
 - `plan-approval`: the run stops after the plan. A person fills `approvedBy` on each entry, then the
   batch is generated from the approved plan.
 
-Humor is never generated automatically: the editorial gate requires a named approver for every Humor
-post, so `excludePillars` keeps it out of automated batches.
+Humor is generated like any other pillar and goes to Buffer as a draft; the editorial gate accepts
+Byron's review of the draft as the approval it requires (`review: "buffer-drafts"`).
 
 ## What the model is given
 
@@ -52,6 +52,21 @@ what the photo library can supply, and the layouts available to this brand. Layo
 the brand lacks what they need (the product screenshot until a real screenshot is in the library),
 when they need a source (founder portrait and quote card belong to source mode), or when
 `excludeLayouts` turns them off.
+
+## Carousels and humor
+
+`carousel.every` sets how many posts are carousels (3: one in three, rounded either way per batch),
+on the channels in `carousel.channels`, with `minSlides` to `maxSlides` slides. The planner marks a
+post `layout: "carousel"` with a kind (`reveal-flip`, `list`, `steps`); the writer fills a fixed
+structure (cover, inner slides, optional reveal, close) and the engine maps it onto the carousel
+layouts, so every carousel reads as one family. Every gate reads every slide, and a finding on a slide
+goes back to its post naming the slide. A carousel's rotation format is `carousel`; its shell is the
+cover's (a photo cover counts as a photo post), so the grid still alternates.
+
+`humor.every` sets how many posts are Humor (5: one in five). Humor follows `humor-standard.md`: a
+named mechanism, never blaming or mocking a member, landing without a footer, and the joke never in
+the assistant doing something. It goes to Buffer as a draft like everything else; Byron approving the
+draft is the review the editorial gate requires.
 
 ## Calls to action
 
@@ -85,7 +100,9 @@ account when the key is set up, and run one batch with `--plan-only` first.
   "cadence": { "batchDays": 14, "slots": [ { "dayOfBatch": 0, "time": "08:35", "channel": "linkedin_page" } ] },
   "channels": { "instagram": { "size": "ig" }, "linkedin_page": { "size": "li" } },
   "cta": { "every": 4, "type": "demo", "link": "https://...", "variants": [ { "id": "...", "linkedin": "... https://...", "instagram": "... Link in bio." } ] },
-  "excludePillars": ["Humor"],
+  "carousel": { "every": 3, "channels": ["instagram", "linkedin_page"], "minSlides": 4, "maxSlides": 8 },
+  "humor": { "every": 5 },
+  "excludePillars": [],
   "excludeLayouts": [],
   "maxRevisions": { "plan": 3, "post": 2 }
 }

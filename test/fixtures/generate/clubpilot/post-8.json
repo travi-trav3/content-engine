@@ -1,21 +1,24 @@
 {
  "props": {
   "position": "bottom",
-  "eyebrow": "Course update",
-  "headline": "Frost delay until eight.",
-  "emphasis": "Every member heard before they left home.",
-  "body": "Decided on the morning of play, sent the way each member chose to hear from the club."
+  "eyebrow": null,
+  "headline": "Fog delay?",
+  "emphasis": "Not for the seven o'clock doubles.",
+  "body": null
  },
  "photo": {
-  "subject": "course",
-  "time": "dawn",
-  "people": null,
+  "subject": "tennis",
+  "time": "day",
+  "people": "present",
   "tags": [
-   "mist"
+   "fog"
   ]
  },
- "caption": "Frost delays are decided on the morning of play, by people looking at the course that day. There is no way to know the night before.\n\nThat makes the update a race against the commute. The club that reaches every member before they leave home saves a lot of people a wasted drive, and saves the staff the conversation that follows.\n\nThe decision stays with the superintendent. The job of club communication is getting it out fast.",
- "firstComment": "Members each have a preference for hearing about this: some want a text, some check email, some open the app. The update should meet each of them where they already look.",
- "altText": "Photograph of a golf course at dawn with mist in the trees, with the eyebrow Course update and the headline Frost delay until eight. Every member heard before they left home. Body: decided on the morning of play, sent the way each member chose to hear from the club.",
- "earnsItsPlace": "Shows the same-morning course update from the operator's side, the notification job Club Pilot does across channels; a course account would post the delay, not how every member hears it."
+ "caption": "Every club has a group that plays through anything. Fog, drizzle, the first cold morning of the year.\n\nThey are not waiting for an announcement. They are already on the court.\n\nThe rest of the membership would like to know whether it is worth the drive.",
+ "firstComment": "Every club has this group, and every club is a little proud of them.",
+ "altText": "Photograph of a tennis court in thick fog with players at the net, and the line Fog delay? Not for the seven o'clock doubles.",
+ "earnsItsPlace": "Recognition of the devoted regulars every operator knows, with a nod to the members who need the update before they drive in, which is the job Club Pilot does.",
+ "humorMechanism": "Devotion taken slightly too far: the regulars play through fog everyone else would wait out.",
+ "observableAnswer": null,
+ "standsWithoutFooter": true
 }

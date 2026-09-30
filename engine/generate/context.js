@@ -16,12 +16,12 @@ const fs = require('fs');
 const path = require('path');
 const { propsSummary } = require('./catalog');
 
-// Read in this order. Humor has its own standard and is review-first, so it
-// is not generated automatically and its standard is not sent.
+// Read in this order, the same on every call.
 const BRAND_FILES = [
   'BRAND.md',
   'capability-boundary.md',
   'editorial-standard.md',
+  'humor-standard.md',
   'club-operations-facts.md',
   'format-rotation.md',
   'voice-reference-posts.md',
@@ -83,12 +83,21 @@ function photoSummary(library, lib = require('../photos/library'), now = Date.no
   ].join('\n');
 }
 
-function layoutMenu(catalog, brand) {
-  return catalog.filter((c) => c.eligible).map((c) => [
+function layoutMenu(catalog, brand, config = {}) {
+  const singles = catalog.filter((c) => c.eligible).map((c) => [
     `### ${c.id} (format: ${c.format}; shell: ${c.shell}; surfaces: ${c.surfaces.join(', ')})`,
     c.description,
     ...propsSummary(c.layout, brand).map((l) => `- ${l}`),
-  ].join('\n')).join('\n\n');
+  ].join('\n'));
+  if (config.carousel && config.carousel.every) {
+    const min = config.carousel.minSlides || 4;
+    const max = config.carousel.maxSlides || 8;
+    singles.push([
+      `### carousel (format: carousel; shell: photo-full-bleed with a photo cover, otherwise dark-type; surfaces: dark, light, photo for the cover)`,
+      `A multi-slide post of ${min} to ${max} slides: a cover that earns the swipe, inner slides (a step, or an approved statistic with its source), an optional reveal, and a close with the takeaway and optionally a "try this at your club" technique. Kinds: reveal-flip (question, evidence, the answer, the takeaway), list (one item per slide), steps (a short how-to). Channels: ${(config.carousel.channels || []).join(', ')}.`,
+    ].join('\n'));
+  }
+  return singles.join('\n\n');
 }
 
 module.exports = { brandContext, historySummary, photoSummary, layoutMenu, BRAND_FILES };

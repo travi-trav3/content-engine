@@ -19,26 +19,42 @@
 
 'use strict';
 
-const { validateProps } = require('../render/render');
+const { validateProps, loadLayout } = require('../render/render');
 const { propsSchema, PHOTO_VOCAB } = require('./catalog');
 const { brandContext } = require('./context');
 const { ownAsk } = require('./cta');
+const { carouselSchema, toSlides, structureFailures } = require('./carousel');
 
 const nullable = (schema) => ({ ...schema, type: [schema.type, 'null'], ...(schema.enum ? { enum: [...schema.enum, null] } : {}) });
 
+const isCarousel = (entry) => entry.shape === 'carousel';
+
+/** The cover photo prop of the carousel set: a full-bleed library photo. */
+const coverPhotoSpec = () => ({ key: 'photo', ...loadLayout('carousel-cover').props.photo });
+
 function postSchema(entry, brand) {
-  const props = propsSchema(entry.layoutModule, brand);
-  if (entry.fixed.includes('sender')) {
-    delete props.properties.sender;
-    props.required = props.required.filter((k) => k !== 'sender');
+  const properties = {};
+  if (isCarousel(entry)) {
+    properties.carousel = carouselSchema(entry);
+  } else {
+    const props = propsSchema(entry.layoutModule, brand);
+    if (entry.fixed.includes('sender')) {
+      delete props.properties.sender;
+      props.required = props.required.filter((k) => k !== 'sender');
+    }
+    properties.props = props;
   }
-  const properties = {
-    props,
+  Object.assign(properties, {
     caption: { type: 'string' },
     firstComment: { type: 'string' },
     altText: { type: 'string' },
     earnsItsPlace: { type: 'string' },
-  };
+  });
+  if (entry.pillar === 'Humor') {
+    properties.humorMechanism = { type: 'string', description: 'One sentence: why it is funny (humor-standard.md section 2), not the joke restated.' };
+    properties.observableAnswer = { type: ['string', 'null'], description: 'Only for observable contradiction: what the asker can see that settles the question.' };
+    properties.standsWithoutFooter = { type: 'boolean', description: 'True only if the card still lands with any explanatory line covered.' };
+  }
   if (entry.photoProps.length) {
     properties.photo = {
       type: 'object',
@@ -60,7 +76,7 @@ const SYSTEM = (brandName) => `You write social posts for ${brandName} from an a
 The brand files are the authority on voice, positioning, capability and proof. Follow them exactly.
 
 The graphic:
-- It carries the plan's message and is read in about three seconds. Shorter beats clever. Stay inside every character limit.
+- It carries the plan's message and is read in about three seconds. Shorter beats clever. Stay inside every character limit, and keep all the words on one image (headline, lines, body, labels) to 240 characters or fewer; on a carousel that limit applies to each slide.
 - Sentence case for headlines. No em dashes or en dashes anywhere; use a comma, a period or a colon. No exclamation marks.
 - Numbers: only statistics from approved-stats.json, worded as that file allows and attributed as it says, never presented as a ${brandName} result. Clock times and small everyday counts are fine.
 - Never write a real club's name except as approved-clubs.json allows. Thread senders are the fictional demo club the plan names.
@@ -75,7 +91,11 @@ The words around the graphic:
 - firstComment: one or two sentences that add one more thought. Not a call to action, not a restatement.
 - altText: describe the image and quote its visible words.
 - earnsItsPlace: one sentence naming what makes this a post only ${brandName} could publish. "On brand" is not a reason.
-- photo (photo layouts only): the plan's photoSubject, the time of day the copy implies, whether people are in it, and up to three tags from the library.
+- photo (photo layouts and photo covers only): the plan's photoSubject, the time of day the copy implies, whether people are in it, and up to three tags from the library.
+
+Carousels (the plan's layout is "carousel"): fill the carousel structure for the plan's carouselKind and about its slideCount. The cover earns the swipe; each inner slide carries one thought (a step, a list item, or a statistic from approved-stats.json with its source); a reveal-flip's reveal is the answer and must reward the curiosity; the close gives the takeaway, and when it fits, a "try this at your club" technique the club can use with its own members. The close gives, it never asks.
+
+Humor (the plan's pillar is Humor): follow humor-standard.md. Name the mechanism in humorMechanism, never blame or mock a member, and make it land without a footer. The joke is in the question or the moment, never in the assistant doing something.
 
 Return only the JSON the schema asks for. Optional props you do not use are null.`;
 
@@ -133,8 +153,9 @@ function choosePhoto({ lib, library, request, spec, exclude, now }) {
 /** Everything the renderer would refuse, plus the photo, found before rendering. */
 function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
   const failures = [];
-  const props = clean(data.props || {});
-  if (entry.fixed.includes('sender')) props.sender = entry.sender;
+  const carousel = isCarousel(entry);
+  const props = carousel ? {} : clean(data.props || {});
+  if (!carousel && entry.fixed.includes('sender')) props.sender = entry.sender;
   const photos = [];
   let photoMatch = null;
   const now = Date.parse(entry.dueAt);
@@ -152,8 +173,27 @@ function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
     photos.push(pick.photo.id);
     photoMatch = { id: pick.photo.id, matched: pick.matched, dropped: pick.dropped };
   }
-  failures.push(...validateProps(entry.layoutModule, props));
-  if (!failures.length && entry.layoutModule.check) failures.push(...entry.layoutModule.check({ props, brand }));
+  let slides = null;
+  if (carousel) {
+    const structure = data.carousel || {};
+    failures.push(...structureFailures(entry, structure, config));
+    slides = toSlides(entry, structure, props.photo);
+    slides.forEach((sl) => {
+      const layout = loadLayout(sl.layout);
+      for (const e of validateProps(layout, sl.props)) failures.push(`slide ${sl.slide.index} (${sl.layout}): ${e}`);
+    });
+  } else {
+    failures.push(...validateProps(entry.layoutModule, props));
+    if (!failures.length && entry.layoutModule.check) failures.push(...entry.layoutModule.check({ props, brand }));
+  }
+  if (entry.pillar === 'Humor') {
+    const mech = String(data.humorMechanism || '').trim();
+    if (!mech) failures.push('humorMechanism is empty: say in one sentence why it is funny');
+    if (data.standsWithoutFooter !== true) failures.push('the joke needs a footer to land; rewrite it so the card works on its own');
+    if (/observable contradiction/i.test(mech) && !String(data.observableAnswer || '').trim()) {
+      failures.push('observable contradiction needs observableAnswer: what the asker can see that settles it');
+    }
+  }
   for (const k of ['caption', 'firstComment', 'altText', 'earnsItsPlace']) {
     if (!String(data[k] || '').trim()) failures.push(`${k} is empty`);
   }
@@ -164,13 +204,19 @@ function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
   return {
     failures,
     post: {
-      props,
+      props: carousel ? null : props,
+      slides,
       photos,
       photoMatch,
       caption: String(data.caption || '').trim(),
       firstComment: String(data.firstComment || '').trim(),
       altText: String(data.altText || '').trim(),
       earnsItsPlace: String(data.earnsItsPlace || '').trim(),
+      ...(entry.pillar === 'Humor' ? {
+        humorMechanism: String(data.humorMechanism || '').trim(),
+        observableAnswer: data.observableAnswer || null,
+        standsWithoutFooter: data.standsWithoutFooter === true,
+      } : {}),
     },
   };
 }
@@ -206,4 +252,4 @@ async function writePost({ provider, entry, brand, brandDir, config, lib, librar
   return { ...result, rounds: round, raw };
 }
 
-module.exports = { writePost, postSchema, choosePhoto, clean, finish };
+module.exports = { writePost, postSchema, choosePhoto, clean, finish, coverPhotoSpec };

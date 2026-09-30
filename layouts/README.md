@@ -42,7 +42,7 @@ of a carousel (`engine/render/carousel.js`), and undefined otherwise.
 | 12 | `photo-band` | dark, light | copy above a photo band; any band-resolution photo |
 | 13 | `photo-thread` | photo | the message thread over a photo of club life |
 | 14 | `founder-portrait` | dark, light | the founder's point in their words, with a photo tagged `founder` |
-| 15 | `carousel-step` | dark, light | a numbered step inside a carousel |
+| 15 | carousel set: `carousel-cover`, `carousel-step`, `carousel-reveal`, `carousel-close` | cover: dark, light, photo; others: dark, light | a multi-slide post: the hook, steps or stats, the answer, the takeaway (and "try this at your club") |
 
 ## Canvas and sizes
 
@@ -116,8 +116,12 @@ A render reports `render.fontMissing`, `render.imageMissing`, `render.photoTooSm
 ## Carousels
 
 `engine/render/carousel.js` renders 2 to 10 slides as one PNG each. Any layout can be a slide; the
-carousel's `surface` applies to every slide that offers it. `carousel-step` shows its position
-(`02 / 05`) and a swipe cue from the carousel, never from copy.
+carousel's `surface` applies to every slide that offers it. The carousel set shares `slideFoot()` from
+`_shared/h.js`: the position (`02 / 05`) and a swipe cue come from the carousel, never from copy.
+`carousel-step` numbers from the first step (`slide.step`), and drops the number on a reveal-flip's
+evidence slides (`slide.numbered: false`). Generated carousels are built by
+`engine/generate/carousel.js`: cover, inner slides (a step, or a stat card for an approved statistic),
+an optional reveal, and a close.
 
 ## Test fixtures
 

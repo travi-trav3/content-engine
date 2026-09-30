@@ -14,7 +14,10 @@
 
 'use strict';
 
+const { loadLayout } = require('../render/render');
+
 const THREAD_FIELDS = ['question', 'offer', 'reply', 'handoff'];
+const pad2 = (n) => String(n).padStart(2, '0');
 const NOT_COPY = new Set(['sender', 'timestamp']);
 
 /** headline, subhead, text, eyebrow and thread for the gates, from a layout's props. */
@@ -68,9 +71,34 @@ function creativeFields(layout, props) {
   return { headline, subhead, text: rest.length ? rest.join('\n') : null, eyebrow, thread };
 }
 
+/**
+ * A carousel's slides for the ledger: each slide's layout, props and copy
+ * fields (so the gates can read every slide), and its render when there is
+ * one. renders is an array, one result per slide, or undefined.
+ */
+function slideEntries(entry, post, renders) {
+  return post.slides.map((sl, i) => {
+    const f = creativeFields(loadLayout(sl.layout), sl.props);
+    const r = renders && renders[i];
+    return {
+      index: sl.slide.index,
+      layout: sl.layout,
+      surface: sl.surface,
+      props: sl.props,
+      headline: f.headline,
+      subhead: f.subhead,
+      text: f.text,
+      eyebrow: f.eyebrow,
+      file: `${entry.id}-${pad2(sl.slide.index)}.png`,
+      ...(r ? { renderedText: r.text, render: { sha256: r.sha256, fitStep: r.fitStep, issues: r.issues } } : {}),
+    };
+  });
+}
+
 function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
   const nn = String(batchNo).padStart(2, '0');
-  const creative = creativeFields(layout, post.props);
+  const slides = post.slides ? slideEntries(entry, post, render) : null;
+  const creative = slides ? { ...slides[0], thread: null } : creativeFields(layout, post.props);
   const out = {
     post: index + 1,
     id: entry.id,
@@ -84,6 +112,8 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     aversion: entry.aversion,
     message: entry.message,
     layout: entry.layout,
+    shape: slides ? 'carousel' : 'single',
+    carouselKind: entry.carouselKind || null,
     renderSurface: entry.renderSurface,
     surface: entry.surface,
     format: entry.format,
@@ -99,6 +129,7 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     altText: post.altText,
     earnsItsPlace: post.earnsItsPlace,
     props: post.props,
+    slides,
     photos: post.photos,
     photoMatch: post.photoMatch,
     depictsAssistant: entry.depictsAssistant,
@@ -109,6 +140,11 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     depictsScenario: entry.depictsScenario,
     operationalCheck: entry.operationalCheck || null,
     artDirectionMatch: entry.artDirectionMatch || null,
+    ...(entry.pillar === 'Humor' ? {
+      humorMechanism: post.humorMechanism,
+      observableAnswer: post.observableAnswer,
+      standsWithoutFooter: post.standsWithoutFooter,
+    } : {}),
     ctaType: entry.ctaType,
     ctaVariant: entry.ctaVariant || null,
     // The ask the engine adds after the caption; postText is what Buffer gets.
@@ -119,16 +155,25 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     review: entry.review || null,
     approvedBy: entry.approvedBy || null,
     plannedBy: entry.plannedBy,
-    file: `${entry.id}.png`,
+    file: slides ? slides[0].file : `${entry.id}.png`,
     size,
-    assets: [{ source: `batch-${nn}/${entry.id}.png`, altText: post.altText }],
+    // One asset per image, in order. A carousel's first slide carries the
+    // writer's alt text; the others describe what their slide drew.
+    assets: slides
+      ? slides.map((sl) => ({
+        source: `batch-${nn}/${sl.file}`,
+        altText: sl.index === 1 ? post.altText : `Slide ${sl.index} of ${slides.length}. ${sl.renderedText || [sl.headline, sl.text].filter(Boolean).join('. ')}`,
+      }))
+      : [{ source: `batch-${nn}/${entry.id}.png`, altText: post.altText }],
     status: 'written',
   };
-  if (render) {
-    out.dimensions = `${render.width}x${render.height}`;
-    out.renderedText = render.text;
-    out.render = { sha256: render.sha256, fitStep: render.fitStep, issues: render.issues };
-    out.status = render.issues.length ? 'render-failed' : 'rendered';
+  const first = Array.isArray(render) ? render[0] : render;
+  if (first) {
+    out.dimensions = `${first.width}x${first.height}`;
+    out.renderedText = first.text;
+    out.render = { sha256: first.sha256, fitStep: first.fitStep, issues: first.issues };
+    const all = Array.isArray(render) ? render : [render];
+    out.status = all.some((r) => r.issues.length) ? 'render-failed' : 'rendered';
   }
   return out;
 }

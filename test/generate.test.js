@@ -27,7 +27,7 @@ const { requestBody, outputText, createOpenAI } = require('../engine/generate/pr
 const { createMock } = require('../engine/generate/providers/mock');
 const { creativeFields } = require('../engine/generate/ledger');
 const { writePost } = require('../engine/generate/write');
-const { runBatch } = require('../engine/generate/batch');
+const { runBatch, workEntry, findingsByPost } = require('../engine/generate/batch');
 const { ctaTypesOf, assignVariants, validateLibrary, ownAsk } = require('../engine/generate/cta');
 const { checkAll } = require('../engine/gates/check-batch');
 const { loadLayout } = require('../engine/render/render');
@@ -59,6 +59,10 @@ function freshContent(name) {
 
 /** Does a value fit the strict schema subset the engine sends? */
 function conforms(schema, value, at = '$') {
+  if (schema.anyOf) {
+    const tries = schema.anyOf.map((b) => conforms(b, value, at));
+    return tries.some((t) => t.length === 0) ? [] : tries.sort((a, b) => a.length - b.length)[0];
+  }
   const types = [].concat(schema.type || []);
   const typeOf = (v) => (v === null ? 'null' : Array.isArray(v) ? 'array' : Number.isInteger(v) ? 'integer' : typeof v);
   const t = typeOf(value);
@@ -87,6 +91,7 @@ function strict(schema, at = '$') {
     for (const k of keys) errs.push(...strict(schema.properties[k], `${at}.${k}`));
   }
   if (schema.items) errs.push(...strict(schema.items, `${at}[]`));
+  if (schema.anyOf) schema.anyOf.forEach((b, i) => errs.push(...strict(b, `${at}|${i}`)));
   return errs;
 }
 
@@ -165,7 +170,7 @@ function strict(schema, at = '$') {
   const { planSchema } = require('../engine/generate/plan');
   const pillars = require('../engine/gates/plan-gate').PILLARS.filter((p) => !config.excludePillars.includes(p));
   const demoClubs = JSON.parse(fs.readFileSync(path.join(WS.brandDir, 'demo-clubs.json'), 'utf8')).clubs.map((c) => c.name);
-  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: ctaTypesOf(config), slotCount: 10 });
+  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: ctaTypesOf(config), slotCount: 10, carousels: true });
   const planErrs = conforms(pSchema, planFixture);
   check('the recorded plan fits the plan schema', planErrs.length === 0, planErrs.slice(0, 5).join('; '));
 
@@ -187,12 +192,12 @@ function strict(schema, at = '$') {
   check('ten posts, all rendered', ledger.posts.length === 10 && ledger.posts.every((p) => p.status === 'rendered'),
     ledger.posts.map((p) => `${p.id}:${p.status}`).join(', '));
   const writeSchemaErrs = [];
+  const byLayout = new Map(catalog.map((c) => [c.id, c]));
+  const { postSchema } = require('../engine/generate/write');
   for (const call of mock.calls.filter((c) => c.key.startsWith('post-'))) {
     const i = Number(call.key.slice(5));
-    const w = { ...planDoc.posts[i] };
-    const c = catalog.find((x) => x.id === w.layout);
-    const { postSchema } = require('../engine/generate/write');
-    const schema = postSchema({ ...w, layoutModule: c.layout, photoProps: c.photoProps, fixed: 'sender' in c.layout.props && w.sender ? ['sender'] : [] }, brand);
+    const schema = postSchema(workEntry(planDoc.posts[i], i, byLayout, brand), brand);
+    check(`${call.key}: the schema the engine sent is strict`, strict(schema).length === 0, strict(schema).join('; '));
     const recorded = JSON.parse(fs.readFileSync(path.join(FIXTURES, `${call.key}.json`), 'utf8'));
     for (const resp of [].concat(recorded)) writeSchemaErrs.push(...conforms(schema, resp, call.key));
   }
@@ -213,6 +218,33 @@ function strict(schema, at = '$') {
   check('each channel renders at its own size', ig.dimensions === '1080x1350' && li.dimensions === '1200x1500');
   check('the report and contact sheet are written', fs.existsSync(path.join(batchDir, 'report.md')) && fs.existsSync(path.join(batchDir, 'contact-sheet.jpg')));
   check('renders stay out of the content folder', !fs.readdirSync(batchDir).some((f) => f.endsWith('.png')));
+
+  console.log('== carousels: one post in three, planned as a whole ==');
+  const carousels = ledger.posts.filter((p) => p.layout === 'carousel');
+  check('three or four of ten posts are carousels', carousels.length >= 3 && carousels.length <= 4, String(carousels.length));
+  check('each carousel has 4 to 8 slides, every one rendered',
+    carousels.every((p) => p.slides.length >= 4 && p.slides.length <= 8 && p.slides.every((sl) => sl.render && sl.render.issues.length === 0)),
+    carousels.map((p) => `${p.id}:${p.slides.length}`).join(', '));
+  check('a carousel opens on a cover and closes on a close',
+    carousels.every((p) => p.slides[0].layout === 'carousel-cover' && p.slides[p.slides.length - 1].layout === 'carousel-close'));
+  const flip = carousels.find((p) => p.carouselKind === 'reveal-flip');
+  check('a reveal-flip has its reveal slide', flip && flip.slides.some((sl) => sl.layout === 'carousel-reveal'));
+  const list = carousels.find((p) => p.carouselKind === 'list');
+  check('list items are numbered from 01, not from the cover', list && /\b01\b/.test(list.slides[1].renderedText), list && list.slides[1].renderedText);
+  check('every slide goes to Buffer with alt text', carousels.every((p) => p.assets.length === p.slides.length && p.assets.every((a) => a.altText)));
+  check('a photo cover uses a library photo', carousels.filter((p) => p.renderSurface === 'photo').every((p) => p.photos.length === 1 && p.slides[0].props.photo === p.photos[0]));
+  const routed = findingsByPost([{ failures: [
+    { id: 'b06-07-x (slide 6)', rule: 'brand.copyCap.card', detail: 'too long' },
+    { id: '(batch)', rule: 'rotation.noNewPairing', detail: 'batch-level' },
+  ] }], ['b06-07-x']);
+  check('a slide\'s gate finding goes back to its post, naming the slide',
+    routed.size === 1 && routed.get('b06-07-x')[0] === 'slide 6: brand.copyCap.card: too long', JSON.stringify([...routed]));
+
+  console.log('== humor: a regular part of the plan ==');
+  const jokes = ledger.posts.filter((p) => p.pillar === 'Humor');
+  check('two of ten posts are Humor (one in five)', jokes.length === 2, String(jokes.length));
+  check('each names its mechanism and lands without a footer', jokes.every((p) => p.humorMechanism && p.standsWithoutFooter === true));
+  check('each goes to Buffer as a draft for Byron to approve', jokes.every((p) => p.review === 'buffer-drafts' && !p.approvedBy));
 
   console.log('== calls to action: one in four, rotating, added by the engine ==');
   const asking = ledger.posts.filter((p) => p.ctaType !== 'none');

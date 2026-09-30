@@ -19,6 +19,7 @@ const rotationGate = require('../gates/rotation-gate');
 const { PHOTO_VOCAB } = require('./catalog');
 const { brandContext, historySummary, photoSummary, layoutMenu } = require('./context');
 const { ctaTypesOf, ctaRange } = require('./cta');
+const { KINDS, everyRange, carouselRange } = require('./carousel');
 
 const CHECKLIST = ['interestingWithoutPurchase', 'peerToPeer', 'credibleScenario', 'oneThought',
   'captionAddsLayer', 'worksWithoutCta', 'buildsTrust', 'hasDistribution'];
@@ -27,8 +28,8 @@ const THREAD_INTERACTION = { 'message-thread': 'answer', 'photo-thread': 'answer
 
 const nullable = (schema) => ({ ...schema, type: [schema.type, 'null'], ...(schema.enum ? { enum: [...schema.enum, null] } : {}) });
 
-function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount }) {
-  const layouts = catalog.filter((c) => c.eligible).map((c) => c.id);
+function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount, carousels = false }) {
+  const layouts = [...catalog.filter((c) => c.eligible).map((c) => c.id), ...(carousels ? ['carousel'] : [])];
   const entry = {
     slot: { type: 'integer', description: `The slot index this entry fills, 0 to ${slotCount - 1}.` },
     slug: { type: 'string', description: 'Two to four lowercase words joined by hyphens, naming the idea.' },
@@ -41,6 +42,8 @@ function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount }) {
     angle: { type: 'string', description: 'Two or three sentences for the writer: what the graphic shows and what the caption adds.' },
     layout: { type: 'string', enum: layouts },
     renderSurface: { type: 'string', enum: ['dark', 'light', 'photo'] },
+    carouselKind: nullable({ type: 'string', enum: KINDS }),
+    slideCount: { type: ['integer', 'null'], description: 'For a carousel: how many slides, cover and close included.' },
     photoSubject: nullable({ type: 'string', enum: PHOTO_VOCAB.subjects }),
     photoBrief: nullable({ type: 'string', description: 'For a photo layout: what the photo must show, and why it fits the copy.' }),
     artDirectionMatch: nullable({ type: 'string', description: 'For a photo layout: one sentence confirming the shot depicts the scenario in the copy.' }),
@@ -108,6 +111,9 @@ function planRequest({ ctx, slots, rules, revision }) {
 function batchRules({ slots, pillars, config, factIds, demoClubs }) {
   const n = slots.length;
   const cta = ctaRange(n, config);
+  const car = carouselRange(n, config);
+  const humor = everyRange(n, config.humor && config.humor.every);
+  const span = (r) => (r.min === r.max ? `${r.min}` : `${r.min} to ${r.max}`);
   return [
     'One entry per slot, every slot filled once. The slot fixes the date and channel.',
     `Pillars allowed in this batch: ${pillars.join('; ')}.`,
@@ -116,8 +122,10 @@ function batchRules({ slots, pillars, config, factIds, demoClubs }) {
     cta.every
       ? `Calls to action: ${cta.min === cta.max ? cta.min : `${cta.min} to ${cta.max}`} posts set ctaType "${ctaTypesOf(config)[0]}" (one in ${cta.every}); every other post is "none". Never two asking posts in a row on the same channel. Choose posts where a relaxed invitation to meet the team follows naturally; the engine writes the ask itself.`
       : 'At most one post has a CTA, and it is the promote post. Every other ctaType is "none".',
+    ...(car.every ? [`Carousels: ${span(car)} posts use layout "carousel" (one in ${car.every}), on ${(config.carousel.channels || []).join(' or ')}, each with a carouselKind (${KINDS.join(', ')}) and a slideCount from ${config.carousel.minSlides || 4} to ${config.carousel.maxSlides || 8}. renderSurface is the cover's: dark, light, or photo with a photoSubject. A carousel never depicts the assistant. Every other post sets carouselKind and slideCount null.`] : []),
+    ...(humor.every ? [`Humor: ${span(humor)} posts are the Humor pillar (one in ${humor.every}), because it is what performs best. Follow humor-standard.md: a mechanism you can name, never blaming or mocking a member, landing without a footer, and the joke is in the question or the moment, never in the assistant doing something. Any layout; photos and carousels are often funnier than type cards. Byron approves each one as a Buffer draft.`] : []),
     `Shells (from the layout menu): no shell on more than ${Math.ceil(n / 3)} posts, and no two consecutive posts on the same channel share a shell.`,
-    'Formats (from the layout menu): a pillar uses a format at most once in the batch; no format on more than 3 posts; at least one pillar + format pairing that is not in the history.',
+    `Formats (from the layout menu): a pillar uses a format at most once in the batch; no format other than ${car.every ? 'carousel' : 'the brand-governed ones'} on more than 3 posts; at least one pillar + format pairing that is not in the history.`,
     'The front desk leak runs on LinkedIn only.',
     'renderSurface must be one the chosen layout offers. Photo layouts use photo or the band surfaces as listed; vary dark and light across type layouts.',
     'Thread layouts (message-thread, photo-thread: interactionType "answer" with a sourceDocument; escalation-thread: interactionType "escalation") set depictsAssistant true. Every other layout sets depictsAssistant false and interactionType null.',
@@ -139,7 +147,10 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
   const nn = String(batchNo).padStart(2, '0');
   return [...(response.posts || [])].sort((a, b) => a.slot - b.slot).map((p) => {
     const slot = slots[p.slot] || {};
-    const c = byId.get(p.layout) || {};
+    const isCarousel = p.layout === 'carousel';
+    const c = isCarousel
+      ? { format: 'carousel', shell: p.renderSurface === 'photo' ? 'photo-full-bleed' : 'dark-type' }
+      : byId.get(p.layout) || {};
     const suffix = String(slot.channel || '').startsWith('linkedin') ? 'li' : 'ig';
     const entry = {
       id: `b${nn}-${String(p.slot + 1).padStart(2, '0')}-${slugify(p.slug)}-${suffix}`,
@@ -154,6 +165,7 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
       message: p.message,
       angle: p.angle,
       layout: p.layout,
+      shape: isCarousel ? 'carousel' : 'single',
       renderSurface: p.renderSurface,
       surface: c.shell,
       format: c.format,
@@ -170,6 +182,10 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
     }
     if (p.depictsScenario) entry.operationalCheck = p.operationalCheck;
     if (p.sender) entry.sender = p.sender;
+    if (isCarousel) {
+      entry.carouselKind = p.carouselKind;
+      entry.slideCount = p.slideCount;
+    }
     if (p.photoSubject) {
       entry.photoSubject = p.photoSubject;
       entry.photoBrief = p.photoBrief;
@@ -193,11 +209,28 @@ function engineChecks(entries, { slots, catalog, pillars, library, lib, config =
   slots.forEach((s) => { if (!seenSlots.includes(s.date + s.channel)) failures.push(`slot ${s.slot} (${s.date} ${s.channel}) has no entry`); });
   const senders = new Map();
   const subjectDemand = new Map();
+  const car = config.carousel || {};
   for (const e of entries) {
-    const c = byId.get(e.layout);
     const at = `${e.id}:`;
-    if (!c || !c.eligible) { failures.push(`${at} layout "${e.layout}" is not available`); continue; }
     if (!pillars.includes(e.pillar)) failures.push(`${at} pillar "${e.pillar}" is not allowed in this batch`);
+    if (e.layout === 'carousel') {
+      if (!car.every) { failures.push(`${at} carousels are not enabled for this brand`); continue; }
+      if (!(car.channels || []).includes(e.channel)) failures.push(`${at} carousels run on ${(car.channels || []).join(', ')}, not ${e.channel}`);
+      if (!KINDS.includes(e.carouselKind)) failures.push(`${at} a carousel needs a carouselKind (${KINDS.join(', ')})`);
+      const min = car.minSlides || 4;
+      const max = car.maxSlides || 8;
+      if (!(e.slideCount >= min && e.slideCount <= max)) failures.push(`${at} slideCount must be ${min} to ${max}`);
+      if (e.depictsAssistant) failures.push(`${at} a carousel never depicts the assistant`);
+      if (e.sender) failures.push(`${at} sender is only for thread layouts`);
+      if (e.renderSurface === 'photo') {
+        if (!e.photoSubject) failures.push(`${at} a photo cover needs a photoSubject`);
+        else subjectDemand.set(e.photoSubject, (subjectDemand.get(e.photoSubject) || 0) + 1);
+      }
+      continue;
+    }
+    const c = byId.get(e.layout);
+    if (!c || !c.eligible) { failures.push(`${at} layout "${e.layout}" is not available`); continue; }
+    if (e.carouselKind || e.slideCount) failures.push(`${at} carouselKind and slideCount are only for carousels`);
     if (!c.surfaces.includes(e.renderSurface)) {
       failures.push(`${at} ${e.layout} offers surfaces ${c.surfaces.join(', ')}, not "${e.renderSurface}"`);
     }
@@ -217,6 +250,17 @@ function engineChecks(entries, { slots, catalog, pillars, library, lib, config =
       if (!e.photoSubject) failures.push(`${at} ${e.layout} needs a photoSubject`);
       else subjectDemand.set(e.photoSubject, (subjectDemand.get(e.photoSubject) || 0) + 1);
     }
+  }
+  const span = (r) => (r.min === r.max ? `${r.min}` : `${r.min} to ${r.max}`);
+  const carousels = carouselRange(entries.length, config);
+  const carCount = entries.filter((e) => e.layout === 'carousel').length;
+  if (carousels.every && (carCount < carousels.min || carCount > carousels.max)) {
+    failures.push(`${carCount} posts are carousels; this batch needs ${span(carousels)} (one in ${carousels.every})`);
+  }
+  const humor = everyRange(entries.length, config.humor && config.humor.every);
+  const humorCount = entries.filter((e) => e.pillar === 'Humor').length;
+  if (humor.every && (humorCount < humor.min || humorCount > humor.max)) {
+    failures.push(`${humorCount} posts are Humor; this batch needs ${span(humor)} (one in ${humor.every})`);
   }
   const cta = ctaRange(entries.length, config);
   const asking = entries.filter((e) => e.ctaType && e.ctaType !== 'none').length;
@@ -248,12 +292,12 @@ function gateFailures(entries, priors, { awaitingApproval = false } = {}) {
 async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, log = () => {} }) {
   const pillars = planGate.PILLARS.filter((p) => !(config.excludePillars || []).includes(p));
   const ctaTypes = ctaTypesOf(config);
-  const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length });
+  const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length, carousels: Boolean(config.carousel && config.carousel.every) });
   const ctx = {
     brand: brandContext(brandDir),
     history: historySummary(priors, slots[0].date),
     photos: photoSummary(library, lib, Date.parse(`${slots[0].date}T12:00:00Z`)),
-    layouts: layoutMenu(catalog, brand),
+    layouts: layoutMenu(catalog, brand, config),
   };
   const rules = batchRules({ slots, pillars, config, factIds, demoClubs });
   const maxRounds = 1 + ((config.maxRevisions && config.maxRevisions.plan) ?? 3);

@@ -39,7 +39,7 @@ const { loadCatalog, propsSummary } = require('./catalog');
 const { brandContext } = require('./context');
 const { slotsFor, nextMonday, addDays } = require('./slots');
 const { makePlan } = require('./plan');
-const { writePost } = require('./write');
+const { writePost, coverPhotoSpec } = require('./write');
 const { assignVariants, validateLibrary } = require('./cta');
 const { ledgerEntry } = require('./ledger');
 
@@ -82,6 +82,48 @@ function renderFeedback(issues) {
     'render.photoTooSmall': 'The photo is too small for this layout. Ask for a different photo.',
   };
   return issues.map((i) => `${i.rule}: ${i.detail} ${hint[i.rule] || ''}`.trim());
+}
+
+/** A plan entry plus what the writer needs: the loaded layout, photo props, fixed props, menu text. */
+function workEntry(e, i, byLayout, brand) {
+  if (e.layout === 'carousel') {
+    return {
+      ...e,
+      slotIndex: i,
+      layoutModule: null,
+      photoProps: e.renderSurface === 'photo' ? [coverPhotoSpec()] : [],
+      fixed: [],
+      layoutInfo: `carousel (${e.carouselKind}, about ${e.slideCount} slides): cover, inner slides, ${e.carouselKind === 'reveal-flip' ? 'the reveal, ' : ''}and the close. Limits are in the schema descriptions.`,
+    };
+  }
+  const c = byLayout.get(e.layout);
+  return {
+    ...e,
+    slotIndex: i,
+    layoutModule: c.layout,
+    photoProps: c.photoProps,
+    fixed: 'sender' in c.layout.props && e.sender ? ['sender'] : [],
+    layoutInfo: [`${c.id}: ${c.description}`, ...propsSummary(c.layout, brand).map((l) => `- ${l}`)].join('\n'),
+  };
+}
+
+/**
+ * Gate failures grouped by post. A carousel slide's finding names the slide
+ * ("<id> (slide 6)"); it goes back to its post, with the slide named, so
+ * the writer can fix it. Batch-level findings are left out.
+ */
+function findingsByPost(gates, ids) {
+  const out = new Map();
+  for (const g of gates) {
+    for (const f of g.failures) {
+      const slide = /^(.*) \(slide (\d+)\)$/.exec(String(f.id));
+      const id = slide ? slide[1] : f.id;
+      if (!ids.includes(id)) continue;
+      if (!out.has(id)) out.set(id, []);
+      out.get(id).push(`${slide ? `slide ${slide[2]}: ` : ''}${f.rule}: ${f.detail}`);
+    }
+  }
+  return out;
 }
 
 async function runBatch(opts = {}) {
@@ -144,17 +186,7 @@ async function runBatch(opts = {}) {
   /* -- 2. write ------------------------------------------------------ */
   result.stage = 'write';
   const brandText = brandContext(brandDir);
-  const work = plan.entries.map((e, i) => {
-    const c = byLayout.get(e.layout);
-    return {
-      ...e,
-      slotIndex: i,
-      layoutModule: c.layout,
-      photoProps: c.photoProps,
-      fixed: 'sender' in c.layout.props && e.sender ? ['sender'] : [],
-      layoutInfo: [`${c.id}: ${c.description}`, ...propsSummary(c.layout, brand).map((l) => `- ${l}`)].join('\n'),
-    };
-  });
+  const work = plan.entries.map((e, i) => workEntry(e, i, byLayout, brand));
   const written = new Map();
   const usedBy = new Map();
   const usedPhotos = (exceptId) => [...usedBy].filter(([id]) => id !== exceptId).flatMap(([, ps]) => ps);
@@ -188,18 +220,31 @@ async function runBatch(opts = {}) {
         if (wr.failures.length) failing.set(w.id, [...wr.failures]);
       }
       gates = checkAll({ plan: planDoc, ledger: { posts: assemble() }, priors, brandDir });
-      for (const g of gates) {
-        for (const f of g.failures) {
-          if (!failing.has(f.id) && !work.some((w) => w.id === f.id)) continue;
-          if (!failing.has(f.id)) failing.set(f.id, []);
-          failing.get(f.id).push(`${f.rule}: ${f.detail}`);
-        }
+      for (const [id, found] of findingsByPost(gates, work.map((w) => w.id))) {
+        if (!failing.has(id)) failing.set(id, []);
+        failing.get(id).push(...found);
       }
       result.stage = 'render';
       for (const w of work) {
         if (failing.has(w.id) || renders.has(w.id)) continue;
         const wr = written.get(w.id);
         const size = (config.channels[w.channel] || {}).size || 'ig';
+        if (wr.post.slides) {
+          const results = [];
+          const issues = [];
+          for (const sl of wr.post.slides) {
+            const r = await renderer.render({
+              layout: sl.layout, surface: sl.surface, size, props: sl.props, slide: sl.slide, library,
+              out: path.join(stagingDir, `${w.id}-${String(sl.slide.index).padStart(2, '0')}.png`),
+            });
+            results.push(r);
+            for (const i of r.issues) issues.push({ ...i, detail: `slide ${sl.slide.index} (${sl.layout}): ${i.detail}` });
+          }
+          note({ step: 'render', id: w.id, issues: issues.map((i) => i.rule) });
+          if (issues.length) failing.set(w.id, renderFeedback(issues));
+          else renders.set(w.id, results);
+          continue;
+        }
         const r = await renderer.render({
           layout: w.layout, surface: w.renderSurface, size, props: wr.post.props, library,
           out: path.join(stagingDir, `${w.id}.png`),
@@ -235,7 +280,12 @@ async function runBatch(opts = {}) {
   };
   gates = checkAll({ plan: planDoc, ledger, priors, brandDir });
   fs.writeFileSync(path.join(batchDir, 'ledger.json'), `${JSON.stringify(ledger, null, 2)}\n`);
-  const files = work.filter((w) => renders.has(w.id)).map((w) => path.join(stagingDir, `${w.id}.png`));
+  const files = work.filter((w) => renders.has(w.id)).flatMap((w) => {
+    const post = written.get(w.id).post;
+    return post.slides
+      ? post.slides.map((sl) => path.join(stagingDir, `${w.id}-${String(sl.slide.index).padStart(2, '0')}.png`))
+      : [path.join(stagingDir, `${w.id}.png`)];
+  });
   if (files.length) {
     const sheetPng = path.join(stagingDir, 'contact-sheet.png');
     await contactSheet(files, { out: sheetPng, columns: 5, tileWidth: 360 });
@@ -265,7 +315,8 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
   posts.forEach((p, i) => {
     const photo = p.photoMatch ? `${p.photoMatch.id}${p.photoMatch.dropped.length ? ` (dropped ${p.photoMatch.dropped.join(', ')})` : ''}` : '';
     const head = (p.headline || p.message || '').replace(/\|/g, '/');
-    lines.push(`| ${i + 1} | ${String(p.dueAt || p.date).slice(0, 16).replace('T', ' ')} | ${p.channel} | ${p.pillar} | ${p.layout} (${p.renderSurface}) | ${head} | ${photo} | ${p.ctaVariant || ''} | ${p.status || 'planned'} |`);
+    const shape = p.layout === 'carousel' ? `carousel, ${p.carouselKind}, ${p.slides ? p.slides.length : p.slideCount} slides` : p.layout;
+    lines.push(`| ${i + 1} | ${String(p.dueAt || p.date).slice(0, 16).replace('T', ' ')} | ${p.channel} | ${p.pillar} | ${shape} (${p.renderSurface}) | ${head} | ${photo} | ${p.ctaVariant || ''} | ${p.status || 'planned'} |`);
   });
   lines.push('');
   if (result.unresolved) {
@@ -289,7 +340,7 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
   fs.writeFileSync(path.join(batchDir, 'report.md'), `${lines.join('\n')}\n`);
 }
 
-module.exports = { runBatch, defaultStart, nextBatchNo, renderFeedback };
+module.exports = { runBatch, defaultStart, nextBatchNo, renderFeedback, workEntry, findingsByPost };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);

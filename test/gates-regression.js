@@ -108,6 +108,44 @@ check('b2-08-tennis still fails for the assistant booking a court (capability.le
 check('a call to action that books a demo no longer fails (b2-09-single-ask)',
   !b2cap.failures.some((f) => f.id === 'b2-09-single-ask'));
 
+console.log('== carousels: every slide is checked ==');
+const carousel = (slide2) => ({
+  id: 'car', pillar: 'Industry pulse', format: 'carousel', depictsAssistant: false, clubMarks: [],
+  headline: 'What is the most effective channel at your club?', caption: 'A question worth asking.',
+  slides: [
+    { index: 1, headline: 'What is the most effective channel at your club?' },
+    { index: 2, headline: 'Email?', text: null, ...slide2 },
+  ],
+});
+check('an em dash on an inner slide fails the brand gate',
+  brand.checkBatch({ posts: [carousel({ text: 'Some members live in email — others never open it.' })] }).failures
+    .some((f) => f.rule === 'brand.emDash' && /slide 2/.test(f.id)));
+check('an out-of-scope claim on an inner slide fails the capability gate',
+  capability.checkBatch({ posts: [carousel({ text: 'Members pay their dues by text.' })] }, WS.brandDir).failures
+    .some((f) => f.rule === 'capability.lexicon.blocked'));
+check('an unapproved number on an inner slide fails the stat gate',
+  stat.checkBatch({ posts: [carousel({ headline: '43% of members open email.' })] }).failures
+    .some((f) => f.rule === 'stat.unapprovedNumeral'));
+const fourCarousels = { posts: ['a', 'b', 'c', 'd'].map((x, i) => ({ id: x, pillar: plan.PILLARS[i], format: 'carousel' })) };
+const fourCards = { posts: ['a', 'b', 'c', 'd'].map((x, i) => ({ id: x, pillar: plan.PILLARS[i], format: 'type-card' })) };
+check('four carousels in a batch pass: the brand sets their frequency (config carousel.every)',
+  !rotation.checkBatch(fourCarousels).failures.some((f) => f.rule === 'rotation.formatDominates'));
+check('four type cards in a batch still fail (rotation.formatDominates)',
+  rotation.checkBatch(fourCards).failures.some((f) => f.rule === 'rotation.formatDominates'));
+
+console.log('== humor: review-first, as a person or as a Buffer draft ==');
+const joke = {
+  id: 'joke', pillar: 'Humor', headline: 'Fog delay? Not for the seven o\'clock doubles.',
+  earnsItsPlace: 'Recognition of the devoted regulars every operator knows, told by the brand that talks to members every day.',
+  humorMechanism: 'Devotion taken slightly too far: the regulars play through fog nobody else would.', standsWithoutFooter: true,
+};
+const edRules = (post) => editorial.checkBatch({ posts: [post] }).failures.map((f) => f.rule);
+check('a humor post nobody has approved still fails (editorial.humorNeedsApproval)', edRules(joke).includes('editorial.humorNeedsApproval'));
+check('a humor post going to Buffer as a draft for review passes the approval rule',
+  !edRules({ ...joke, review: 'buffer-drafts' }).includes('editorial.humorNeedsApproval'), edRules({ ...joke, review: 'buffer-drafts' }).join(', '));
+check('a Buffer-draft humor post still needs its mechanism', edRules({ ...joke, review: 'buffer-drafts', humorMechanism: '' }).includes('editorial.humorMechanism'));
+check('and still fails when the joke needs a footer', edRules({ ...joke, review: 'buffer-drafts', standsWithoutFooter: false }).includes('editorial.standsWithoutFooter'));
+
 console.log('== capability: context decides (2026-09-30) ==');
 // A word fails where it describes the product doing something, not where the
 // industry story or a call to action uses it.

@@ -115,6 +115,11 @@ function readableText(post) {
   if (Array.isArray(post.thread)) {
     post.thread.forEach((m) => push(typeof m === 'string' ? m : m && m.text));
   }
+  // A carousel's slides are copy too: every one is checked.
+  for (const sl of post.slides || []) {
+    push(sl.headline); push(sl.subhead); push(sl.text);
+    if (Array.isArray(sl.thread)) sl.thread.forEach((m) => push(typeof m === 'string' ? m : m && m.text));
+  }
   if (Array.isArray(post.assets)) {
     post.assets.forEach((a) => {
       push(a && a.altText);

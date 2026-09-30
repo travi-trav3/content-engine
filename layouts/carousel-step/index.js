@@ -1,18 +1,17 @@
 /**
- * Layout 15: carousel step.
+ * Layout 15, carousel set: the step slide.
  *
  * One step of a multi-slide post (an Instagram carousel, a LinkedIn
  * multi-image post): a large step number, a headline and a short body,
  * with the slide's position and a swipe cue on every slide but the last.
  * The position comes from the carousel renderer (engine/render/carousel.js),
- * never from copy, so numbering cannot drift from the slide order. A
- * carousel opens and closes with any other layout (a type card, a question
- * card) and uses this one for the steps between.
+ * never from copy, so numbering cannot drift from the slide order. The set
+ * is cover, steps (or stat cards), an optional reveal, and a close.
  */
 
 'use strict';
 
-const { esc, words, wordmark, eyebrow } = require('../_shared/h');
+const { words, wordmark, eyebrow, slideFoot } = require('../_shared/h');
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -28,23 +27,21 @@ module.exports = {
   },
 
   render({ props, brand, surface, slide }) {
-    const number = slide ? `<div class="cs-number">${pad(slide.index)}</div>` : '';
+    // Numbered from the first step, not the cover; a reveal-flip's evidence
+    // slides are not numbered at all.
+    const number = slide && slide.numbered !== false ? `<div class="cs-number">${pad(slide.step || slide.index)}</div>` : '';
     const body = props.body
       ? `<p class="body-copy cs-body" data-fit="[32,30,28,26,24]" data-lines>${words(props.body)}</p>`
-      : '';
-    const position = slide
-      ? `<div class="foot"><span class="nowrap">${pad(slide.index)} / ${pad(slide.total)}</span><div class="rule"></div>${
-        slide.index < slide.total ? '<span class="nowrap cs-next">Swipe <span class="cs-arrow">&rarr;</span></span>' : ''}</div>`
       : '';
     return `
       ${wordmark(brand, surface)}
       <div class="region cs-region" data-fit-box>
         ${number}
         ${eyebrow(props.eyebrow)}
-        <h1 class="headline" data-fit="[70,64,60,56,52]" data-lines>${words(props.headline)}</h1>
+        <h1 class="headline" data-fit="${number ? '[70,64,60,56,52]' : '[88,80,72,64,58,52]'}" data-lines>${words(props.headline)}</h1>
         ${body}
       </div>
-      ${position}
+      ${slideFoot(slide)}
       <style>
         .cs-region { justify-content: center; }
         .cs-number {
@@ -52,8 +49,6 @@ module.exports = {
           line-height: 0.9; letter-spacing: -0.04em; color: var(--accent-graphic); margin-bottom: 40px;
         }
         .cs-body { margin-top: 40px; max-width: 860px; }
-        .cs-next { color: var(--accent); font-weight: var(--fw-head); }
-        .cs-arrow { display: inline-block; margin-left: 6px; }
       </style>`;
   },
 };

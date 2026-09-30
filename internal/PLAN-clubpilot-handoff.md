@@ -408,3 +408,17 @@ Open:
 - CTAs: one post in four (config `cta.every`), never two in a row on a channel (plan gate), from a
   rotating library of eight soft meet-the-team lines chosen least recently used and appended by the
   engine. Regression and generator tests cover both.
+
+### 2026-09-30, increment 6 (carousels and humor in the plan)
+
+- Carousels are planned: one post in three (config `carousel.every`), kinds reveal-flip, list and steps,
+  4 to 8 slides, on Instagram and the company page. The carousel set (layout 15) is cover, step,
+  reveal and close; steps number from 01 and reveal-flip evidence slides are unnumbered. Every gate
+  reads every slide; slide findings route back to their post. The rotation cap of three per format
+  does not apply to carousels because the brand sets their frequency; every other rotation rule does.
+- Humor is planned: one post in five (config `humor.every`). The editorial gate accepts Byron's review
+  of the Buffer draft as the approval humor requires; mechanism and no-footer rules unchanged.
+- Approvals: Byron only. Aaron has no approval role (Travis, 2026-09-30). Setup work Aaron was down
+  for (the Google service account) moves into the build.
+- The recorded batch now has 3 carousels, 2 humor posts and 2 asks, and passes every gate. The
+  per-slide brand checks caught three real defects in the stand-in copy on the first run.

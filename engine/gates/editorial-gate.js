@@ -75,6 +75,11 @@ function readableText(post) {
   if (Array.isArray(post.thread)) {
     post.thread.forEach((m) => push(typeof m === 'string' ? m : m && m.text));
   }
+  // A carousel's slides are copy too: every one is checked.
+  for (const sl of post.slides || []) {
+    push(sl.headline); push(sl.subhead); push(sl.text);
+    if (Array.isArray(sl.thread)) sl.thread.forEach((m) => push(typeof m === 'string' ? m : m && m.text));
+  }
   if (Array.isArray(post.assets)) post.assets.forEach((a) => push(a && a.altText));
   return out;
 }
@@ -131,9 +136,14 @@ function checkPost(post) {
   if (!isHumor(post)) return findings;
 
   /* -- Rule 3: humor is review-first until it is calibrated ---------- */
-  if (!post.approvedBy || !String(post.approvedBy).trim()) {
+  // Review-first holds either way: a person approved the line (approvedBy),
+  // or the post goes to Buffer only as a draft that Byron reads and schedules
+  // himself (review: "buffer-drafts", 2026-09-30). Humor is now a regular
+  // part of the plan because it performs best; nothing publishes unread.
+  const approved = post.approvedBy && String(post.approvedBy).trim();
+  if (!approved && post.review !== 'buffer-drafts') {
     add(FAIL, 'editorial.humorNeedsApproval',
-      'Humor is review-first. Two Humor posts published and were deleted on Aug 15 and Aug 16 2026, the second after the first had already been rejected. No Humor post renders, schedules or publishes until a person has read the line as plain text and said yes. Set approvedBy to their name. Lifts after three consecutive concepts approved without a rewrite.');
+      'Humor is review-first. Two Humor posts published and were deleted on Aug 15 and Aug 16 2026, the second after the first had already been rejected. No Humor post publishes until a person has read the line and said yes: set approvedBy to their name, or send it to Buffer as a draft the operator reviews and schedules (review: "buffer-drafts").');
   }
 
   /* -- Rule 4: the joke needs a stated reason ------------------------ */

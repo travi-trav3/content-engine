@@ -39,6 +39,20 @@ const KNOWN_FORMATS = [
 ];
 
 const norm = (s) => String(s || '').trim().toLowerCase();
+
+/**
+ * Formats whose frequency the brand sets itself, exempt from the
+ * three-per-batch cap: Club Pilot plans one carousel in three posts
+ * (config.json carousel.every, 2026-09-30), and the planner holds that
+ * number instead. Every other rotation rule still applies to them.
+ */
+function governedFormats() {
+  try {
+    const { workspace } = require('../lib/workspace');
+    const cfg = JSON.parse(require('fs').readFileSync(require('path').join(workspace().dir, 'config.json'), 'utf8'));
+    return cfg.carousel && Number(cfg.carousel.every) > 0 ? ['carousel'] : [];
+  } catch { return []; }
+}
 const pairKey = (p) => `${norm(p.pillar)} + ${norm(p.format)}`;
 
 function postsOf(ledger) {
@@ -88,8 +102,9 @@ function checkBatch(ledger, priors = []) {
     const f = norm(p.format);
     byFormat.set(f, (byFormat.get(f) || 0) + 1);
   }
+  const governed = governedFormats();
   for (const [f, n] of byFormat) {
-    if (n > MAX_PER_FORMAT) {
+    if (n > MAX_PER_FORMAT && !governed.includes(f)) {
       add(FAIL, 'rotation.formatDominates',
         `${n} posts use "${f}", over the limit of ${MAX_PER_FORMAT}. The batch reads as one idea in one shape.`);
     }

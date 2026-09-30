@@ -74,7 +74,7 @@ See `brand/format-rotation.md` for how formats cycle across pillars. Humor is no
 | `humorMechanism` | string | Required when `pillar` is Humor. One sentence naming why it is funny. Free text, so a new mechanism is allowed, but it has to be a reason and not a restatement of the joke |
 | `observableAnswer` | string | Required **only** when `humorMechanism` is observable contradiction. Names the thing the asker can see that settles the question |
 | `standsWithoutFooter` | boolean | Required when `pillar` is Humor. Must be true |
-| `approvedBy` | string | Required when `pillar` is Humor. The person who read the line and said yes, before anything was rendered |
+| `approvedBy` | string | Required when `pillar` is Humor, unless the post goes to Buffer as a draft that Byron reads and schedules himself (`review: "buffer-drafts"`, 2026-09-30). Either way, nothing publishes before a person has read the line and said yes |
 
 Enforced by `editorial-gate.js`, which also hard-fails member-blaming copy anywhere in the batch, on any pillar, and refuses any Humor post without `approvedBy`. Humor is review-first: see `editorial-standard.md` section 3 for why.
 

@@ -1,40 +1,106 @@
 [
  {
-  "props": {
-   "eyebrow": "Heard every week",
-   "headline": "Five questions every club",
-   "emphasis": "answers all week long.",
-   "items": [
-    "Grill hours tonight",
-    "Is the pool open Monday",
-    "Weekend guest policy",
-    "Dress code for Friday dinner",
-    "When the range opens"
+  "carousel": {
+   "cover": {
+    "eyebrow": "Heard every week",
+    "headline": "Five questions every club answers all week long.",
+    "emphasis": null
+   },
+   "inner": [
+    {
+     "eyebrow": null,
+     "headline": "What time does the grill close tonight?",
+     "body": "Asked from the course, the pool deck and the parking lot.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "Is the pool open Monday?",
+     "body": "Especially the Monday after a holiday weekend.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "What is the guest policy this weekend?",
+     "body": "Usually asked on Friday afternoon.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "What do I wear to Friday dinner?",
+     "body": "The answer is published. The question still comes.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "When does the range open?",
+     "body": "Usually asked before sunrise.",
+     "stat": null
+    }
    ],
-   "signoff": null
+   "reveal": null,
+   "close": {
+    "headline": "None of these are hard. That is the point.",
+    "body": "Each one is small, and each one interrupts someone on the team.",
+    "tryTitle": "Try this at your club",
+    "tryBody": "Count the routine questions your team answers on one Saturday."
+   }
   },
-  "caption": "None of these are hard questions. That is the point.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one lands on someone in the middle of something else. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
+  "caption": "Five small questions, asked all week, from everywhere.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one lands on someone in the middle of something else. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
   "firstComment": "Which question would top the list at your club?",
-  "altText": "Light card with the eyebrow Heard every week and the headline Five questions every club answers all week long, listing: grill hours tonight, is the pool open Monday, weekend guest policy, dress code for Friday dinner, when the range opens.",
+  "altText": "Carousel cover: dark card with the eyebrow Heard every week and the headline Five questions every club answers all week long.",
   "earnsItsPlace": "Names the routine questions Club Pilot answers so staff are not interrupted, from the operator's side of the counter; a vendor that only sends announcements has nothing to say about the questions that come back."
  },
  {
-  "props": {
-   "eyebrow": "Heard every week",
-   "headline": "Five questions every club",
-   "emphasis": "answers all week long.",
-   "items": [
-    "Grill hours tonight",
-    "Is the pool open Monday",
-    "Weekend guest policy",
-    "Dress code for Friday dinner",
-    "When the range opens"
+  "carousel": {
+   "cover": {
+    "eyebrow": "Heard every week",
+    "headline": "Five questions every club answers all week long.",
+    "emphasis": null
+   },
+   "inner": [
+    {
+     "eyebrow": null,
+     "headline": "What time does the grill close tonight?",
+     "body": "Asked from the course, the pool deck and the parking lot.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "Is the pool open Monday?",
+     "body": "Especially the Monday after a holiday weekend.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "What is the guest policy this weekend?",
+     "body": "Usually asked on Friday afternoon.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "What do I wear to Friday dinner?",
+     "body": "The answer is published. The question still comes.",
+     "stat": null
+    },
+    {
+     "eyebrow": null,
+     "headline": "When does the range open?",
+     "body": "Usually asked before sunrise.",
+     "stat": null
+    }
    ],
-   "signoff": null
+   "reveal": null,
+   "close": {
+    "headline": "None of these are hard. That is the point.",
+    "body": "Each one is small, and each one interrupts someone on the team.",
+    "tryTitle": "Try this at your club",
+    "tryBody": "Count the routine questions your team answers on one Saturday."
+   }
   },
-  "caption": "None of these are hard questions. That is the point.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one interrupts whoever happens to be nearest. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
+  "caption": "Five small questions, asked all week, from everywhere.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one interrupts whoever happens to be nearest. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
   "firstComment": "Which question would top the list at your club?",
-  "altText": "Light card with the eyebrow Heard every week and the headline Five questions every club answers all week long, listing: grill hours tonight, is the pool open Monday, weekend guest policy, dress code for Friday dinner, when the range opens.",
+  "altText": "Carousel cover: dark card with the eyebrow Heard every week and the headline Five questions every club answers all week long.",
   "earnsItsPlace": "Names the routine questions Club Pilot answers so staff are not interrupted, from the operator's side of the counter; a vendor that only sends announcements has nothing to say about the questions that come back."
  }
 ]

@@ -472,7 +472,23 @@ function checkBatch(ledger, brandDir = workspace().brandDir) {
   }
 
   const posts = postsOf(ledger);
-  for (const post of posts) findings = findings.concat(checkPost(post, ctx));
+  for (const post of posts) {
+    findings = findings.concat(checkPost(post, ctx));
+    // Each carousel slide after the cover is its own card: the same caps,
+    // casing, dash, label and drawn-text checks, one slide at a time. The
+    // cover is the post's own headline and render, checked above.
+    for (const sl of (post.slides || []).slice(1)) {
+      findings = findings.concat(checkPost({
+        id: `${idOf(post)} (slide ${sl.index})`,
+        pillar: post.pillar,
+        headline: sl.headline,
+        subhead: sl.subhead,
+        text: sl.text,
+        eyebrow: sl.eyebrow,
+        renderedText: sl.renderedText,
+      }, ctx));
+    }
+  }
 
   const failures = findings.filter((f) => f.level === FAIL);
   return {
