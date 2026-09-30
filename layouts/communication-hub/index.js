@@ -30,6 +30,7 @@ const CENTER = 540;
 module.exports = {
   id: 'communication-hub',
   title: 'Communication hub',
+  format: 'diagram',
   surfaces: ['dark'],
   props: {
     headline: { required: true, maxChars: 60 },

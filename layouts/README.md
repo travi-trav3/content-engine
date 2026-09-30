@@ -6,6 +6,7 @@ One folder per layout, each with an `index.js` that exports:
 module.exports = {
   id: 'type-card',                     // folder name
   title: 'Type card',
+  format: 'type-card',                 // rotation format (brand/format-rotation.md); the gates read it
   surfaces: ['dark', 'light'],         // surfaces this layout supports; first is the default
   props: {                             // the only way copy gets in
     headline: { required: true, maxChars: 70 },

@@ -12,6 +12,7 @@ const { esc, words, wordmark, headlineWords, eyebrow } = require('../_shared/h')
 module.exports = {
   id: 'numbered-list',
   title: 'Numbered list',
+  format: 'list',
   surfaces: ['light', 'dark'],
   props: {
     eyebrow: { maxChars: 32 },

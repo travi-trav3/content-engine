@@ -14,6 +14,7 @@ const { words, wordmark, eyebrow, headlineWords, photo } = require('../_shared/h
 module.exports = {
   id: 'photo-band',
   title: 'Photo band',
+  format: 'photo',
   surfaces: ['dark', 'light'],
   props: {
     photo: { type: 'photo', need: 'band', required: true },

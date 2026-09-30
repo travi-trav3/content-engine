@@ -20,12 +20,13 @@ const logoFile = (entry, surface) => entry.file && (entry.file[surface] || null)
 module.exports = {
   id: 'proof-bar',
   title: 'Proof bar',
+  format: 'logo-wall',
   surfaces: ['dark'],
   props: {
     eyebrow: { maxChars: 32 },
     headline: { required: true, maxChars: 90 },
     attribution: { maxChars: 48 },
-    logos: { type: 'list', item: 'text', required: true, minItems: 1, maxItems: 4, maxChars: 40 },
+    logos: { type: 'list', item: 'text', registry: 'proof.logos', required: true, minItems: 1, maxItems: 4, maxChars: 40 },
   },
 
   check({ props, brand }) {

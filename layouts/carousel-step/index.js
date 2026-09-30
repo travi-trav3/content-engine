@@ -19,6 +19,7 @@ const pad = (n) => String(n).padStart(2, '0');
 module.exports = {
   id: 'carousel-step',
   title: 'Carousel step',
+  format: 'carousel',
   surfaces: ['dark', 'light'],
   props: {
     eyebrow: { maxChars: 32 },

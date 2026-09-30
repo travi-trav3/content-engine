@@ -107,6 +107,31 @@ check('batch 3 fails the combined gates',
 check('batch 1 passes stat gate (no false positives on legacy numbers)',
   stat.checkBatch(ledgers.b1).pass);
 
+console.log('== generated posts: visible-text checks run on what the render drew ==');
+// A generated post has no legacy template file. Its render's text gets the
+// checks a template's markup got, so a layout cannot draw what a template
+// was forbidden to show.
+const generated = (over) => ({
+  id: 'gen-01', channel: 'linkedin_page', pillar: 'Member experience, elevated', format: 'thread',
+  template: 'message-thread', layout: 'message-thread', sender: 'Fairhaven Country Club',
+  headline: 'One less call to the front desk.', caption: 'A routine question, answered from the club hours.',
+  thread: [{ from: 'member', text: 'What time does the range close tonight?' },
+    { from: 'assistant', text: 'The range closes at 8pm tonight, per the facility hours.' }],
+  depictsAssistant: true, interactionType: 'answer', sourceDocument: 'facility hours', clubMarks: [],
+  renderedText: 'clubpilot One less call to the front desk. FC Fairhaven Country Club Texting · powered by Club Pilot What time does the range close tonight? The range closes at 8pm tonight, per the facility hours.',
+  ...over,
+});
+const genClean = brand.checkBatch({ posts: [generated({})] });
+check('a clean generated thread passes the brand gate with no template warning',
+  genClean.pass && !hasRule({ failures: genClean.warnings }, 'brand.templateMissing'),
+  [...genClean.failures, ...genClean.warnings].map((f) => f.rule).join(', '));
+const genNoMicro = brand.checkBatch({ posts: [generated({ renderedText: 'clubpilot One less call to the front desk. FC Fairhaven Country Club What time does the range close tonight?' })] });
+check('a generated thread drawn without the powered-by line fails (brand.template.microlineMissing)',
+  hasRule(genNoMicro, 'brand.template.microlineMissing'));
+const genLabel = brand.checkBatch({ posts: [generated({ renderedText: 'clubpilot INTELLIGENT COMMUNICATION One less call. powered by Club Pilot' })] });
+check('a planning label drawn on a generated post fails (brand.template.internalLabel)',
+  hasRule(genLabel, 'brand.template.internalLabel'));
+
 /* ------------------------------------------------------------------ *
  * Suite 2: generation tests on the fixture plan
  * ------------------------------------------------------------------ */
@@ -138,7 +163,20 @@ const mutations = [
     p.posts.find((x) => x.depictsScenario === true).operationalCheck = 'Checked with a club manager.';
   }, 'plan.operationalCheck.noFactRef'],
   ['retired template 9 reference', (p) => { p.posts[0].template = 'old-way-vs-intelligent-way'; }, 'plan.retiredTemplate'],
+  ['an unknown review mode in place of approval', (p) => {
+    p.posts[5].approvedBy = '';
+    p.posts[5].review = 'auto';
+  }, 'plan.approvedBy'],
 ];
+
+// Buffer review is the operating model after handoff: an unapproved plan
+// whose posts all go to Buffer as drafts for a person to review passes the
+// approval rule, and says so instead of carrying an approval nobody gave.
+const bufferReview = clone();
+bufferReview.posts.forEach((x) => { delete x.approvedBy; x.review = plan.REVIEW_IN_BUFFER; });
+const br = plan.checkPlan(bufferReview, priors);
+check('a plan reviewed as Buffer drafts is accepted without approvedBy', br.pass,
+  br.failures.map((f) => `${f.id}:${f.rule}`).join(', '));
 
 for (const [label, mutate, expectedRule] of mutations) {
   const mutated = clone();

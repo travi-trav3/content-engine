@@ -1,0 +1,40 @@
+[
+ {
+  "props": {
+   "eyebrow": "Heard every week",
+   "headline": "Five questions every club",
+   "emphasis": "answers all week long.",
+   "items": [
+    "Grill hours tonight",
+    "Is the pool open Monday",
+    "Weekend guest policy",
+    "Dress code for Friday dinner",
+    "When the range opens"
+   ],
+   "signoff": null
+  },
+  "caption": "None of these are hard questions. That is the point.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one lands on someone in the middle of something else. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
+  "firstComment": "Which question would top the list at your club?",
+  "altText": "Light card with the eyebrow Heard every week and the headline Five questions every club answers all week long, listing: grill hours tonight, is the pool open Monday, weekend guest policy, dress code for Friday dinner, when the range opens.",
+  "earnsItsPlace": "Names the routine questions Club Pilot answers so staff are not interrupted, from the operator's side of the counter; a vendor that only sends announcements has nothing to say about the questions that come back."
+ },
+ {
+  "props": {
+   "eyebrow": "Heard every week",
+   "headline": "Five questions every club",
+   "emphasis": "answers all week long.",
+   "items": [
+    "Grill hours tonight",
+    "Is the pool open Monday",
+    "Weekend guest policy",
+    "Dress code for Friday dinner",
+    "When the range opens"
+   ],
+   "signoff": null
+  },
+  "caption": "None of these are hard questions. That is the point.\n\nThey arrive by phone, by text, at the pro shop counter and in the hallway, and each one interrupts whoever happens to be nearest. A dining manager setting up for service. A pro between lessons. A membership director on a call.\n\nEvery answer is on file somewhere. What costs the club is the interruption, repeated all week.",
+  "firstComment": "Which question would top the list at your club?",
+  "altText": "Light card with the eyebrow Heard every week and the headline Five questions every club answers all week long, listing: grill hours tonight, is the pool open Monday, weekend guest policy, dress code for Friday dinner, when the range opens.",
+  "earnsItsPlace": "Names the routine questions Club Pilot answers so staff are not interrupted, from the operator's side of the counter; a vendor that only sends announcements has nothing to say about the questions that come back."
+ }
+]

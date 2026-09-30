@@ -13,6 +13,7 @@ const { esc, words, wordmark } = require('../_shared/h');
 module.exports = {
   id: 'type-card',
   title: 'Type card',
+  format: 'type-card',
   surfaces: ['dark', 'light'],
   props: {
     headline: { required: true, maxChars: 70 },

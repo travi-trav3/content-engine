@@ -23,6 +23,7 @@ const { workspace } = require('../engine/lib/workspace');
 const { createRenderer, loadLayout, validateProps, SIZES } = require('../engine/render/render');
 const { renderCarousel } = require('../engine/render/carousel');
 const photoLibrary = require('../engine/photos/library');
+const { KNOWN_FORMATS } = require('../engine/gates/rotation-gate');
 
 const WS = workspace();
 const LAYOUTS_DIR = path.join(__dirname, '..', 'layouts');
@@ -117,6 +118,7 @@ function checkLayoutContract() {
   for (const id of ids) {
     const layout = loadLayout(id);
     check(`${id}: id matches its folder`, layout.id === id, layout.id);
+    check(`${id}: declares a rotation format the gates know`, KNOWN_FORMATS.includes(layout.format), String(layout.format));
     check(`${id}: has a test-props fixture`, fs.existsSync(path.join(WS.dir, 'test-props', `${id}.json`)));
     const missing = layout.surfaces.filter((s) => !tokens.includes(`.surface-${s}`));
     check(`${id}: every surface is defined by the brand tokens`, missing.length === 0, missing.join(', '));

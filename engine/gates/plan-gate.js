@@ -58,6 +58,7 @@ const SURFACES = ['dark-type', 'photo-full-bleed', 'thread'];
 const CTA_TYPES = ['none', 'demo', 'app', 'follow', 'website'];
 
 const FOUNDER_CHANNEL = 'linkedin_byron';
+const REVIEW_IN_BUFFER = 'buffer-drafts';
 
 // Operational fact ids from brand/club-operations-facts.md ("### <id>" headers).
 function loadFactIds() {
@@ -220,10 +221,16 @@ function checkPost(post) {
     }
   }
 
-  /* -- approval: where Travis is in the loop ------------------------- */
-  if (!(post.approvedBy && String(post.approvedBy).trim())) {
+  /* -- approval: where a person is in the loop ----------------------- */
+  // Either a person approved the plan before generation (approvedBy: name
+  // and date), or the plan says honestly that nobody has yet and a person
+  // reviews every post as a Buffer draft that nothing schedules for them
+  // (review: "buffer-drafts", the operating model since the Sep 2026
+  // handoff). What never passes is neither, or an approval nobody gave.
+  const approved = post.approvedBy && String(post.approvedBy).trim();
+  if (!approved && post.review !== REVIEW_IN_BUFFER) {
     add(FAIL, 'plan.approvedBy',
-      'approvedBy is empty. The plan is where a person approves the batch, once, before generation. Name and date.');
+      `approvedBy is empty and review is not "${REVIEW_IN_BUFFER}". Either a person approves the plan before generation (name and date), or every post goes to Buffer as a draft that a person reviews and schedules. Got review: ${JSON.stringify(post.review)}.`);
   }
 
   return findings;
@@ -409,7 +416,7 @@ function report(result, label = 'plan gate') {
 
 module.exports = {
   checkPost, checkPlan, checkLedgerAgainstPlan, report,
-  PILLARS, TERRITORIES, AUDIENCES, FEELINGS, AVERSIONS, SURFACES, CTA_TYPES,
+  PILLARS, TERRITORIES, AUDIENCES, FEELINGS, AVERSIONS, SURFACES, CTA_TYPES, REVIEW_IN_BUFFER,
 };
 
 /* ------------------------------------------------------------------ *

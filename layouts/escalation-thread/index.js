@@ -23,6 +23,7 @@ const { bubble, device, threadCss } = require('../_shared/thread');
 module.exports = {
   id: 'escalation-thread',
   title: 'Escalation thread',
+  format: 'thread',
   surfaces: ['dark'],
   props: {
     headline: { required: true, maxChars: 60 },

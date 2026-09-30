@@ -14,6 +14,7 @@ const { esc, words, wordmark } = require('../_shared/h');
 module.exports = {
   id: 'quote-card',
   title: 'Quote card',
+  format: 'type-card',
   surfaces: ['light', 'dark'],
   props: {
     quote: { required: true, maxChars: 180 },

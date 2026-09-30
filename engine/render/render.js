@@ -295,6 +295,8 @@ async function fitAndCheck({ family, weights, outputScale }) {
     // Largest step any group needed, or -1 when some group could not fit.
     fitStep: fitSteps.includes(-1) ? -1 : Math.max(0, ...fitSteps),
     fontSizes: fitEls.map((f) => ({ element: label(f.el), px: parseFloat(f.el.style.fontSize) })),
+    // Every word as drawn (with CSS text-transform applied), for the ledger.
+    text: document.getElementById('canvas').innerText.replace(/\s+/g, ' ').trim(),
   };
 }
 
@@ -377,6 +379,7 @@ async function createRenderer() {
         issues: qa.issues,
         fitStep: qa.fitStep,
         photos: Object.values(photos).map((p) => p.id),
+        text: qa.text,
         fontSizes: qa.fontSizes,
         sha256: crypto.createHash('sha256').update(png).digest('hex'),
         png,

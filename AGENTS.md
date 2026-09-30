@@ -11,11 +11,12 @@ it in their own GitHub organization. Club Pilot is the first brand and lives her
 ```
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
 engine/gates/      the checks; check-batch.js runs all of them for one batch
+engine/generate/   plan, write, gate, render a batch (batch.js); providers/ (openai, mock); see its README
 engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js
 engine/photos/     library.js (selection), ingest.js, review.js; see engine/photos/README.md
 layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
 brands/<name>/     a brand fixture: brand/, content/, photos/, test-props/, goldens/
-test/              gates-regression.js, photos.test.js, render.test.js
+test/              gates-regression.js, photos.test.js, render.test.js, generate.test.js, fixtures/
 internal/          Applied Intelligence planning material. Never copied into a client instance
 ```
 
@@ -25,6 +26,8 @@ internal/          Applied Intelligence planning material. Never copied into a c
 npm ci
 npm test                                                  # everything CI runs
 CE_WORKSPACE=brands/clubpilot node engine/gates/check-batch.js 05
+CE_WORKSPACE=brands/clubpilot npm run generate -- --plan-only          # needs OPENAI_API_KEY
+CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir test/fixtures/generate/clubpilot --start 2026-10-05
 CE_WORKSPACE=brands/clubpilot npm run render -- --layout type-card \
   --props brands/clubpilot/test-props/type-card.json --out /tmp/renders
 CE_WORKSPACE=brands/clubpilot npm run render:carousel -- --spec carousel.json --out /tmp/renders
@@ -60,9 +63,12 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
    `product-screenshot`.
 7. **Proof logos come only from the registry** in `render.json`, with the relation that is true. A
    customer logo (`trusted`) needs the written approval recorded in its entry before it is added.
-8. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
+8. **Generation never approves or publishes.** A generated plan records `review: "buffer-drafts"` (every
+   post goes to Buffer as a draft for a person) or waits for a person's `approvedBy`. Never write a
+   name into `approvedBy` from code, and never generate Humor without a named approver.
+9. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
    or into `engine/` or `layouts/`. `internal/` never ships.
-9. Commit the render harness and tests with every change. Do not commit `node_modules/` or
+10. Commit the render harness and tests with every change. Do not commit `node_modules/` or
    `test/output/`.
 
 ## Known gaps
@@ -72,6 +78,10 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: generation (OpenAI), Buffer client, feedback loop, source mode, scheduled workflows.
+- Not built yet: Buffer client, publishing renders to the assets repo, feedback loop, source mode,
+  carousels in generation, scheduled workflows.
+- The full-bleed layout darkens the wordmark corner from the photo's measured top zones, which are
+  measured on the whole photo; a landscape photo cropped to 4:5 shows its middle. Measure the crop
+  instead when a render shows a weak wordmark.
 - Goldens are lossless WebP, about 10 MB for Club Pilot. Every intended visual change adds a changed
   golden to history; batch visual changes rather than regenerating goldens for each small tweak.

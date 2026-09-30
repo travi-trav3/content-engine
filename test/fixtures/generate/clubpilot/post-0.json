@@ -1,0 +1,30 @@
+[
+ {
+  "props": {
+   "eyebrow": "Industry figure",
+   "value": "$100M+",
+   "unit": null,
+   "label": "a year, spent by clubs answering routine member phone calls",
+   "context": "Hours, dress code, guest policy. Small questions, asked often, each one a call someone stops to take.",
+   "source": "NGF"
+  },
+  "caption": "Most of the calls a club takes are not hard ones. What time the grill closes. Whether the pool is open on a holiday. The guest policy for Sunday.\n\nThe NGF puts the industry's cost of answering routine member calls above $100 million a year. That number is not a staffing failure. It is what happens when every small answer needs a person to stop and pick up.\n\nThe questions are not going away, and they should not. Members ask because they care about the club. The useful question for an operator is which of those answers a member could get without anyone stopping what they are doing.",
+  "firstComment": "The figure covers calls with published answers: hours, policies, event details. The harder calls, the ones that need judgment, still belong with the team.",
+  "altText": "Light card with a large green figure, $100M+, and the line: a year, spent by clubs answering routine member phone calls. Source line: NGF.",
+  "earnsItsPlace": "Puts a cost on the routine-call workload Club Pilot exists to absorb, using the NGF figure the brand file clears; a vendor selling announcements would not frame the incoming call as the problem."
+ },
+ {
+  "props": {
+   "eyebrow": "Industry figure",
+   "value": "$100M+",
+   "unit": null,
+   "label": "a year, spent by clubs answering routine member phone calls",
+   "context": "Hours, dress code, guest policy. Small questions, asked often, each one a call someone stops to take.",
+   "source": "NGF"
+  },
+  "caption": "Most of the calls a club takes are not hard ones. What time the grill closes. Pool hours on the holiday weekend. The guest policy for Sunday.\n\nThe NGF puts the industry's cost of answering routine member calls above $100 million a year. That number is not a staffing failure. It is what happens when every small answer needs a person to stop and pick up.\n\nThe questions are not going away, and they should not. Members ask because they care about the club. The useful question for an operator is which of those answers a member could get without anyone stopping what they are doing.",
+  "firstComment": "The figure covers calls with published answers: hours, policies, event details. The harder calls, the ones that need judgment, still belong with the team.",
+  "altText": "Light card with a large green figure, $100M+, and the line: a year, spent by clubs answering routine member phone calls. Source line: NGF.",
+  "earnsItsPlace": "Puts a cost on the routine-call workload Club Pilot exists to absorb, using the NGF figure the brand file clears; a vendor selling announcements would not frame the incoming call as the problem."
+ }
+]

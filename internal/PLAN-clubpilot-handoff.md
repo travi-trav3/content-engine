@@ -364,3 +364,33 @@ Needs Byron (add to the brand files review):
 - Customer club logos: confirm the written approval (BRAND.md contradicts itself) and send transparent
   high-resolution files. CMAA's relation, if it is to appear in a proof bar.
 - A skim of the photo review (tags and restrictions were set by Claude from contact sheets).
+
+### 2026-09-30, increment 4
+
+Done:
+- Generation in `engine/generate`: plan, write, gate, render and record a batch with one command.
+  OpenAI provider on the Responses API with strict JSON-schema output (no SDK, key from the
+  environment only), and a recorded-response provider so everything is tested without a key.
+- The plan step revises against the plan gate, the rotation rules and engine consistency checks; the
+  write step validates props and picks photos; posts that fail a gate or render badly are rewritten
+  with the finding quoted. What still fails lands in `report.md` for a person.
+- A recorded ten-post batch (Oct 5 to 18) that passes every gate, used by `test/generate.test.js`. Two
+  of its first drafts repeated batch-5 wording and were caught by the diversity gate; the recorded
+  revisions pass, so the test runs the real rewrite loop.
+- Plan gate: `approvedBy` or `review: "buffer-drafts"`. Automated plans say honestly that nobody
+  approved them and that every post is a Buffer draft a person reviews. Regression cases added.
+  Humor stays out of automated batches (the editorial gate still requires a named approver).
+- Brand gate: the visible-text checks that ran on legacy HTML templates now run on what the renderer
+  drew for generated posts (powered-by line on threads, no planning labels, no Aimi as sender).
+- `check-batch.js` exposes `checkAll()`; command output is byte-identical for batches 1 to 5.
+- Layouts declare their rotation format; `diagram` and `screenshot` added to the format list.
+
+Decided in the build, for Byron's review:
+- Cadence is 5 LinkedIn + 5 Instagram per two weeks, not 4 + 6: the plan gate requires LinkedIn to
+  carry at least half of every batch (D15), and the gate wins over the earlier cadence note.
+- Automated batches never include Humor.
+
+Open:
+- The model name in `config.json` is a starting value; confirm it when Byron's key is set up.
+- Next: publish renders to the assets repo (content-hashed names, verify 200 + sha256), Buffer
+  client (drafts, first comments, notes read-back), scheduled workflows, source mode, carousels.

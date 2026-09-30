@@ -1,0 +1,39 @@
+{
+  "brand": "Club Pilot",
+  "timezone": "America/Los_Angeles",
+  "review": "buffer-drafts",
+  "provider": {
+    "name": "openai",
+    "model": "gpt-5",
+    "apiKeyEnv": "OPENAI_API_KEY",
+    "reasoningEffort": "medium"
+  },
+  "cadence": {
+    "batchDays": 14,
+    "startDay": "mon",
+    "slots": [
+      { "dayOfBatch": 0, "time": "08:35", "channel": "linkedin_page" },
+      { "dayOfBatch": 1, "time": "12:05", "channel": "instagram" },
+      { "dayOfBatch": 3, "time": "09:50", "channel": "linkedin_page" },
+      { "dayOfBatch": 5, "time": "10:20", "channel": "instagram" },
+      { "dayOfBatch": 7, "time": "07:55", "channel": "linkedin_page" },
+      { "dayOfBatch": 8, "time": "19:45", "channel": "instagram" },
+      { "dayOfBatch": 9, "time": "12:20", "channel": "linkedin_page" },
+      { "dayOfBatch": 10, "time": "09:10", "channel": "linkedin_page" },
+      { "dayOfBatch": 11, "time": "18:35", "channel": "instagram" },
+      { "dayOfBatch": 13, "time": "16:40", "channel": "instagram" }
+    ]
+  },
+  "channels": {
+    "instagram": { "size": "ig" },
+    "linkedin_page": { "size": "li" },
+    "linkedin_byron": { "size": "li", "founderVoice": true }
+  },
+  "cta": {
+    "types": ["demo", "website"],
+    "demo": "https://www.clubpilot.com/demo"
+  },
+  "excludePillars": ["Humor"],
+  "excludeLayouts": [],
+  "maxRevisions": { "plan": 3, "post": 2 }
+}

@@ -1,0 +1,16 @@
+{
+ "props": {
+  "headline": "The handoff arrives with context.",
+  "emphasis": "Staff reply in the same thread.",
+  "timestamp": "Thursday \u00b7 4:10 PM",
+  "question": "Is the dining room doing a Thanksgiving buffet this year?",
+  "offer": "I don't have that one yet. Want me to send it to the team?",
+  "reply": "Please",
+  "handoff": "Sent. Someone will get back to you shortly.",
+  "signoff": null
+ },
+ "caption": "A handoff only helps if the person receiving it can see what was asked.\n\nIn Club Pilot, a question the assistant cannot answer goes to the club inbox inside the same conversation. Whoever picks it up sees what the member asked and what was said, and replies right there, in their own voice.\n\nFor the member it reads as one conversation with the club. For the team it is one less round of asking a member to repeat themselves.",
+ "firstComment": "The status on the thread tells staff it needs a person. Nothing is pushed to anyone's phone; the inbox is where it waits.",
+ "altText": "Dark card with the headline The handoff arrives with context. Staff reply in the same thread. A phone thread from Oakcrest Country Club, powered by Club Pilot: a member asks whether the dining room is doing a Thanksgiving buffet this year; the assistant says it does not have that one yet and offers to send it to the team; the member says please; the assistant replies sent, someone will get back to you shortly. Status: marked for the club team.",
+ "earnsItsPlace": "Shows where an escalated question goes in Club Pilot, the club inbox inside the same conversation, ending the thread at the handoff; no other vendor can show its own inbox behavior."
+}

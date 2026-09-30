@@ -15,6 +15,7 @@ const { bubble, device, threadCss } = require('../_shared/thread');
 module.exports = {
   id: 'message-thread',
   title: 'Message thread',
+  format: 'thread',
   surfaces: ['dark'],
   props: {
     headline: { required: true, maxChars: 60 },

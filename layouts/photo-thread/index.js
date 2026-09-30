@@ -15,6 +15,7 @@ const { bubble, device, threadCss } = require('../_shared/thread');
 module.exports = {
   id: 'photo-thread',
   title: 'Photo thread',
+  format: 'thread',
   surfaces: ['photo'],
   props: {
     photo: { type: 'photo', need: 'fullBleed', required: true },

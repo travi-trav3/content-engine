@@ -23,6 +23,8 @@ Predictable is the problem. Not any single post.
 | `compare` | A split or versus layout |
 | `carousel` | Multi-slide, builds to something |
 | `logo-wall` | A roster of marks. Frozen until the approved club list lands |
+| `diagram` | Channels, steps or systems drawn as connected shapes (the communication hub) |
+| `screenshot` | A real product screenshot in a frame. Never drawn UI |
 
 New formats are welcome and expected. Add them here when you build one.
 

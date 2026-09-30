@@ -15,6 +15,7 @@ const { esc, words, wordmark, photo } = require('../_shared/h');
 module.exports = {
   id: 'full-bleed-photo',
   title: 'Full-bleed photo',
+  format: 'photo',
   surfaces: ['photo'],
   props: {
     photo: { type: 'photo', need: 'fullBleed', required: true },

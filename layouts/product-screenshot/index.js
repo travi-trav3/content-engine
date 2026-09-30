@@ -16,6 +16,7 @@ const { esc, words, wordmark, headlineWords, photo } = require('../_shared/h');
 module.exports = {
   id: 'product-screenshot',
   title: 'Product screenshot',
+  format: 'screenshot',
   surfaces: ['dark', 'light'],
   requires: { photoTags: ['product-screenshot'] },
   props: {

@@ -1,0 +1,30 @@
+{
+ "props": {
+  "headline": "Where club communication is heading:",
+  "emphasis": "every channel, one shared history.",
+  "channels": [
+   {
+    "label": "Email",
+    "icon": "email"
+   },
+   {
+    "label": "Text",
+    "icon": "text"
+   },
+   {
+    "label": "Member app",
+    "icon": "app"
+   },
+   {
+    "label": "AI Assist",
+    "icon": "assistant"
+   }
+  ],
+  "hubLabel": "One inbox",
+  "hubDetail": "One history for every member"
+ },
+ "caption": "Most clubs already communicate on several channels. Email for the newsletter, text for the urgent things, an app for the calendar, and now an assistant for the questions.\n\nThe direction we are building in is simple to say: those channels should share one inbox and one history for each member, so the team sees the whole conversation no matter where it started.\n\nThis is where Club Pilot is heading, and we will share more as it ships. No channel replaces another. The member chooses; the club keeps one picture.",
+ "firstComment": "Nothing here asks a club to drop the tools it runs today. The point is that a member's text and a member's email end up in the same place.",
+ "altText": "Dark card with the headline Where club communication is heading: every channel, one shared history. Four tiles, Email, Text, Member app and AI Assist, connect into a panel reading One inbox, One history for every member.",
+ "earnsItsPlace": "States the connected-communication direction Club Pilot is building, framed as direction rather than a shipped capability; a single-channel vendor cannot draw every channel into one history."
+}

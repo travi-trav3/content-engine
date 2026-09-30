@@ -1,0 +1,22 @@
+{
+ "props": {
+  "headline": "Sunday night, a Monday question.",
+  "emphasis": "Answered from the club's hours.",
+  "timestamp": "Sunday \u00b7 8:05 PM",
+  "messages": [
+   {
+    "from": "member",
+    "text": "What time does the fitness center open tomorrow?"
+   },
+   {
+    "from": "club",
+    "text": "The fitness center opens at 6am on weekdays, per the facility hours."
+   }
+  ],
+  "signoff": null
+ },
+ "caption": "Sunday at 8pm, a member is planning Monday morning. The question is small: what time does the fitness center open?\n\nThe answer is posted. The staff who know it are off for the evening, which is exactly as it should be.\n\nA reply from the club's own facility hours, in the club's name, means the member gets their answer and nobody's Sunday gets interrupted.",
+ "firstComment": "Evening and weekend questions are where this matters most. The answer exists; the person who knows it should be off the clock.",
+ "altText": "Dark card with the headline Sunday night, a Monday question. Answered from the club's hours. A phone thread from Stonebridge Country Club, powered by Club Pilot: a member asks what time the fitness center opens tomorrow, and the club replies that it opens at 6am on weekdays, per the facility hours.",
+ "earnsItsPlace": "Shows an after-hours member question answered from the club's own published hours without interrupting staff, which is Club Pilot's everyday job; no apparel or course brand can show that exchange."
+}

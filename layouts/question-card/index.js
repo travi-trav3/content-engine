@@ -12,6 +12,7 @@ const { esc, words, wordmark, eyebrow } = require('../_shared/h');
 module.exports = {
   id: 'question-card',
   title: 'Question card',
+  format: 'type-card',
   surfaces: ['light', 'dark'],
   props: {
     eyebrow: { maxChars: 32 },

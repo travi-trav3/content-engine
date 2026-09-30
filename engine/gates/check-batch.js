@@ -25,105 +25,89 @@ const path = require('path');
 
 const { workspace } = require('../lib/workspace');
 
-const ROOT = __dirname;
-const CONTENT = workspace().contentDir;
-
-const nn = (process.argv[2] || '').replace(/^batch-/, '');
-const planOnly = process.argv.includes('--plan');
-if (!/^\d{2}$/.test(nn)) {
-  console.error('usage: node engine/gates/check-batch.js <NN> [--plan]');
-  process.exit(2);
-}
-
-const batchDir = path.join(CONTENT, `batch-${nn}`);
-const planPath = path.join(batchDir, 'plan.json');
-const ledgerPath = path.join(batchDir, 'ledger.json');
+const GATES = __dirname;
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 
-const priors = fs.readdirSync(CONTENT)
-  .filter((d) => /^batch-\d{2}$/.test(d) && d !== `batch-${nn}`)
-  .sort()
-  .map((d) => path.join(CONTENT, d, 'ledger.json'))
-  .filter((f) => fs.existsSync(f));
+/**
+ * Every gate for one batch, as data: [{ label, pass, failures, warnings,
+ * reportText }]. The plan gate always runs; the ledger gates run when a
+ * ledger is given. The batch runner (engine/generate/batch.js) calls this
+ * directly; the command below prints it.
+ */
+function checkAll({ plan, ledger, priors = [], brandDir = workspace().brandDir }) {
+  const results = [];
+  const run = (label, fn, reportFn) => {
+    try {
+      const r = fn();
+      results.push({ label, pass: r.pass, failures: r.failures || [], warnings: r.warnings || [], reportText: reportFn(r) });
+    } catch (e) {
+      results.push({ label, pass: false, failures: [{ id: '(batch)', rule: 'gate.error', detail: e.message }], warnings: [], reportText: `  ERROR: ${e.message}` });
+    }
+  };
+  const planGate = require(path.join(GATES, 'plan-gate.js'));
+  run('plan gate', () => planGate.checkPlan(plan, priors), (r) => planGate.report(r));
+  if (!ledger) return results;
 
-let failed = false;
-function run(label, fn) {
-  console.log(`\n===== ${label} =====`);
-  try {
-    const result = fn();
-    console.log(result.reportText);
-    if (!result.pass) failed = true;
-  } catch (e) {
-    console.log(`  ERROR: ${e.message}`);
-    failed = true;
+  const capability = require(path.join(GATES, 'capability-gate.js'));
+  run('capability gate', () => capability.checkBatch(ledger, brandDir), (r) => capability.report(r));
+  const editorial = require(path.join(GATES, 'editorial-gate.js'));
+  run('editorial gate', () => editorial.checkBatch(ledger), (r) => editorial.report(r));
+  const rotation = require(path.join(GATES, 'rotation-gate.js'));
+  run('rotation gate', () => rotation.checkBatch(ledger, priors), (r) => rotation.report(r));
+  const diversity = require(path.join(GATES, 'diversity-gate.js'));
+  run('diversity gate', () => diversity.checkBatch(ledger, priors), (r) => diversity.report(r));
+  const brand = require(path.join(GATES, 'brand-gate.js'));
+  run('brand gate', () => brand.checkBatch(ledger), (r) => brand.report(r));
+  const stat = require(path.join(GATES, 'stat-gate.js'));
+  run('stat gate', () => stat.checkBatch(ledger), (r) => stat.report(r));
+  run('plan match', () => planGate.checkLedgerAgainstPlan(ledger, plan), (r) => planGate.report(r, 'plan match'));
+  return results;
+}
+
+/** Prior batch ledgers in a content directory, oldest first, excluding one batch. */
+function priorLedgers(contentDir, exceptBatch) {
+  return fs.readdirSync(contentDir)
+    .filter((d) => /^batch-\d{2}$/.test(d) && d !== exceptBatch)
+    .sort()
+    .map((d) => path.join(contentDir, d, 'ledger.json'))
+    .filter((f) => fs.existsSync(f))
+    .map(read);
+}
+
+module.exports = { checkAll, priorLedgers };
+
+if (require.main === module) {
+  const CONTENT = workspace().contentDir;
+  const nn = (process.argv[2] || '').replace(/^batch-/, '');
+  const planOnly = process.argv.includes('--plan');
+  if (!/^\d{2}$/.test(nn)) {
+    console.error('usage: node engine/gates/check-batch.js <NN> [--plan]');
+    process.exit(2);
   }
-}
-
-/* -- plan ----------------------------------------------------------- */
-if (!fs.existsSync(planPath)) {
-  console.error(`${planPath} not found. No plan, no batch.`);
-  process.exit(1);
-}
-const plan = require(path.join(ROOT, 'plan-gate.js'));
-run('plan gate', () => {
-  const r = plan.checkPlan(read(planPath), priors.map(read));
-  return { pass: r.pass, reportText: plan.report(r) };
-});
-
-if (planOnly) {
-  console.log(failed ? '\nPLAN FAILS. Fix it before generating.' : '\nPLAN PASSES. Generation may read it.');
+  const batchDir = path.join(CONTENT, `batch-${nn}`);
+  const planPath = path.join(batchDir, 'plan.json');
+  const ledgerPath = path.join(batchDir, 'ledger.json');
+  if (!fs.existsSync(planPath)) {
+    console.error(`${planPath} not found. No plan, no batch.`);
+    process.exit(1);
+  }
+  if (!planOnly && !fs.existsSync(ledgerPath)) {
+    console.error(`${ledgerPath} not found. Run with --plan before generation, or write the ledger first.`);
+    process.exit(1);
+  }
+  const results = checkAll({
+    plan: read(planPath),
+    ledger: planOnly ? null : read(ledgerPath),
+    priors: priorLedgers(CONTENT, `batch-${nn}`),
+  });
+  for (const r of results) console.log(`\n===== ${r.label} =====\n${r.reportText}`);
+  const failed = results.some((r) => !r.pass);
+  if (planOnly) {
+    console.log(failed ? '\nPLAN FAILS. Fix it before generating.' : '\nPLAN PASSES. Generation may read it.');
+  } else {
+    console.log(failed
+      ? '\nBATCH DOES NOT SHIP: one or more gates failed.'
+      : '\nALL GATES PASS. Not a verdict on quality; a person still reads the batch.');
+  }
   process.exit(failed ? 1 : 0);
 }
-
-/* -- ledger --------------------------------------------------------- */
-if (!fs.existsSync(ledgerPath)) {
-  console.error(`${ledgerPath} not found. Run with --plan before generation, or write the ledger first.`);
-  process.exit(1);
-}
-const ledger = read(ledgerPath);
-
-const capability = require(path.join(ROOT, 'capability-gate.js'));
-run('capability gate', () => {
-  const r = capability.checkBatch(ledger, workspace().brandDir);
-  return { pass: r.pass, reportText: capability.report(r) };
-});
-
-const editorial = require(path.join(ROOT, 'editorial-gate.js'));
-run('editorial gate', () => {
-  const r = editorial.checkBatch(ledger);
-  return { pass: r.pass, reportText: editorial.report(r) };
-});
-
-const rotation = require(path.join(ROOT, 'rotation-gate.js'));
-run('rotation gate', () => {
-  const r = rotation.checkBatch(ledger, priors.map(read));
-  return { pass: r.pass, reportText: rotation.report(r) };
-});
-
-const diversity = require(path.join(ROOT, 'diversity-gate.js'));
-run('diversity gate', () => {
-  const r = diversity.checkBatch(ledger, priors.map(read));
-  return { pass: r.pass, reportText: diversity.report(r) };
-});
-
-const brand = require(path.join(ROOT, 'brand-gate.js'));
-run('brand gate', () => {
-  const r = brand.checkBatch(ledger);
-  return { pass: r.pass, reportText: brand.report(r) };
-});
-
-const stat = require(path.join(ROOT, 'stat-gate.js'));
-run('stat gate', () => {
-  const r = stat.checkBatch(ledger);
-  return { pass: r.pass, reportText: stat.report(r) };
-});
-
-run('plan match', () => {
-  const r = plan.checkLedgerAgainstPlan(ledger, read(planPath));
-  return { pass: r.pass, reportText: plan.report(r, 'plan match') };
-});
-
-console.log(failed
-  ? '\nBATCH DOES NOT SHIP: one or more gates failed.'
-  : '\nALL GATES PASS. Not a verdict on quality; a person still reads the batch.');
-process.exit(failed ? 1 : 0);

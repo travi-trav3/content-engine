@@ -15,6 +15,7 @@ const { esc, words, wordmark, eyebrow } = require('../_shared/h');
 module.exports = {
   id: 'stat-card',
   title: 'Stat card',
+  format: 'data',
   surfaces: ['light', 'dark'],
   props: {
     eyebrow: { maxChars: 32 },

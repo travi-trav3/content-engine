@@ -193,6 +193,16 @@ function templateMarkup(templateName) {
   return { html, visible, file: path.join('legacy-templates', templateName, file) };
 }
 
+/**
+ * A generated post has no template file; its render records every word it
+ * drew (renderedText). The same visible-text checks run on that, so a
+ * generated post gets the markup checks a hand-built template got.
+ */
+function renderedMarkup(post) {
+  if (!post.renderedText) return null;
+  return { html: '', visible: String(post.renderedText), file: `the render of ${idOf(post)}`, rendered: true };
+}
+
 function looksLikeThreadTemplate(tpl) {
   return /align-self:\s*flex-(start|end)/i.test(tpl.html) && /border-radius:\s*24px/i.test(tpl.html);
 }
@@ -229,10 +239,10 @@ function checkPost(post, ctx) {
   }
 
   /* -- Template markup checks (D1, D2, D3) --------------------------- */
-  const tpl = templateMarkup(post.template);
+  const tpl = templateMarkup(post.template) || renderedMarkup(post);
   if (post.template && !tpl) {
     add(WARN, 'brand.templateMissing',
-      `Template "${post.template}" not found under legacy-templates/; markup checks skipped.`);
+      `Template "${post.template}" not found under legacy-templates/ and the post has no rendered text; markup checks skipped.`);
   }
   if (tpl) {
     if (/club concierge/i.test(tpl.visible)) {
@@ -246,7 +256,8 @@ function checkPost(post, ctx) {
       add(FAIL, 'brand.template.monogramAvatar',
         `${tpl.file} renders a product-monogram avatar on the thread. The avatar is the demo club's initials.`);
     }
-    if (looksLikeThreadTemplate(tpl) && !/powered by club pilot/i.test(tpl.visible)) {
+    const threadShaped = tpl.rendered ? isThread : looksLikeThreadTemplate(tpl);
+    if (threadShaped && !/powered by club pilot/i.test(tpl.visible)) {
       add(FAIL, 'brand.template.microlineMissing',
         `${tpl.file} is a thread template with no "powered by Club Pilot" microline. The microline is where the brand lives on a thread.`);
     }

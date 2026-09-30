@@ -1,0 +1,29 @@
+{
+ "props": {
+  "headline": "Asked on the ninth hole,",
+  "emphasis": "answered before the tenth.",
+  "timestamp": "Saturday \u00b7 11:48 AM",
+  "messages": [
+   {
+    "from": "member",
+    "text": "Is the grill serving lunch after we finish?"
+   },
+   {
+    "from": "club",
+    "text": "Yes. The grill serves lunch until 2:30pm today, per the dining hours."
+   }
+  ]
+ },
+ "photo": {
+  "subject": "golfers",
+  "time": "day",
+  "people": "present",
+  "tags": [
+   "conversation"
+  ]
+ },
+ "caption": "Asked on the ninth hole, answered before the tenth.\n\nThe grill's hours were never a secret. They were in the dining schedule, on the website, probably on a sign by the door. None of that helps a member standing on the course deciding whether to stay for lunch.\n\nA text to the club and a straight answer from the published hours is a small thing. Small things are most of what membership feels like.",
+ "firstComment": "Every club has its own version of this question. The course, the pool deck and the dock all produce them, usually within the same hour.",
+ "altText": "Photograph of two golfers talking on the course, with a phone thread from Elmwood Country Club, powered by Club Pilot: a member asks whether the grill is serving lunch after they finish, and the club replies that the grill serves lunch until 2:30pm today, per the dining hours. Headline: Asked on the ninth hole, answered before the tenth.",
+ "earnsItsPlace": "Shows a member getting a published answer by text in the middle of a round, the exact moment Club Pilot is built for; a course or a software vendor without a member channel could not show the club answering directly."
+}

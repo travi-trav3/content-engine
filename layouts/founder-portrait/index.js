@@ -15,6 +15,7 @@ const { esc, words, wordmark, photo } = require('../_shared/h');
 module.exports = {
   id: 'founder-portrait',
   title: 'Founder portrait',
+  format: 'portrait',
   surfaces: ['dark', 'light'],
   props: {
     photo: { type: 'photo', requireTags: ['founder'], required: true },

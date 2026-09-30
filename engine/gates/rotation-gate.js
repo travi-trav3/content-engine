@@ -35,7 +35,7 @@ const STALE_AFTER = 3; // consecutive batches on one format before a pillar is f
 
 const KNOWN_FORMATS = [
   'photo', 'thread', 'type-card', 'data', 'portrait',
-  'list', 'compare', 'carousel', 'logo-wall',
+  'list', 'compare', 'carousel', 'logo-wall', 'diagram', 'screenshot',
 ];
 
 const norm = (s) => String(s || '').trim().toLowerCase();
