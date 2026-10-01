@@ -71,12 +71,15 @@ function assignVariants(entries, priors, config) {
  * Every carousel ends on an end card (layout carousel-cta): its own ask,
  * seen only by people who swiped to the end. Each carousel gets the least
  * recently used card, never the same one twice in a batch. A carousel
- * carries no caption ask as well; one ask per post. Sets endCard and
- * endCardProps on the carousel entries.
+ * carries no caption ask as well; one ask per post. Carousels in a pillar
+ * listed in cta.endCardSkipPillars (Humor: an ask after the joke deflates
+ * it) end on their close and ask nothing. Sets endCard and endCardProps on
+ * the carousel entries.
  */
 function assignEndCards(entries, priors, config) {
   const cards = (config.cta && config.cta.endCards) || [];
-  const carousels = entries.filter((e) => e.layout === 'carousel')
+  const skip = new Set((config.cta && config.cta.endCardSkipPillars) || []);
+  const carousels = entries.filter((e) => e.layout === 'carousel' && !skip.has(e.pillar))
     .sort((a, b) => String(a.dueAt || a.date).localeCompare(String(b.dueAt || b.date)));
   if (!carousels.length || !cards.length) return entries;
   const lastUsed = new Map(cards.map((c) => [c.id, '']));

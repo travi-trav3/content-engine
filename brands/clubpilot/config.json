@@ -127,6 +127,9 @@
       "linkedin": "clubpilot.com/demo",
       "instagram": "Link in bio"
     },
+    "endCardSkipPillars": [
+      "Humor"
+    ],
     "endCards": [
       {
         "id": "see-it",

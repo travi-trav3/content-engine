@@ -70,6 +70,18 @@ const INTERNAL_LABELS = [
 // Retired positioning (BRAND.md, Retired lines, 2026-08-26).
 const RETIRED_LINES = ['smartest front desk', 'never had to hire'];
 
+// Golf Digest (BRAND.md section 8, locked 2026-07-31): Club Pilot was
+// featured in a roundup headlined with the quote below, and the article
+// never judges Club Pilot itself. Remembered versions keep resurfacing ("one
+// of the coolest new products"; the Sep 30 home page draft's "naming us a
+// leader in the SMS space"), so any judgment attributed to Golf Digest
+// fails. The locked quote, verbatim, is removed before the check.
+const PRESS_QUOTE = 'The coolest stuff we saw at the 2026 PGA Merchandise Show.';
+const PRESS_QUOTE_RE = new RegExp(PRESS_QUOTE.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+const PRESS_JUDGMENT = '(nam(ed|es|ing)|call(ed|s|ing)|rank(ed|s|ing)|rated|crowned|declared|award(ed|s)?|voted|leaders?|leading|best|top|coolest|#1|number one)';
+const PRESS_CLAIM = new RegExp(
+  `\\bgolf digest\\b[^.!?\\n]{0,60}\\b${PRESS_JUDGMENT}|\\b${PRESS_JUDGMENT}\\b[^.!?\\n]{0,60}\\bgolf digest\\b`, 'i');
+
 // Known abstractions (D22), from BRAND.md. This list catches repeats of
 // shipped offenders and nothing more: novel abstraction passes every string
 // check ever written. The real defense is the plan's plain-language message
@@ -372,6 +384,14 @@ function checkPost(post, ctx) {
     }
   }
 
+  /* -- Press attribution (BRAND.md section 8) --------------------------- */
+  const pressText = joinedAll.replace(PRESS_QUOTE_RE, ' ');
+  const press = pressText.match(PRESS_CLAIM);
+  if (press) {
+    add(FAIL, 'brand.pressClaim',
+      `Attributes a judgment to Golf Digest: "${press[0]}". Club Pilot was featured in its 2026 PGA Merchandise Show roundup; quote that roundup verbatim ("${PRESS_QUOTE}") or say "featured in Golf Digest". BRAND.md section 8.`);
+  }
+
   /* -- D22: known abstractions (partial defense, see the list) ---------- */
   for (const phrase of ABSTRACTION_PHRASES) {
     if (joinedAll.toLowerCase().includes(phrase)) {
@@ -515,7 +535,7 @@ function report(result) {
 
 module.exports = {
   checkPost, checkBatch, report,
-  PILLARS, INTERNAL_LABELS, ACCUSATION_PATTERNS, RETIRED_LINES,
+  PILLARS, INTERNAL_LABELS, ACCUSATION_PATTERNS, RETIRED_LINES, PRESS_QUOTE,
   CAP_HEADLINE, CAP_SUBHEAD, CAP_CARD_TOTAL,
 };
 

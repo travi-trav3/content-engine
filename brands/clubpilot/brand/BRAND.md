@@ -19,6 +19,8 @@
   channel, and the line rotates through the library in `config.json` (`cta.variants`). The engine adds
   the ask as the caption's last line; generated copy never writes its own. Every carousel also ends on
   an end card with its own ask (`cta.endCards`), and a carousel never asks in its caption as well.
+  Humor carousels are the exception: they end on the takeaway and ask nothing, because an ask
+  straight after the joke deflates it (Travis, 2026-10-01; `cta.endCardSkipPillars`).
 - **"Book" is the reader's word, never the assistant's (2026-09-30).** A call to action may say book.
   A post that depicts the assistant may not: it never books tee times, courts or dinner reservations,
   and never implies it. Naming the tee sheet is fine ("Rip out the tee sheet? No."); saying Club Pilot
@@ -26,6 +28,19 @@
 - **Byron's personal LinkedIn (2026-09-30)** is being connected to the new Buffer account. Founder posts
   are first person and come only from material Byron supplies (source mode); each is approved by him
   before it publishes.
+- **Where clubs start (2026-09-30, home page draft "Fix the Messaging Channels. One at a Time.").**
+  Byron softened the 2.0 story after Heather's concern about walking away from the SMS strength: most
+  clubs start with text messaging and AI Assist, and 2.0 adds email and the mobile app, which a club
+  takes on at its own pace (the home page path: 1 text, 2 AI Assist, 3 email, 4 app). Text plus AI
+  Assist is the brand's most familiar story and stays a lead story, not a legacy one. Platform posts
+  present the other channels as there when the club is ready, never as a migration, a rip-and-replace
+  or an all-at-once rollout. The channel-versus-channel ban (section 2) still holds: starting with text
+  is never framed as text beating email or the app.
+- **Golf Digest did not name Club Pilot a leader (2026-09-30).** The home page draft says clubs start
+  with text "thanks to Golf Digest naming us a leader in the SMS space". The article does not say that
+  (section 8: Club Pilot was featured in a roundup, and Golf Digest judges nothing about it). Posts
+  never repeat it; the brand gate fails any judgment attributed to Golf Digest (`brand.pressClaim`).
+  The website line is Byron's call; it has been flagged to him.
 
 - **Em dashes: BANNED.** No em dashes anywhere — headlines, body, chat bubbles, UI
   mockups. (Confirmed by operator in chat 2026-07-23; also matches §3 of this doc.)
@@ -466,6 +481,17 @@ Never use these. They are recorded so a future session does not rediscover and r
 Amendments preserve the superseded text here rather than deleting it, so the history stays legible.
 Note: this repo has no `ClubPilot_locked_state_v3.md`; this file is where the locked state lives, so
 the changelog lives here too.
+
+### 2026-09-30 — Club Pilot 2.0 and the Sep 30 home page draft
+
+- **Live overrides added:** 2.0 is live; calls to action (one in four, rotating, engine-added; carousel
+  end cards, none on Humor carousels); "book" is the reader's word; Byron's personal LinkedIn; where
+  clubs start (text and AI Assist first, the rest at the club's pace); Golf Digest did not name Club
+  Pilot a leader.
+- **§2 dual-track positioning** is superseded by "2.0 is live" for capability, and partly restored in
+  spirit by "where clubs start": text plus AI Assist is still the entry point; the difference is that
+  the other channels are available, not "what we're building".
+- **§2 / §5 / §9 one-CTA-per-batch** is superseded by the one-in-four rotation.
 
 ### 2026-08-26 — Byron direction amendment (docs 01, 02, 03, Trinity, and the Aug 21 raw feedback)
 

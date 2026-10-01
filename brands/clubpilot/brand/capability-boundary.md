@@ -25,7 +25,8 @@ no further. The AI Assist rules in sections 1 to 9 are unchanged: 2.0 adds chann
 the assistant new powers.
 
 - **One platform.** Email, Text, Mobile App and AI Assist in one place, with one inbox for staff and
-  one communication history for each member. Members choose how they hear from the club.
+  one communication history for each member. Members choose how they hear from the club. Clubs take
+  it on in steps at their own pace, most starting with text and AI Assist (home page draft, Sep 30).
 - **Email.** Created and personalized in Club Pilot, two-way (members can reply), with smarter
   targeting, sent from the club's own domain.
 - **Text.** Timely notifications, event promotions, reminders, surveys and two-way conversations.
@@ -36,7 +37,10 @@ the assistant new powers.
   and hand-selected topics of interest: `[CONFIRM exact behavior with Byron before depicting either]`.
 - **AI Assist.** Answers routine questions 24/7 from the documents the club provides, in the club's
   voice, and hands off to staff when a person is needed. It does not book, reserve, pay, order, look
-  up live availability or act for anyone (section 3), in any channel.
+  up live availability or act for anyone (section 3), in any channel. Setup, as the home page draft
+  describes it: the club uploads its PDFs, documents and FAQs to its knowledge center; Club Pilot
+  makes them ready for the assistant and tunes the voice to the club; the club names its assistant.
+  It works in text and inside the app.
 - **Live integrations.** None with the tee sheet, reservations, POS or club management software.
   Club Pilot sits beside those systems and hopes to partner with them; posts may say that, and may
   not say it connects to them. USGA scores in the app are the one named integration.

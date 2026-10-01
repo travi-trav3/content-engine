@@ -222,16 +222,25 @@ function strict(schema, at = '$') {
   console.log('== carousels: one post in three, planned as a whole ==');
   const carousels = ledger.posts.filter((p) => p.layout === 'carousel');
   check('three or four of ten posts are carousels', carousels.length >= 3 && carousels.length <= 4, String(carousels.length));
-  check('each carousel has 4 to 8 content slides plus its end card, every one rendered',
-    carousels.every((p) => p.slides.length >= 5 && p.slides.length <= 9 && p.slides.every((sl) => sl.render && sl.render.issues.length === 0)),
+  const skipPillars = config.cta.endCardSkipPillars || [];
+  const askingCarousels = carousels.filter((p) => !skipPillars.includes(p.pillar));
+  const funny = carousels.filter((p) => skipPillars.includes(p.pillar));
+  check('the recorded batch has a humor carousel and asking carousels', funny.length >= 1 && askingCarousels.length >= 2,
+    `${funny.length} humor, ${askingCarousels.length} asking`);
+  const content = (p) => p.slides.length - (p.endCard ? 1 : 0);
+  check('each carousel has 4 to 8 content slides, every one rendered',
+    carousels.every((p) => content(p) >= 4 && content(p) <= 8 && p.slides.every((sl) => sl.render && sl.render.issues.length === 0)),
     carousels.map((p) => `${p.id}:${p.slides.length}`).join(', '));
   check('a carousel opens on a cover, gives its takeaway, then ends on the end card',
-    carousels.every((p) => p.slides[0].layout === 'carousel-cover'
+    askingCarousels.every((p) => p.slides[0].layout === 'carousel-cover'
       && p.slides[p.slides.length - 2].layout === 'carousel-close' && p.slides[p.slides.length - 1].layout === 'carousel-cta'));
-  check('each carousel has a different end card', new Set(carousels.map((p) => p.endCard)).size === carousels.length,
-    carousels.map((p) => p.endCard).join(', '));
-  check('a carousel asks once: on its end card, never in the caption too', carousels.every((p) => p.ctaType === 'none' && !p.cta));
-  check('end cards point to the demo on LinkedIn and the bio on Instagram', carousels.every((p) => {
+  check('a humor carousel ends on its close: no end card after the joke',
+    funny.every((p) => !p.endCard && p.slides[p.slides.length - 1].layout === 'carousel-close'
+      && !p.slides.some((sl) => sl.layout === 'carousel-cta')));
+  check('each asking carousel has a different end card', new Set(askingCarousels.map((p) => p.endCard)).size === askingCarousels.length,
+    askingCarousels.map((p) => p.endCard).join(', '));
+  check('a carousel asks once at most: on its end card, never in the caption too', carousels.every((p) => p.ctaType === 'none' && !p.cta));
+  check('end cards point to the demo on LinkedIn and the bio on Instagram', askingCarousels.every((p) => {
     const card = p.slides[p.slides.length - 1].props;
     return p.channel.startsWith('linkedin') ? card.link === config.cta.endCardLink.linkedin : card.link === config.cta.endCardLink.instagram;
   }));
@@ -244,6 +253,8 @@ function strict(schema, at = '$') {
     { id: 'x', layout: 'carousel', channel: 'instagram', dueAt: '2026-10-20T09:00:00-07:00' },
   ], [{ posts: [{ endCard: 'see-it', dueAt: '2026-10-06T12:05:00-07:00' }] }], config);
   check('the next end card is one not used recently', cards[0].endCard && cards[0].endCard !== 'see-it', cards[0].endCard);
+  const skipped = assignEndCards([{ id: 'h', layout: 'carousel', pillar: 'Humor', channel: 'instagram', dueAt: '2026-10-20T09:00:00-07:00' }], [], config);
+  check('a Humor carousel gets no end card', !skipped[0].endCard && !skipped[0].endCardProps);
   const flip = carousels.find((p) => p.carouselKind === 'reveal-flip');
   check('a reveal-flip has its reveal slide', flip && flip.slides.some((sl) => sl.layout === 'carousel-reveal'));
   const list = carousels.find((p) => p.carouselKind === 'list');

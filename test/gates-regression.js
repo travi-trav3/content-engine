@@ -168,6 +168,18 @@ fails('a dining reservation outside any thread', capPost({ caption: 'Move a dini
 fails('a claim that Club Pilot syncs with the tee sheet', capPost({ caption: 'Club Pilot syncs with your tee sheet.' }), 'capability.integrationClaim');
 fails('a claim of a POS integration', capPost({ caption: 'Answers come straight from the POS integration.' }), 'capability.integrationClaim');
 
+console.log('== press: Golf Digest featured Club Pilot and judged nothing (BRAND.md section 8) ==');
+const pressRules = (caption) => brand.checkBatch({ posts: [{ id: 'press', pillar: 'Proof', headline: 'Featured at the PGA Show.', caption, clubMarks: [] }] })
+  .failures.map((f) => f.rule);
+const pressFails = (label, caption) => check(`fails: ${label} (brand.pressClaim)`, pressRules(caption).includes('brand.pressClaim'), pressRules(caption).join(', ') || 'passed');
+const pressPasses = (label, caption) => check(`passes: ${label}`, !pressRules(caption).includes('brand.pressClaim'));
+pressFails('the Sep 30 home page draft line', 'Most clubs start with text, thanks to Golf Digest naming us a leader in the SMS space.');
+pressFails('a remembered superlative', 'One of the coolest new products at the PGA Show, per Golf Digest.');
+pressFails('Golf Digest called it the best', 'Golf Digest called Club Pilot one of the best new tools for clubs.');
+pressPasses('featured in Golf Digest', 'As featured in Golf Digest, 2026.');
+pressPasses('the locked quote, verbatim, with its attribution',
+  `"${brand.PRESS_QUOTE}" Golf Digest, 2026`);
+
 console.log('== regression: overall gate verdicts ==');
 check('batch 3 fails the combined gates',
   !(b3brand.pass && b3stat.pass && b3div.pass));
