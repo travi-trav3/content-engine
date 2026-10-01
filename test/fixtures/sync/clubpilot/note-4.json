@@ -1,0 +1,11 @@
+{
+  "understood": "Make it a simple type card on the light background, same message.",
+  "actionable": true,
+  "layout": "type-card",
+  "surface": "light",
+  "newPhoto": false,
+  "photoSubject": null,
+  "changeCaption": false,
+  "cannotDo": null,
+  "lesson": null
+}

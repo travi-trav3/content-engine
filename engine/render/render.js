@@ -398,4 +398,4 @@ async function createRenderer() {
   return { render, close };
 }
 
-module.exports = { createRenderer, loadLayout, validateProps, resolvePhotos, SIZES, DESIGN };
+module.exports = { createRenderer, loadLayout, validateProps, resolvePhotos, chromiumPath, SIZES, DESIGN };

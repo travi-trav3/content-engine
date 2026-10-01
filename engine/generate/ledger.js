@@ -95,7 +95,7 @@ function slideEntries(entry, post, renders) {
   });
 }
 
-function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
+function ledgerEntry({ index, entry, layout, post, render, size, batchNo, draft }) {
   const nn = String(batchNo).padStart(2, '0');
   const slides = post.slides ? slideEntries(entry, post, render) : null;
   const creative = slides ? { ...slides[0], thread: null } : creativeFields(layout, post.props);
@@ -156,6 +156,9 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo }) {
     review: entry.review || null,
     approvedBy: entry.approvedBy || null,
     plannedBy: entry.plannedBy,
+    // The model's answer as returned: what a later revision (a reviewer's
+    // note) starts from.
+    draft: draft || null,
     file: slides ? slides[0].file : `${entry.id}.png`,
     size,
     // One asset per image, in order. A carousel's first slide carries the

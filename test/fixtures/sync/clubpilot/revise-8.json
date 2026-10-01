@@ -1,0 +1,24 @@
+{
+  "props": {
+    "position": "bottom",
+    "eyebrow": null,
+    "headline": "Fog delay?",
+    "emphasis": "Not for the early doubles.",
+    "body": null
+  },
+  "photo": {
+    "subject": "tennis",
+    "time": "dusk",
+    "people": "none",
+    "tags": [
+      "court"
+    ]
+  },
+  "caption": "Every club has a group that plays through anything. Fog, drizzle, the first cold morning of the year.\n\nThey are not waiting for an announcement. They are already on the court.\n\nThe rest of the membership would like to know whether it is worth the drive.",
+  "firstComment": "Every club has this group, and every club is a little proud of them.",
+  "altText": "Photograph of a tennis court in thick fog with players at the net, and the line Fog delay? Not for the early doubles.",
+  "earnsItsPlace": "Recognition of the devoted regulars every operator knows, with a nod to the members who need the update before they drive in, which is the job Club Pilot does.",
+  "humorMechanism": "Devotion taken slightly too far: the regulars play through fog everyone else would wait out.",
+  "observableAnswer": null,
+  "standsWithoutFooter": true
+}

@@ -99,21 +99,24 @@ Humor (the plan's pillar is Humor): follow humor-standard.md. Name the mechanism
 
 Return only the JSON the schema asks for. Optional props you do not use are null.`;
 
-function writeRequest({ brandText, entry, layoutInfo, revision }) {
+function writeRequest({ brandText, entry, layoutInfo, revision, reviewerFeedback }) {
   const plan = { ...entry };
   for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant', 'endCard', 'endCardProps']) delete plan[k];
-  const parts = [
-    brandText,
+  const parts = [brandText];
+  if (reviewerFeedback) parts.push('<reviewer_feedback>', reviewerFeedback, '</reviewer_feedback>');
+  parts.push(
     '<layout>', layoutInfo, '</layout>',
     '<plan_entry>', JSON.stringify(plan, null, 1), '</plan_entry>',
-  ];
+  );
   if (entry.ctaLine) parts.push(`<cta>The engine ends this caption with: ${entry.ctaLine}</cta>`);
   if (entry.channel === 'instagram') parts.push('<channel>Instagram: the caption can be short; the first line must stand alone.</channel>');
   else parts.push('<channel>LinkedIn company page: the caption can run longer and reason more; the first two lines show before "see more".</channel>');
   if (revision) {
     parts.push('<revision>',
-      'Your previous draft of this post failed these checks. Return a complete corrected post, changing what the failures require and keeping what passed.',
-      'Failures:', revision.failures.map((f) => `- ${f}`).join('\n'),
+      revision.reviewer
+        ? 'The reviewer read your previous draft and asked for changes. Return a complete revised post: change what the note asks for and keep everything else as it was.'
+        : 'Your previous draft of this post failed these checks. Return a complete corrected post, changing what the failures require and keeping what passed.',
+      revision.reviewer ? 'The request:' : 'Failures:', revision.failures.map((f) => `- ${f}`).join('\n'),
       'Previous draft:', JSON.stringify(revision.previous, null, 1), '</revision>');
   }
   return parts.join('\n');
@@ -151,7 +154,7 @@ function choosePhoto({ lib, library, request, spec, exclude, now }) {
 }
 
 /** Everything the renderer would refuse, plus the photo, found before rendering. */
-function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
+function finish({ entry, data, brand, lib, library, usedPhotos, config = {}, keepPhotos = {} }) {
   const failures = [];
   const carousel = isCarousel(entry);
   const props = carousel ? {} : clean(data.props || {});
@@ -160,6 +163,13 @@ function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
   let photoMatch = null;
   const now = Date.parse(entry.dueAt);
   for (const spec of entry.photoProps) {
+    // A revision that was not asked to change the photo keeps it.
+    if (keepPhotos[spec.key]) {
+      props[spec.key] = keepPhotos[spec.key];
+      photos.push(keepPhotos[spec.key]);
+      photoMatch = { id: keepPhotos[spec.key], matched: ['kept'], dropped: [] };
+      continue;
+    }
     const request = data.photo || { subject: entry.photoSubject, tags: [] };
     if (request.subject !== entry.photoSubject) {
       failures.push(`photo.subject is "${request.subject}" but the plan's photoSubject is "${entry.photoSubject}"`);
@@ -226,25 +236,25 @@ function finish({ entry, data, brand, lib, library, usedPhotos, config = {} }) {
  * or the renderer) starts the call as a revision of `previous`.
  * Returns { post, failures, rounds, raw }.
  */
-async function writePost({ provider, entry, brand, brandDir, config, lib, library, usedPhotos, feedback, previous, brandText, log = () => {} }) {
+async function writePost({ provider, entry, brand, brandDir, config, lib, library, usedPhotos, feedback, previous, brandText, reviewerFeedback, reviewer = false, keepPhotos, key, log = () => {} }) {
   const schema = postSchema(entry, brand);
   const text = brandText || brandContext(brandDir);
   const maxRounds = 1 + ((config.maxRevisions && config.maxRevisions.post) ?? 2);
-  let revision = feedback && feedback.length ? { failures: feedback, previous } : null;
+  let revision = feedback && feedback.length ? { failures: feedback, previous, reviewer } : null;
   let result = null;
   let raw = null;
   let round = 0;
   while (round < maxRounds) {
     round += 1;
     const { data, usage } = await provider.generate({
-      key: `post-${entry.slotIndex}`,
+      key: key || `post-${entry.slotIndex}`,
       system: SYSTEM(config.brand || brand.name),
-      user: writeRequest({ brandText: text, entry, layoutInfo: entry.layoutInfo, revision }),
+      user: writeRequest({ brandText: text, entry, layoutInfo: entry.layoutInfo, revision, reviewerFeedback }),
       schema,
       schemaName: 'post',
     });
     raw = data;
-    result = finish({ entry, data, brand, lib, library, usedPhotos, config });
+    result = finish({ entry, data, brand, lib, library, usedPhotos, config, keepPhotos });
     log({ step: 'write', id: entry.id, round, usage, failures: result.failures });
     if (!result.failures.length) break;
     revision = { failures: result.failures, previous: data };
@@ -252,4 +262,4 @@ async function writePost({ provider, entry, brand, brandDir, config, lib, librar
   return { ...result, rounds: round, raw };
 }
 
-module.exports = { writePost, postSchema, choosePhoto, clean, finish, coverPhotoSpec };
+module.exports = { writePost, writeRequest, postSchema, choosePhoto, clean, finish, coverPhotoSpec };

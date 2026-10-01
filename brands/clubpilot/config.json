@@ -76,6 +76,34 @@
       "founderVoice": true
     }
   },
+  "buffer": {
+    "organizationId": null,
+    "apiKeyEnv": "BUFFER_API_KEY",
+    "channels": {
+      "instagram": null,
+      "linkedin_page": null,
+      "linkedin_byron": null
+    },
+    "linkedinCarousel": "document",
+    "tags": {
+      "engine": "Content engine",
+      "revised": "Revised",
+      "needsLook": "Needs a look",
+      "checkCaption": "Check caption"
+    },
+    "reviewerName": "Byron",
+    "reviewers": []
+  },
+  "assets": {
+    "host": "github",
+    "repo": null,
+    "branch": "main",
+    "tokenEnv": "ASSETS_PUSH_TOKEN"
+  },
+  "notify": {
+    "slackWebhookEnv": "SLACK_WEBHOOK_URL",
+    "onRevised": true
+  },
   "cta": {
     "every": 4,
     "type": "demo",

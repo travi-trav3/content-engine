@@ -91,6 +91,7 @@ function planRequest({ ctx, slots, rules, revision }) {
     '<history>', ctx.history, '</history>',
     '<photo_library>', ctx.photos, '</photo_library>',
     '<layouts>', ctx.layouts, '</layouts>',
+    ...(ctx.feedback ? ['<reviewer_feedback>', ctx.feedback, '</reviewer_feedback>'] : []),
     '<task>',
     `Plan one post for each of these ${slots.length} slots:`,
     slotLines,
@@ -290,7 +291,7 @@ function gateFailures(entries, priors, { awaitingApproval = false } = {}) {
  * Plans a batch, revising until the plan passes or the revision budget runs
  * out. Returns { entries, failures, rounds }; failures is empty on success.
  */
-async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, log = () => {} }) {
+async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, reviewerFeedback, log = () => {} }) {
   const pillars = planGate.PILLARS.filter((p) => !(config.excludePillars || []).includes(p));
   const ctaTypes = ctaTypesOf(config);
   const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length, carousels: Boolean(config.carousel && config.carousel.every) });
@@ -299,6 +300,7 @@ async function makePlan({ provider, brandDir, brand, config, catalog, library, l
     history: historySummary(priors, slots[0].date),
     photos: photoSummary(library, lib, Date.parse(`${slots[0].date}T12:00:00Z`)),
     layouts: layoutMenu(catalog, brand, config),
+    feedback: reviewerFeedback || '',
   };
   const rules = batchRules({ slots, pillars, config, factIds, demoClubs });
   const maxRounds = 1 + ((config.maxRevisions && config.maxRevisions.plan) ?? 3);

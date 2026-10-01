@@ -42,6 +42,7 @@ const { makePlan } = require('./plan');
 const { writePost, coverPhotoSpec } = require('./write');
 const { assignVariants, assignEndCards, validateLibrary } = require('./cta');
 const { ledgerEntry } = require('./ledger');
+const feedbackLog = require('../feedback/log');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const today = (now) => new Date(now).toISOString().slice(0, 10);
@@ -150,6 +151,9 @@ async function runBatch(opts = {}) {
   const catalog = loadCatalog({ brand, library, config });
   const byLayout = new Map(catalog.map((c) => [c.id, c]));
   const demoClubs = read(path.join(brandDir, 'demo-clubs.json')).clubs.map((c) => c.name);
+  // How the reviewer received recent drafts (feedback/log.jsonl, written by sync).
+  const reviewerFeedback = opts.reviewerFeedback ?? feedbackLog.summary(feedbackLog.load(opts.feedbackFile),
+    { reviewer: (config.buffer && config.buffer.reviewerName) || 'The reviewer' });
   const batchDir = path.join(contentDir, `batch-${nn}`);
   const stagingDir = path.join(stagingRoot, `batch-${nn}`);
   fs.mkdirSync(batchDir, { recursive: true });
@@ -160,7 +164,7 @@ async function runBatch(opts = {}) {
   /* -- 1. plan ------------------------------------------------------- */
   const plan = await makePlan({
     provider, brandDir, brand, config, catalog, library, lib: photoLib, slots, priors, batchNo,
-    plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), log: note,
+    plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), reviewerFeedback, log: note,
   });
   if (!plan.failures.length) {
     assignVariants(plan.entries, priors, config);
@@ -196,7 +200,7 @@ async function runBatch(opts = {}) {
   const write = async (w, feedback) => {
     const prev = written.get(w.id);
     const r = await writePost({
-      provider, entry: w, brand, brandDir, config, lib: photoLib, library, brandText,
+      provider, entry: w, brand, brandDir, config, lib: photoLib, library, brandText, reviewerFeedback,
       usedPhotos: usedPhotos(w.id), feedback, previous: prev && prev.raw, log: note,
     });
     written.set(w.id, r);
@@ -210,6 +214,7 @@ async function runBatch(opts = {}) {
   const assemble = () => work.map((w, i) => ledgerEntry({
     index: i, entry: w, layout: w.layoutModule, post: written.get(w.id).post,
     render: renders.get(w.id), size: (config.channels[w.channel] || {}).size || 'ig', batchNo,
+    draft: written.get(w.id).raw,
   }));
   const renderer = await createRenderer();
   let gates = null;

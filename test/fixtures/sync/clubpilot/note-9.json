@@ -1,0 +1,11 @@
+{
+  "understood": "Replace the message thread with a custom illustration of the club's dining room.",
+  "actionable": true,
+  "layout": null,
+  "surface": null,
+  "newPhoto": false,
+  "photoSubject": null,
+  "changeCaption": false,
+  "cannotDo": "The engine builds images from its layouts and the photo library; it cannot draw a custom illustration, and the library has no dining room photos.",
+  "lesson": null
+}
