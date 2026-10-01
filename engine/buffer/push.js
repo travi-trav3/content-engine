@@ -15,6 +15,7 @@
  * way resumes where it left off and never drafts a post twice.
  *
  *   node engine/buffer/push.js --batch 07 [--buffer mock] [--assets mock] [--dry-run]
+ *   node engine/buffer/push.js --latest      the newest batch that has a ledger
  */
 
 'use strict';
@@ -137,8 +138,13 @@ if (require.main === module) {
   (async () => {
     const ws = workspace();
     const config = read(path.join(ws.dir, 'config.json'));
-    const batchNo = Number(arg('batch'));
-    if (!batchNo) throw new Error('--batch NN is required');
+    let batchNo = Number(arg('batch'));
+    if (argv.includes('--latest')) {
+      const nums = fs.readdirSync(ws.contentDir).map((d) => /^batch-(\d{2})$/.exec(d)).filter(Boolean)
+        .filter((m) => fs.existsSync(path.join(ws.contentDir, m[0], 'ledger.json'))).map((m) => Number(m[1]));
+      batchNo = nums.length ? Math.max(...nums) : 0;
+    }
+    if (!batchNo) throw new Error('--batch NN or --latest is required');
     const dryRun = argv.includes('--dry-run');
     const bc = bufferConfig(config);
     const buffer = dryRun ? null : arg('buffer') === 'mock' ? createMockBuffer({ channels: bc.channels }) : createBuffer({ apiKeyEnv: bc.apiKeyEnv });

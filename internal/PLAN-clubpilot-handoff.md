@@ -425,3 +425,46 @@ Open:
 - Every carousel ends on an end card (carousel-cta) after its close: one ask per carousel, in the
   brand's words from `cta.endCards`, rotated least recently used; carousels never also ask in the
   caption. Caption asks stay at one in four across the other posts.
+
+### 2026-10-01, increment 7 (Buffer, the edit loop, workflows)
+
+Decided (Travis): humor carousels skip the end card. Byron asked (Slack, Sep 30) how to change an
+image: Byron does not edit the graphic, but leaves a note on the Buffer draft and gets a new version
+in the same draft; captions are edited directly in Buffer. That loop is what this increment builds,
+ahead of the Drive photo sync and the photo scout, because Byron called it "the real snag".
+
+Done:
+- `cta.endCardSkipPillars: ["Humor"]`.
+- Sep 30 home page draft folded in: BRAND.md override "where clubs start" (text and AI Assist first,
+  the rest at the club's pace), capability boundary section 0 (stepwise adoption, AI Assist setup as
+  the page describes it). The page says Golf Digest named Club Pilot "a leader in the SMS space"; the
+  article does not. New gate rule `brand.pressClaim` fails any judgment attributed to Golf Digest;
+  the locked quote still passes. Flag the website line to Byron.
+- Buffer client (GraphQL, verified against the live schema and existing posts: notes readable, not
+  writable; an Instagram carousel is a "post" with several images; raw.githubusercontent.com images
+  work). Assets host: public repo via the contents API, content-hashed names, served bytes verified.
+  LinkedIn carousels go up as a PDF so they swipe.
+- Push: drafts only, at planned times, CTA line, first comment, alt text, engine tag; skips posts
+  that fail a gate, lack a channel or missed their slot; idempotent via the ledger.
+- Sync (15 minutes, 7am to 7pm Pacific): a note is read by the model, the post rewritten, gated and
+  rendered, and the images swapped in the same draft, tagged Revised. Photo and caption stay unless
+  the note asks. Impossible asks are tagged Needs a look and explained. Caption edits recorded, and
+  tagged Check caption if they trip a gate (never rewritten). Approvals, deletes, publishes recorded.
+  Everything lands in `feedback/log.jsonl`, whose summary the next batch's planner and writer read.
+- Workflows for the instance (`instance/`): batch (weekly cron, generates when due, which makes it
+  biweekly) and sync. Sync installs Chromium only when a note needs a render.
+- `test/buffer.test.js`: client and host against stubbed fetch, a recorded batch pushed to an
+  in-memory Buffer, and a reviewer's week (schedule, edit, delete, publish, five kinds of note, an
+  outage).
+
+Needs before run 1 (Byron or Travis):
+- A Buffer org for Club Pilot with Instagram (currently disconnected in Travis's org) and the LinkedIn
+  page connected; Byron's personal LinkedIn is locked there (5 channels on a 4-channel plan). API key.
+- A public `clubpilot-social-assets` repo in Byron's org and a token scoped to it.
+- A Slack webhook for messages to Byron, and Byron's Buffer email for `buffer.reviewers`.
+- GitHub plan minutes: sync uses about 1,450 a month at this schedule.
+
+Open:
+- LinkedIn document posts through the API are untested against a live account; run 1 settles it
+  (fallback: `buffer.linkedinCarousel: "images"`).
+- Promised to Byron in Slack, not built: the monthly theme input (brief mode).

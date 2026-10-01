@@ -12,11 +12,16 @@ it in their own GitHub organization. Club Pilot is the first brand and lives her
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
 engine/gates/      the checks; check-batch.js runs all of them for one batch
 engine/generate/   plan, write, gate, render a batch (batch.js); providers/ (openai, mock); see its README
-engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js
+engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js, pdf.js (LinkedIn carousels)
 engine/photos/     library.js (selection), ingest.js, review.js; see engine/photos/README.md
+engine/buffer/     client.js, mock.js, push.js (drafts), sync.js (notes, edits, approvals); see its README
+engine/feedback/   revise.js (a note becomes a new version), log.js (feedback/log.jsonl and its summary)
+engine/publish/    host.js: renders to the public assets repository, content-hashed and verified
+engine/notify.js   messages to the reviewer (Slack webhook or console)
+instance/          files only a client instance gets: the batch and sync workflows
 layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
 brands/<name>/     a brand fixture: brand/, content/, photos/, test-props/, goldens/
-test/              gates-regression.js, photos.test.js, render.test.js, generate.test.js, fixtures/
+test/              gates-regression.js, photos.test.js, render.test.js, generate.test.js, buffer.test.js, fixtures/
 internal/          Applied Intelligence planning material. Never copied into a client instance
 ```
 
@@ -28,6 +33,8 @@ npm test                                                  # everything CI runs
 CE_WORKSPACE=brands/clubpilot node engine/gates/check-batch.js 05
 CE_WORKSPACE=brands/clubpilot npm run generate -- --plan-only          # needs OPENAI_API_KEY
 CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir test/fixtures/generate/clubpilot --start 2026-10-05
+CE_WORKSPACE=brands/clubpilot npm run push -- --batch 06 --dry-run              # what would go to Buffer
+BUFFER_API_KEY=... node engine/buffer/setup.js                                 # organization and channel ids
 CE_WORKSPACE=brands/clubpilot npm run render -- --layout type-card \
   --props brands/clubpilot/test-props/type-card.json --out /tmp/renders
 CE_WORKSPACE=brands/clubpilot npm run render:carousel -- --spec carousel.json --out /tmp/renders
@@ -65,10 +72,15 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
    customer logo (`trusted`) needs the written approval recorded in its entry before it is added.
 8. **Generation never approves or publishes.** A generated plan records `review: "buffer-drafts"` (every
    post goes to Buffer as a draft for Byron) or waits for a person's `approvedBy`. Never write a name
-   into `approvedBy` from code. Humor is generated only as a Buffer draft Byron approves.
-9. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
+   into `approvedBy` from code. Humor is generated only as a Buffer draft Byron approves. Push creates
+   drafts only (`saveToDraft`); nothing in the engine schedules a post. Scheduling a draft in Buffer is
+   the approval, and sync records it as Buffer status, never as `approvedBy`.
+9. **The reviewer's words are theirs.** Sync never rewrites a caption the reviewer edited; a caption
+   edit that trips a gate is tagged and reported. A note changes a post only through the writer, the
+   gates and the renderer, like any other revision; what cannot be made is reported, never guessed at.
+10. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
    or into `engine/` or `layouts/`. `internal/` never ships.
-10. Commit the render harness and tests with every change. Do not commit `node_modules/` or
+11. Commit the render harness and tests with every change. Do not commit `node_modules/` or
    `test/output/`.
 
 ## Known gaps
@@ -78,8 +90,13 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: Buffer client, publishing renders to the assets repo, feedback loop, source mode,
-  scheduled workflows, Drive photo sync and the weekly photo scout.
+- Not built yet: source mode (founder posts from material Byron supplies), brief mode (a monthly theme or
+  map from the reviewer), the brand-update inbox, Drive photo sync and the weekly photo scout.
+- Not yet exercised against a live Buffer account: a LinkedIn document (PDF) post created through the
+  API, and Buffer's own normalization of caption text. Run 1 settles both (engine/buffer/README.md).
+- A note cannot turn a single image into a carousel or back, or add or remove a message thread; it
+  says so and tags the draft. Lessons from notes stay in the feedback log until a person moves them
+  into the brand files.
 - The full-bleed layout darkens the wordmark corner from the photo's measured top zones, which are
   measured on the whole photo; a landscape photo cropped to 4:5 shows its middle. Measure the crop
   instead when a render shows a weak wordmark.

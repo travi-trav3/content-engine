@@ -292,6 +292,25 @@ function stubFetch(script) {
   check('the log does not repeat itself', feedbackLog.load(feedbackFile).length === log.length);
 
   /* ------------------------------------------------------------------ */
+  console.log('== sync: Chromium only when a note needs it ==');
+  buffer.human.note(bid(9), 'Make the headline shorter.');
+  const deferred = await syncOnce({ config: { ...config, buffer: { ...config.buffer, reviewers: ['byron@clubpilot.test'] } }, buffer, host, provider, notifier, contentDir, stagingDir, library, feedbackFile,
+    deferRenders: true, canRenderNow: () => false, now: NOW + 3.5 * 86400000 });
+  check('without Chromium the note waits, unread, for the second pass', deferred.deferred.length === 1
+    && !read(ledgerFile).posts[9].buffer.notesSeen.includes(buffer.posts.get(bid(9)).notes.slice(-1)[0].id));
+  // Mark it read by hand so the outage test below starts clean.
+  { const l = read(ledgerFile); l.posts[9].buffer.notesSeen.push(buffer.posts.get(bid(9)).notes.slice(-1)[0].id); fs.writeFileSync(ledgerFile, JSON.stringify(l, null, 2)); }
+
+  console.log('== a batch every other week ==');
+  {
+    const { batchDue } = require('../engine/generate/batch');
+    const pri = [{ posts: [{ dueAt: '2026-10-18T16:40:00-07:00' }] }];
+    check('not due while the last post is more than a week out', !batchDue(pri, Date.parse('2026-10-05T14:00:00Z'), 7).due);
+    check('due once it is under a week out', batchDue(pri, Date.parse('2026-10-12T14:00:00Z'), 7).due);
+    check('due when nothing has been planned', batchDue([], NOW, 7).due);
+  }
+
+  /* ------------------------------------------------------------------ */
   console.log('== sync: the model is down ==');
   const down = { name: 'down', calls: [], async generate({ key }) { this.calls.push(key); throw new Error('provider unavailable'); } };
   const byron = { ...config, buffer: { ...config.buffer, reviewers: ['byron@clubpilot.test'] } };

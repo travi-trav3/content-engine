@@ -19,9 +19,15 @@
  *
  *   node engine/generate/batch.js [--start YYYY-MM-DD] [--batch NN]
  *                                 [--provider openai|mock] [--mock-dir DIR] [--plan-only]
+ *                                 [--if-due DAYS]
  *
- * Exit 0: every gate passed and every render is clean. Exit 1: the batch
- * needs a person (see report.md). Nothing is ever scheduled from here.
+ * --if-due DAYS generates only when the last planned post is fewer than DAYS
+ * days away, so a weekly schedule makes a batch every other week, a week
+ * before it starts (GitHub Actions cron cannot say "every two weeks").
+ *
+ * Exit 0: every gate passed and every render is clean, or no batch was due.
+ * Exit 1: the batch needs a person (see report.md). Exit 2: the run itself
+ * failed. Nothing is ever scheduled from here.
  */
 
 'use strict';
@@ -348,7 +354,13 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
   fs.writeFileSync(path.join(batchDir, 'report.md'), `${lines.join('\n')}\n`);
 }
 
-module.exports = { runBatch, defaultStart, nextBatchNo, renderFeedback, workEntry, findingsByPost };
+/** Whether a new batch is due: the last planned post is fewer than `days` days from now. */
+function batchDue(priors, now, days) {
+  const last = priors.flatMap(postsOf).map((p) => Date.parse(p.dueAt || `${p.date}T12:00:00Z`)).filter(Number.isFinite).sort((a, b) => a - b).pop();
+  return { due: !last || last - now < days * 86400000, last: last ? new Date(last).toISOString() : null };
+}
+
+module.exports = { runBatch, defaultStart, nextBatchNo, renderFeedback, workEntry, findingsByPost, batchDue };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
@@ -358,6 +370,13 @@ if (require.main === module) {
   if (arg('mock-dir')) overrides.dir = arg('mock-dir');
   (async () => {
     const config = loadConfig(workspace().dir);
+    if (arg('if-due')) {
+      const { due, last } = batchDue(priorLedgers(workspace().contentDir), Date.now(), Number(arg('if-due')));
+      if (!due) {
+        console.log(`No batch due: the last planned post is ${last}, more than ${arg('if-due')} days out.`);
+        process.exit(0);
+      }
+    }
     const r = await runBatch({
       config,
       provider: Object.keys(overrides).length ? createProvider(config, overrides) : undefined,
@@ -373,6 +392,6 @@ if (require.main === module) {
     process.exit(r.ok ? 0 : 1);
   })().catch((e) => {
     console.error(e.message);
-    process.exit(1);
+    process.exit(2);
   });
 }

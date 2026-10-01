@@ -1,0 +1,76 @@
+name: batch
+
+# Every Monday morning (Pacific), and on demand: when the last planned post
+# is under a week away, generate the next two-week batch, put it in Buffer
+# as drafts, and commit the plan, ledger, report and contact sheet. A week
+# with no batch due exits in under a minute. The reviewer gets a message
+# with the contact sheet; nothing is scheduled until they schedule it.
+
+on:
+  schedule:
+    - cron: '7 14 * * 1'   # Monday 7:07 Pacific (6:07 in winter)
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Generate even if no batch is due
+        type: boolean
+        default: false
+
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  batch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: chromium-${{ hashFiles('package-lock.json') }}
+
+      - run: npx playwright-core install --with-deps chromium
+
+      - name: Generate
+        id: generate
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set +e
+          if [ "${{ inputs.force }}" = "true" ]; then node engine/generate/batch.js; else node engine/generate/batch.js --if-due 7; fi
+          code=$?
+          # 0 clean or not due, 1 some posts need a person (the clean ones still go to Buffer), 2 failed.
+          if [ $code -eq 2 ]; then exit 1; fi
+          echo "changed=$(git status --porcelain content | wc -l)" >> "$GITHUB_OUTPUT"
+
+      - name: Draft in Buffer
+        if: steps.generate.outputs.changed != '0'
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          ASSETS_PUSH_TOKEN: ${{ secrets.ASSETS_PUSH_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/buffer/push.js --latest
+
+      - name: Commit the batch
+        if: always() && steps.generate.outputs.changed != '0'
+        run: |
+          git config user.name "content-engine"
+          git config user.email "content-engine@users.noreply.github.com"
+          for d in content feedback; do if [ -e "$d" ]; then git add "$d"; fi; done
+          git diff --cached --quiet && exit 0
+          git commit -m "batch: $(ls content | grep '^batch-' | sort | tail -1) [skip ci]"
+          git pull --rebase
+          git push

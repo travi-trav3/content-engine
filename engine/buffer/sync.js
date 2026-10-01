@@ -19,7 +19,12 @@
  * which the next batch reads. One Buffer request per run when nothing
  * changed (the posts query); none when no draft is open.
  *
- *   node engine/buffer/sync.js [--buffer mock] [--provider mock --mock-dir DIR] [--assets mock]
+ *   node engine/buffer/sync.js [--defer-renders] [--buffer mock] [--provider mock --mock-dir DIR] [--assets mock]
+ *
+ * --defer-renders: when a note needs a re-render and no Chromium is
+ * installed, leave the note unread, finish everything else, and write
+ * needs-render.txt; the workflow then installs Chromium and runs again. Most
+ * runs find nothing to render and never pay for the install.
  */
 
 'use strict';
@@ -28,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const { workspace } = require('../lib/workspace');
 const photoLib = require('../photos/library');
-const { createRenderer } = require('../render/render');
+const { createRenderer, chromiumPath } = require('../render/render');
 const { priorLedgers } = require('../gates/check-batch');
 const { createProvider } = require('../generate/providers');
 const { loadCatalog } = require('../generate/catalog');
@@ -48,6 +53,7 @@ const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const write = (f, v) => fs.writeFileSync(f, `${JSON.stringify(v, null, 2)}\n`);
 const norm = (s) => String(s || '').replace(/\r\n/g, '\n').trim();
 const OPEN = ['draft', 'needs_approval', 'scheduled', 'sending', 'error'];
+const canRender = () => { try { chromiumPath(); return true; } catch { return false; } };
 const channelName = (c) => (String(c).startsWith('linkedin') ? 'LinkedIn' : 'Instagram');
 const stop = (t) => String(t || '').trim().replace(/[.\s]+$/, '');
 const lower = (t) => (t ? t[0].toLowerCase() + t.slice(1) : t);
@@ -84,12 +90,12 @@ function captionFindings(post, newCaption, brandDir) {
   return run(newCaption).filter((f) => !before.has(f));
 }
 
-async function syncOnce({ config, buffer, host, provider, notifier, contentDir, stagingDir, renderer, library, lib = photoLib, feedbackFile, now = Date.now(), log = () => {} }) {
+async function syncOnce({ config, buffer, host, provider, notifier, contentDir, stagingDir, renderer, library, lib = photoLib, feedbackFile, deferRenders = false, canRenderNow = canRender, now = Date.now(), log = () => {} }) {
   const ws = workspace();
   const content = contentDir || ws.contentDir;
   const bc = bufferConfig(config);
   const batches = openBatches(content);
-  const result = { checked: 0, revised: [], notApplied: [], captionEdits: [], approved: [], deleted: [], sent: [], errors: [] };
+  const result = { checked: 0, revised: [], notApplied: [], captionEdits: [], approved: [], deleted: [], sent: [], errors: [], deferred: [] };
   if (!batches.length) return result;
 
   // Tag ids recorded at push time save a request on every run.
@@ -194,6 +200,10 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
           events.push({ ...meta(b, post), kind: 'note', note: noteText, applied: false, reason: 'the post had already been published', understood: '' });
           continue;
         }
+        if (deferRenders && !renderer && !canRenderNow()) {
+          result.deferred.push(post.id);
+          continue;
+        }
         const c = await reviewCtx(b);
         let r;
         try {
@@ -258,8 +268,13 @@ if (require.main === module) {
       provider: createProvider(config, providerOverrides),
       notifier: createNotifier(config),
       library: photoLib.load(),
+      deferRenders: argv.includes('--defer-renders'),
+      log: (e) => { if (e.error) console.log(`${e.id}: ${e.error} (attempt ${e.attempt})`); },
     });
-    console.log(`checked ${r.checked}; revised ${r.revised.length}; not applied ${r.notApplied.length}; caption edits ${r.captionEdits.length}; approved ${r.approved.length}; deleted ${r.deleted.length}; sent ${r.sent.length}; errors ${r.errors.length}`);
+    const marker = path.join(ws.root, 'needs-render.txt');
+    if (r.deferred.length) fs.writeFileSync(marker, `${r.deferred.join('\n')}\n`);
+    else fs.rmSync(marker, { force: true });
+    console.log(`checked ${r.checked}; revised ${r.revised.length}; not applied ${r.notApplied.length}; caption edits ${r.captionEdits.length}; approved ${r.approved.length}; deleted ${r.deleted.length}; sent ${r.sent.length}; errors ${r.errors.length}${r.deferred.length ? `; ${r.deferred.length} note(s) wait for Chromium` : ''}`);
   })().catch((e) => {
     console.error(e.message);
     process.exit(1);

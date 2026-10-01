@@ -8,6 +8,7 @@ node engine/generate/batch.js                         # the next batch, with the
 node engine/generate/batch.js --start 2026-10-05      # a batch starting on a given Monday
 node engine/generate/batch.js --plan-only             # stop after the plan
 node engine/generate/batch.js --provider mock --mock-dir test/fixtures/generate/clubpilot   # no API key
+node engine/generate/batch.js --if-due 7              # only when the last planned post is under a week away
 ```
 
 In the core repository, prefix with `CE_WORKSPACE=brands/clubpilot`.
@@ -28,8 +29,12 @@ In the core repository, prefix with `CE_WORKSPACE=brands/clubpilot`.
    an issue (copy that does not fit, a lone word on a line), goes back to the writer with the finding,
    up to `maxRevisions.post` times. What still fails is listed in the report for a person.
 4. **Record.** `content/batch-NN/` gets `plan.json`, `ledger.json`, `report.md` and
-   `contact-sheet.jpg`. Renders go to `.staging/batch-NN/`, which is not committed; publishing them and
-   drafting them in Buffer are the next steps.
+   `contact-sheet.jpg`. Renders go to `.staging/batch-NN/`, which is not committed. The ledger keeps
+   each post's raw model answer (`draft`), which a later revision starts from. Publishing the renders
+   and drafting them in Buffer is `engine/buffer/push.js` (see `engine/buffer/README.md`).
+
+The planner and the writer also read `<reviewer_feedback>`: a summary of `feedback/log.jsonl`, which
+sync writes from what the reviewer did to earlier drafts (notes, caption edits, deletes, approvals).
 
 ## Review
 
@@ -66,7 +71,9 @@ cover's (a photo cover counts as a photo post), so the grid still alternates.
 Every carousel ends on an end card (`carousel-cta`) after its close: the carousel's one ask, seen only
 by people who swiped to the end. Its words come from `cta.endCards`, least recently used first, never
 from the model, with `cta.endCardLink` for each channel (the demo address on LinkedIn, the bio on
-Instagram). A carousel carries no caption ask as well; caption asks go on other posts.
+Instagram). A carousel carries no caption ask as well; caption asks go on other posts. Carousels in a
+pillar listed in `cta.endCardSkipPillars` end on their close and ask nothing; Club Pilot lists Humor,
+because an ask straight after the joke deflates it.
 
 `humor.every` sets how many posts are Humor (5: one in five). Humor follows `humor-standard.md`: a
 named mechanism, never blaming or mocking a member, landing without a footer, and the joke never in
