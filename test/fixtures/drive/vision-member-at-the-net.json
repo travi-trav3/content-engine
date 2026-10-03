@@ -1,0 +1,9 @@
+{
+  "description": "A tennis player at the net, face clearly visible, on a sunny court.",
+  "subject": "tennis",
+  "time": "day",
+  "people": "present",
+  "tags": ["net", "court"],
+  "focus": { "x": 0.45, "y": 0.4 },
+  "concerns": ["recognizable face"]
+}

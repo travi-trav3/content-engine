@@ -15,6 +15,8 @@
  *     tags: [...], subject, time, people,             written by review
  *     focus: { x, y },                                0..1, crop center
  *     reviewed: true|false,                           false until a person or agent has tagged it
+ *     parked, retired,                                out of rotation (the Drive folders, drive-sync.js)
+ *     drive: { fileId, md5, name, folder },           where it lives in the reviewer's Drive
  *     notes
  *   }
  */
@@ -56,7 +58,7 @@ function lastUsed(lib, id) {
 function select(lib, { tags = [], need = 'any', orientation, days = 30, exclude = [], now = Date.now() } = {}) {
   const cutoff = now - days * DAY;
   return lib.photos
-    .filter((p) => p.reviewed && !p.restricted)
+    .filter((p) => p.reviewed && !p.restricted && !p.parked && !p.retired)
     .filter((p) => need === 'any' || (need === 'fullBleed' ? p.fullBleedOk : p.bandOk))
     .filter((p) => !orientation || p.orientation === orientation)
     .filter((p) => {

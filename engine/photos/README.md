@@ -56,3 +56,26 @@ skips anything used in the last 30 days or already taken in the batch, and puts 
 used first. A use is any earlier post in a batch ledger that carried the photo, on the post's date
 (`library.withLedgerUsage()`; a draft the reviewer deleted does not count). `library.recordUse()` is
 only for uses outside the engine, such as a photo posted by hand.
+
+## The Drive library (what the reviewer uses)
+
+The reviewer manages photos in a shared Google Drive folder; `drive-sync.js` (the instance's
+`photos.yml`, four times a day) makes the library follow:
+
+| Folder | Means |
+|---|---|
+| Inbox | Drop new photos here. Each is ingested, read by a vision model (`vision.js`: subject, time, people, tags, focus, and any concern), and moved to Active, or to Needs a look if the reading has a concern. Uploading is the reviewer's approval; the reading supplies the tags (`reviewedBy: "vision reading; uploaded by ..."`). |
+| Active | In rotation. |
+| Parked | Out of rotation until moved back (`parked: true`). |
+| Retired | Out for good (`retired: true`). A photo used `drive.retireAfterUses` times (5 for Club Pilot) is moved here by the sync, and so is a duplicate upload. A photo deleted from Drive is retired too. |
+| Needs a look | Restricted: a logo that is not the club's, a recognizable face, a real club's name or signage, readable screen text, poor quality, or not a club setting. Moving it to Active is the reviewer's override, recorded in the photo's notes. |
+| Briefs | Briefs for `engine/generate/brief.js` (Word, Google Docs as Word, Markdown, text), copied into `briefs/` when new or changed. |
+
+Each photo's Drive description says its state, what it shows, its tags and how often it has been used.
+The vision reading never adds `founder` or `product-screenshot`; only a person does. Existing photos go
+up once with `node engine/photos/drive-sync.js --seed`.
+
+Setup: a Google Cloud service account with the Drive API enabled; its key JSON as the
+`GOOGLE_SERVICE_ACCOUNT_JSON` secret; the reviewer shares the root folder with the account's email as an
+editor; the folder's id (the last part of its URL) in `config.json` `drive.rootFolderId`. The sync creates
+the subfolders.

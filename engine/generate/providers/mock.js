@@ -23,8 +23,8 @@ function createMock({ dir }) {
   const calls = [];
   const served = new Map();
 
-  async function generate({ key, system, user, schemaName }) {
-    calls.push({ key, system, user, schemaName });
+  async function generate({ key, system, user, schemaName, images }) {
+    calls.push({ key, system, user, schemaName, images: images || [] });
     const file = path.join(dir, `${key}.json`);
     if (!fs.existsSync(file)) throw new Error(`mock: no recorded response for "${key}" (${file})`);
     const recorded = JSON.parse(fs.readFileSync(file, 'utf8'));

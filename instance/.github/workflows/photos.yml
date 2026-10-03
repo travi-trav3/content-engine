@@ -1,0 +1,71 @@
+name: photos
+
+# The reviewer's Drive folders: new photos from Inbox are read and put in
+# rotation (or in Needs a look), the reviewer's moves between Active,
+# Parked, Retired and Needs a look are followed, usage is written onto each
+# photo, and briefs dropped in the Briefs folder are copied in and read.
+# Four times a day, Pacific working hours, and on demand.
+#
+# A commit pushed with the workflow's own token starts no other workflow,
+# so the briefs copied from Drive are read here rather than by brief.yml.
+
+on:
+  schedule:
+    - cron: '23 14,17,20,23 * * *'
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: Upload library photos that are not in Drive yet (first run)
+        type: boolean
+        default: false
+
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Seed Drive with the library
+        if: inputs.seed
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: node engine/photos/drive-sync.js --seed
+
+      - name: Sync the Drive folders
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/photos/drive-sync.js
+
+      - name: Read new briefs
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/generate/brief.js --notify
+
+      - name: Commit what changed
+        if: always()
+        run: |
+          git config user.name "content-engine"
+          git config user.email "content-engine@users.noreply.github.com"
+          for d in photos briefs; do if [ -e "$d" ]; then git add "$d"; fi; done
+          git diff --cached --quiet && exit 0
+          git commit -m "photos: Drive sync [skip ci]"
+          git pull --rebase
+          git push

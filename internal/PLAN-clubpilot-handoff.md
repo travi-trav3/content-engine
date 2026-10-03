@@ -496,3 +496,26 @@ Decisions for Byron:
 - The map's cadence (Instagram 3 a week, Byron's LinkedIn 1 a week) against the engine's (5 company-page
   LinkedIn + 5 Instagram per two weeks, LinkedIn at least half by the plan gate). Unresolved since Sep 30.
 - How Byron gets a brief in: GitHub upload today; a Drive "Briefs" folder with the Drive sync.
+
+### 2026-10-03, increment 9 (photo reuse fix, Drive library)
+
+Fixed: nothing in the pipeline recorded photo use, so the 30-day reuse window only worked inside a
+batch. Selection now counts every photo an earlier ledger post carried (a deleted draft excepted).
+
+Done:
+- The photo library in Byron's Drive: Inbox, Active, Parked, Retired, Needs a look, Briefs. A photo
+  dropped in Inbox is resized, measured and read by a vision model (subject, time, people, tags, focus,
+  concerns) and moved to Active, or to Needs a look with the reason (a logo, a recognizable face, real
+  club signage, screen text, poor quality, not a club setting). Byron's moves set the library state;
+  moving a flagged photo to Active is a recorded override. A photo used 5 times retires itself; a
+  duplicate upload is retired; a deleted file is retired. Each file's Drive description shows its
+  state, tags and use. Briefs dropped in the Briefs folder (Word or Google Docs) are copied and read.
+- Drive client on the API directly (service-account JWT signed with Node's crypto, no SDK), an
+  in-memory Drive for tests, image input on the OpenAI provider, instance workflow `photos.yml` (four
+  times a day; "seed" once to upload the existing 77 photos).
+- AGENTS rule 6 amended: the vision reading is the one automated review, and only for photos Byron
+  uploaded; any concern keeps a photo restricted until a person moves it.
+
+Needs before it runs (Travis): a Google Cloud project with the Drive API, a service account and its key
+as `GOOGLE_SERVICE_ACCOUNT_JSON`, the folder shared with it, its id in `config.json`. Not yet run
+against a live Drive or the live vision model.

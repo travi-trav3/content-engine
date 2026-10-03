@@ -22,12 +22,19 @@ const TIMEOUT_MS = 240000;
 
 const sleep = (ms) => new Promise((r) => { setTimeout(r, ms); });
 
-/** The request body, separate so tests can check its shape without a network call. */
-function requestBody({ model, system, user, schema, schemaName, reasoningEffort }) {
+/**
+ * The request body, separate so tests can check its shape without a network
+ * call. images: data URLs (or https URLs) sent with the text, for the steps
+ * that look at a photo.
+ */
+function requestBody({ model, system, user, schema, schemaName, reasoningEffort, images = [] }) {
+  const content = images.length
+    ? [{ type: 'input_text', text: user }, ...images.map((url) => ({ type: 'input_image', image_url: url }))]
+    : user;
   const body = {
     model,
     instructions: system,
-    input: [{ role: 'user', content: user }],
+    input: [{ role: 'user', content }],
     text: { format: { type: 'json_schema', name: schemaName, schema, strict: true } },
     store: false,
   };
@@ -56,8 +63,8 @@ function createOpenAI({ model, apiKeyEnv = 'OPENAI_API_KEY', reasoningEffort, fe
   const key = process.env[apiKeyEnv];
   if (!key) throw new Error(`${apiKeyEnv} is not set. Add it as a repository secret (Actions) or export it locally.`);
 
-  async function generate({ system, user, schema, schemaName }) {
-    const body = JSON.stringify(requestBody({ model, system, user, schema, schemaName, reasoningEffort }));
+  async function generate({ system, user, schema, schemaName, images }) {
+    const body = JSON.stringify(requestBody({ model, system, user, schema, schemaName, reasoningEffort, images }));
     let lastError;
     for (let attempt = 0; attempt <= RETRIES; attempt += 1) {
       if (attempt) await sleep(2000 * 2 ** (attempt - 1));

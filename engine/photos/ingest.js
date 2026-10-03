@@ -165,4 +165,4 @@ async function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { slugify, unsplashSource, measure };
+module.exports = { slugify, unsplashSource, measure, ingestOne };

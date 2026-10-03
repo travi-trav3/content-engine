@@ -9,12 +9,13 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node test/gates-regression.js && node test/photos.test.js && node test/render.test.js && node test/generate.test.js && node test/buffer.test.js",
+    "test": "node test/gates-regression.js && node test/photos.test.js && node test/render.test.js && node test/generate.test.js && node test/buffer.test.js && node test/drive.test.js",
     "test:gates": "node test/gates-regression.js",
     "test:photos": "node test/photos.test.js",
     "test:render": "node test/render.test.js",
     "test:generate": "node test/generate.test.js",
     "test:buffer": "node test/buffer.test.js",
+    "test:drive": "node test/drive.test.js",
     "generate": "node engine/generate/batch.js",
     "push": "node engine/buffer/push.js",
     "sync": "node engine/buffer/sync.js",
@@ -22,6 +23,7 @@
     "render:carousel": "node engine/render/carousel.js",
     "photos:ingest": "node engine/photos/ingest.js",
     "photos:review": "node engine/photos/review.js",
+    "photos:drive": "node engine/photos/drive-sync.js",
     "check": "node engine/gates/check-batch.js"
   },
   "dependencies": {

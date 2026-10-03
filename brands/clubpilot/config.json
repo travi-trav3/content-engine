@@ -100,6 +100,19 @@
     "branch": "main",
     "tokenEnv": "ASSETS_PUSH_TOKEN"
   },
+  "drive": {
+    "rootFolderId": null,
+    "credentialsEnv": "GOOGLE_SERVICE_ACCOUNT_JSON",
+    "retireAfterUses": 5,
+    "folders": {
+      "inbox": "Inbox",
+      "active": "Active",
+      "parked": "Parked",
+      "retired": "Retired",
+      "needsLook": "Needs a look",
+      "briefs": "Briefs"
+    }
+  },
   "notify": {
     "slackWebhookEnv": "SLACK_WEBHOOK_URL",
     "onRevised": true
