@@ -8,6 +8,7 @@ When an instance is created, the contents of this folder are copied to the insta
 | `.github/workflows/batch.yml` | Monday mornings: when the last planned post is under a week away, generates the next two-week batch, drafts it in Buffer, commits it, and messages the reviewer with the contact sheet. Run it by hand with "force" for an off-cycle batch. |
 | `.github/workflows/brief.yml` | When a brief lands in `briefs/`: reads it once, saves the reading beside it, and tells the reviewer what the engine will use and what in it trips a check. |
 | `.github/workflows/photos.yml` | Four times a day: follows the reviewer's Drive folders (new photos from Inbox read and put in rotation or Needs a look, moves between Active, Parked, Retired and Needs a look, usage written onto each photo, briefs copied from Briefs and read). Run it by hand with "seed" once, to put the existing library in Drive. |
+| `.github/workflows/scout.yml` | Monday mornings: up to eight candidate photos, where the library is thinnest, screened and left in the Drive folder Suggested for the reviewer to move to Active or Rejected. |
 | `.github/workflows/sync.yml` | Every 15 minutes, 7am to 7pm Pacific: reads the drafts back from Buffer, revises from notes, records edits, approvals and deletes, commits the ledger and the feedback log. |
 
 The core's `ci.yml` (gate regression suite and golden renders) comes with the copy. Commits made by these
@@ -30,6 +31,7 @@ least three in ten posts from it.
 | `BUFFER_API_KEY` | Drafts and read-back (publish.buffer.com/settings/api) |
 | `ASSETS_PUSH_TOKEN` | Fine-grained token, contents write on the public assets repository only |
 | `SLACK_WEBHOOK_URL` | Optional; where messages to the reviewer go |
+| `UNSPLASH_ACCESS_KEY` | The weekly scout's Unsplash developer key |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | The Drive service account's key JSON (engine/photos/README.md, "The Drive library") |
 
 The workflows need `contents: write` on the instance repository (set in each file) to commit back.

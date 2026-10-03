@@ -27,6 +27,8 @@ const { createDrive, assertion, GOOGLE_DOC } = require('../engine/drive/client')
 const { createMockDrive } = require('../engine/drive/mock');
 const { syncDrive, seedDrive, summaryMessage, describePhoto } = require('../engine/photos/drive-sync');
 const { createMock } = require('../engine/generate/providers/mock');
+const { scout, scoutMessage, loadState } = require('../engine/photos/scout');
+const { createMockUnsplash, createUnsplash } = require('../engine/photos/unsplash');
 const photoLib = require('../engine/photos/library');
 
 const WS = workspace();
@@ -184,6 +186,72 @@ function stubFetch(handler) {
   check('a changed brief is copied again, under the same name', r4.briefs.join() === 'november-map.docx');
   check('a parked photo says so in Drive', /^Parked:/.test(inFolder('Parked')[0].description));
   check('a flagged photo\'s description tells the reviewer what to do', /Needs a look: x\. Move it to Active/.test(describePhoto({ id: 'p', restricted: true, restrictedReason: 'x', tags: [] }, null, 5)));
+
+  /* ------------------------------------------------------------------ */
+  console.log('== the weekly scout: candidates where the library is thinnest ==');
+  {
+    const f = stubFetch((url) => {
+      if (/search\/photos/.test(url)) return { json: { results: [{ id: 'FREEPHOTO01', urls: { raw: 'https://images.unsplash.com/a?ixid=1' } }, { id: 'PLUSPHOTO01', premium: true, urls: { raw: 'https://plus.unsplash.com/b' } }] } };
+      if (/images\.unsplash\.com\/a/.test(url)) return { bytes: Buffer.from('jpeg') };
+      if (/download_location/.test(url)) return { json: { url: 'x' } };
+      return { status: 404, json: {} };
+    });
+    const u = createUnsplash({ accessKey: 'k', fetchImpl: f });
+    const found = await u.search('pickleball');
+    check('Unsplash search sends the Client-ID key, asks for portrait and safe content, and drops Unsplash+ photos',
+      found.map((x) => x.id).join() === 'FREEPHOTO01' && f.calls[0].init.headers.authorization === 'Client-ID k'
+      && /orientation=portrait/.test(f.calls[0].url) && /content_filter=high/.test(f.calls[0].url));
+    await u.download({ id: 'FREEPHOTO01', urls: { raw: 'https://images.unsplash.com/a?ixid=1' }, links: { download_location: 'https://api.unsplash.com/photos/FREEPHOTO01/download_location' } });
+    check('a download is fetched at library size and reported to Unsplash', /w=2400&fit=max&q=85&fm=jpg/.test(f.calls[1].url) && /download_location/.test(f.calls[2].url));
+  }
+  const img = (file) => fs.readFileSync(path.join(PHOTOS, file));
+  const cand = (id, user, width = 4000, extra = {}) => ({ id, width, height: 5000, user: { name: user }, urls: { raw: `https://images.unsplash.com/${id}` }, links: { html: `https://unsplash.com/photos/${id}` }, ...extra });
+  const unsplash = createMockUnsplash({
+    results: {
+      'pickleball court club': [
+        cand('PREMIUM0001', 'Pro Shooter', 5000, { premium: true }),
+        cand('Lli9yOy5cm8', 'Alexander'),
+        cand('SMALLPHOTO1', 'Tiny Cam', 1200),
+        cand('PKLBALL0002', 'Jane Doe'),
+        cand('PKLBALL0001', 'Jane Doe'),
+      ],
+      'golf course morning': [cand('COURSE00001', 'Sam Lee'), cand('COURSE00002', 'Sam Lee')],
+    },
+    images: {
+      PKLBALL0001: img('amauri-cruz-filho-kbnv9wpcs5k.jpg'), PKLBALL0002: img('aleksandr-galichkin-auae3-x-ldu.jpg'),
+      COURSE00001: img('adrian-hernandez-wifghghg1ny.jpg'), COURSE00002: img('will-porada-uy5zequoscs.jpg'),
+    },
+  });
+  const scoutConfig = { ...config, scout: { perWeek: 2, minWidth: 2400, subjects: { pickleball: ['pickleball court club'], course: ['golf course morning'] } } };
+  const state = loadState(path.join(OUT, 'no-such-scout.json'));
+  const sr = await scout({ config: scoutConfig, drive, unsplash, provider, lib, state, now: NOW });
+  const suggested = inFolder('Suggested');
+  check('two candidates go to Suggested, one per thin subject', sr.suggested.map((x) => `${x.subject}:${x.id}`).join() === 'pickleball:PKLBALL0001,course:COURSE00002',
+    JSON.stringify(sr.suggested));
+  check('named so the photographer is credited, with why it was picked and how to answer',
+    suggested.some((x) => x.name === 'jane-doe-PKLBALL0001-unsplash.jpg' && /Suggested for "pickleball": the library has 0 in rotation/.test(x.description)
+      && /Photo by Jane Doe on Unsplash/.test(x.description) && /Move it to Active to use it, or to Rejected/.test(x.description)));
+  const downloaded = unsplash.calls.filter((c) => c.op === 'download').map((c) => c.id);
+  check('never downloads an Unsplash+ photo, one too small, or one already in the library',
+    !downloaded.includes('PREMIUM0001') && !downloaded.includes('SMALLPHOTO1') && !downloaded.includes('Lli9yOy5cm8'), downloaded.join());
+  check('a candidate the reading puts in another subject, or flags, is dropped and remembered',
+    sr.screenedOut.map((x) => x.id).join() === 'PKLBALL0002,COURSE00001' && /reads as tennis/.test(sr.screenedOut[0].why)
+      && /third-party logo/.test(sr.screenedOut[1].why) && state.screenedOut.length === 2);
+  check('the reviewer is told what is waiting', /2 new photos are in the Drive folder Suggested \(1 pickleball, 1 course\)/.test(scoutMessage(sr)), scoutMessage(sr));
+
+  // Byron says yes to one and no to the other.
+  drive.human.moveTo(suggested.find((x) => /PKLBALL0001/.test(x.name)).id, folderId('Active'));
+  drive.human.moveTo(suggested.find((x) => /COURSE00002/.test(x.name)).id, folderId('Rejected'));
+  const r5 = await syncDrive({ config: scoutConfig, drive, provider, lib, photosDir, briefsDir, ledgers: [usedFive], now: NOW + 86400000 });
+  const pick = photo('jane-doe-pklball0001');
+  check('a suggestion moved to Active joins the library, credited, approved by the move',
+    r5.added.some((a) => a.adopted && a.id === 'jane-doe-pklball0001') && pick && pick.reviewed && !pick.restricted && pick.subject === 'pickleball'
+      && pick.source.photographer === 'Jane Doe' && /PKLBALL0001/.test(pick.source.url) && pick.reviewedBy === 'vision reading; moved to Active by Byron',
+    JSON.stringify(pick && { reviewedBy: pick.reviewedBy, source: pick.source }));
+  check('and is in rotation', photoLib.select(lib, { now: NOW }).some((p) => p.id === 'jane-doe-pklball0001'));
+  const sr2 = await scout({ config: scoutConfig, drive, unsplash, provider, lib, state, now: NOW + 7 * 86400000 });
+  check('the rejection is remembered and nothing seen before is suggested again', sr2.rejectedSeen.join() === 'COURSE00002'
+    && state.rejected.includes('COURSE00002') && sr2.suggested.length === 0, JSON.stringify(sr2));
 
   console.log(failures ? `\ndrive: ${failures} CHECK(S) FAILED` : '\ndrive: ALL CHECKS PASS');
   process.exit(failures ? 1 : 0);

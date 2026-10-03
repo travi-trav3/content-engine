@@ -1,0 +1,9 @@
+{
+  "description": "A tennis court with a player serving.",
+  "subject": "tennis",
+  "time": "day",
+  "people": "distant",
+  "tags": ["serve"],
+  "focus": { "x": 0.5, "y": 0.5 },
+  "concerns": []
+}

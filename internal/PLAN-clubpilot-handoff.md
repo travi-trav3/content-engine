@@ -519,3 +519,19 @@ Done:
 Needs before it runs (Travis): a Google Cloud project with the Drive API, a service account and its key
 as `GOOGLE_SERVICE_ACCOUNT_JSON`, the folder shared with it, its id in `config.json`. Not yet run
 against a live Drive or the live vision model.
+
+### 2026-10-03, increment 10 (the weekly photo scout)
+
+Done:
+- `engine/photos/scout.js` + `unsplash.js`: Monday mornings, up to 8 candidates where the library is
+  thinnest (counts per subject in `scout.subjects`), searched on Unsplash, read by the vision model (a
+  concern or a different subject drops one; at most 3 readings per suggestion), uploaded to the Drive
+  folder Suggested named so the photographer is credited, with why it was picked. Never Unsplash+, never
+  under 2400px, never one already in the library, suggested, screened or rejected. Downloads are
+  reported to Unsplash per its API terms.
+- Drive sync: a suggestion moved to Active (or any photo dropped straight into Active) joins the library,
+  the move being the approval; Rejected is remembered by the scout.
+- Instance workflow `scout.yml`; tests on a recorded Unsplash.
+
+Needs (Travis): an Unsplash developer app and key (`UNSPLASH_ACCESS_KEY`). The scout cannot fix the
+staff, members, dining and events gap: those need Club Pilot's own photos (the half-day shoot).

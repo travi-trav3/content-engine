@@ -13,7 +13,7 @@ engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
 engine/gates/      the checks; check-batch.js runs all of them for one batch
 engine/generate/   plan, write, gate, render a batch (batch.js); brief.js (the reviewer's briefs); providers/; see its README
 engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js, pdf.js (LinkedIn carousels)
-engine/photos/     library.js (selection), ingest.js, review.js, vision.js, drive-sync.js; see engine/photos/README.md
+engine/photos/     library.js, ingest.js, review.js, vision.js, drive-sync.js, scout.js, unsplash.js; see its README
 engine/drive/      client.js (Drive API v3, service account), mock.js
 engine/buffer/     client.js, mock.js, push.js (drafts), sync.js (notes, edits, approvals); see its README
 engine/feedback/   revise.js (a note becomes a new version), log.js (feedback/log.jsonl and its summary)
@@ -95,10 +95,9 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: source mode (founder posts from material Byron supplies), the brand-update inbox and the
-  weekly photo scout.
-- The Drive sync and the vision reading are tested against an in-memory Drive and recorded readings, not
-  yet against a live Drive or the live model.
+- Not built yet: source mode (founder posts from material Byron supplies) and the brand-update inbox.
+- The Drive sync, the vision reading and the scout are tested against an in-memory Drive, a recorded
+  Unsplash and recorded readings, not yet against the live services.
 - A brief's reading (`briefs/<name>.json`) is the model's; it can misplace an idea's week or channel.
   The October map gives no week per Instagram idea, so its reading places them three a week in order.
 - Not yet exercised against a live Buffer account: a LinkedIn document (PDF) post created through the

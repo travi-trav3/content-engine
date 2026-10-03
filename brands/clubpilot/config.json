@@ -113,6 +113,61 @@
       "briefs": "Briefs"
     }
   },
+  "scout": {
+    "perWeek": 8,
+    "minWidth": 2400,
+    "accessKeyEnv": "UNSPLASH_ACCESS_KEY",
+    "subjects": {
+      "course": [
+        "private golf course fairway morning",
+        "golf course green golden hour"
+      ],
+      "aerial-course": [
+        "golf course aerial"
+      ],
+      "golfer": [
+        "golfer swing country club"
+      ],
+      "golfers": [
+        "golf foursome walking fairway"
+      ],
+      "golf-detail": [
+        "golf ball on green close up",
+        "golf flag pin close up"
+      ],
+      "range": [
+        "golf driving range"
+      ],
+      "carts": [
+        "golf cart path"
+      ],
+      "clubhouse": [
+        "country club clubhouse exterior"
+      ],
+      "grounds": [
+        "country club grounds garden path"
+      ],
+      "marina": [
+        "yacht club marina docks"
+      ],
+      "aerial-marina": [
+        "marina aerial view"
+      ],
+      "yacht": [
+        "sailboat yacht club"
+      ],
+      "tennis": [
+        "tennis court club morning"
+      ],
+      "pickleball": [
+        "pickleball court"
+      ],
+      "phone": [
+        "hand holding phone golf course",
+        "person texting outdoors club"
+      ]
+    }
+  },
   "notify": {
     "slackWebhookEnv": "SLACK_WEBHOOK_URL",
     "onRevised": true

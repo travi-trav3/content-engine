@@ -1,0 +1,9 @@
+{
+  "description": "A fairway with a sponsor banner across the tee box.",
+  "subject": "course",
+  "time": "day",
+  "people": "none",
+  "tags": ["fairway", "banner"],
+  "focus": { "x": 0.5, "y": 0.5 },
+  "concerns": ["third-party logo or brand"]
+}

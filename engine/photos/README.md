@@ -70,6 +70,8 @@ The reviewer manages photos in a shared Google Drive folder; `drive-sync.js` (th
 | Retired | Out for good (`retired: true`). A photo used `drive.retireAfterUses` times (5 for Club Pilot) is moved here by the sync, and so is a duplicate upload. A photo deleted from Drive is retired too. |
 | Needs a look | Restricted: a logo that is not the club's, a recognizable face, a real club's name or signage, readable screen text, poor quality, or not a club setting. Moving it to Active is the reviewer's override, recorded in the photo's notes. |
 | Briefs | Briefs for `engine/generate/brief.js` (Word, Google Docs as Word, Markdown, text), copied into `briefs/` when new or changed. |
+| Suggested | The weekly scout's candidates. Moving one to Active adds it to the library (the move is the approval; the photographer is credited from the file name). A photo dropped straight into Active is added the same way. |
+| Rejected | Suggestions turned down; never suggested again. |
 
 Each photo's Drive description says its state, what it shows, its tags and how often it has been used.
 The vision reading never adds `founder` or `product-screenshot`; only a person does. Existing photos go
@@ -79,3 +81,19 @@ Setup: a Google Cloud service account with the Drive API enabled; its key JSON a
 `GOOGLE_SERVICE_ACCOUNT_JSON` secret; the reviewer shares the root folder with the account's email as an
 editor; the folder's id (the last part of its URL) in `config.json` `drive.rootFolderId`. The sync creates
 the subfolders.
+
+## The weekly scout
+
+`scout.js` (the instance's `scout.yml`, Monday mornings) counts the photos in rotation for each subject
+in `config.json` `scout.subjects`, searches Unsplash with the thinnest subjects' queries, and leaves up to
+`scout.perWeek` candidates in Suggested. It never offers an Unsplash+ photo, one under `scout.minWidth`
+pixels wide, one already in the library, one suggested or screened before, or one the reviewer
+rejected. Each candidate is read by the vision model first: any concern, or a subject other than the one
+it was searched for, drops it. At most three readings per suggestion wanted, per run. Every download is
+reported to Unsplash, as its API terms require. State is in `photos/scout.json`.
+
+What the scout cannot fix: stock photography of a club's own staff, members, dining room and events reads
+as stock. Those subjects are not in the vocabulary and need the club's own photos.
+
+Setup: an Unsplash developer app (demo mode, 50 requests an hour, is enough) and its access key as the
+`UNSPLASH_ACCESS_KEY` secret.

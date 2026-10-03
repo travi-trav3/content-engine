@@ -19,6 +19,11 @@
  *                 override, recorded) or to Retired.
  *   Briefs        the reviewer's briefs (Word, Google Docs, Markdown, text),
  *                 copied into briefs/ when new or changed.
+ *   Suggested     the weekly scout's candidates (scout.js). One the reviewer
+ *                 moves to Active is added to the library; a photo dropped
+ *                 straight into Active is too. Either way the move is the
+ *                 approval, and any concern in the reading goes in its notes.
+ *   Rejected      suggestions the reviewer turned down (never suggested again).
  *
  * Each photo's Drive description says what the library holds about it and
  * how often it has been used. A file deleted from Drive is retired. Photos
@@ -39,7 +44,10 @@ const { ingestOne, slugify, unsplashSource } = require('./ingest');
 const { proposeTags } = require('./vision');
 const { GOOGLE_DOC } = require('../drive/client');
 
-const DEFAULT_FOLDERS = { inbox: 'Inbox', active: 'Active', parked: 'Parked', retired: 'Retired', needsLook: 'Needs a look', briefs: 'Briefs' };
+const DEFAULT_FOLDERS = {
+  inbox: 'Inbox', active: 'Active', parked: 'Parked', retired: 'Retired', needsLook: 'Needs a look', briefs: 'Briefs',
+  suggested: 'Suggested', rejected: 'Rejected',
+};
 const STATE_FOLDERS = ['active', 'parked', 'retired', 'needsLook'];
 const IMAGE = /\.(jpe?g|png|webp|heic|tiff?)$/i;
 const BRIEF = /\.(docx|md|txt)$/i;
@@ -96,87 +104,109 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, l
   if (!dc.rootFolderId) throw new Error('config.json drive.rootFolderId is not set');
   const reviewer = (config.buffer && config.buffer.reviewerName) || 'the reviewer';
   const folders = await drive.ensureFolders(dc.rootFolderId, dc.folders);
-  const roleOf = new Map(Object.entries(folders).map(([role, id]) => [id, role]));
   const at = new Date(now).toISOString();
   const result = { added: [], needsLook: [], moved: [], overrides: [], retiredMissing: [], autoRetired: [], duplicates: [], described: 0, briefs: [] };
   const byFile = new Map(lib.photos.filter((p) => p.drive && p.drive.fileId).map((p) => [p.drive.fileId, p]));
   const byMd5 = new Map(lib.photos.filter((p) => p.drive && p.drive.md5).map((p) => [p.drive.md5, p]));
   const seen = new Set();
 
-  /* -- Inbox: new photos ------------------------------------------- */
-  const inbox = (await drive.listFolder(folders.inbox)).filter((f) => IMAGE.test(f.name) || /^image\//.test(f.mimeType || ''));
+  /* -- adding a photo the reviewer put in Drive ---------------------- */
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ce-drive-'));
+  // Ingests and reads a Drive file; returns the library entry and the reading.
+  const addPhoto = async (f, data, sum, approvedBy) => {
+    const id = uniqueId(lib, slugify(f.name));
+    const local = path.join(tmp, `${id}${path.extname(f.name).toLowerCase() || '.jpg'}`);
+    fs.writeFileSync(local, data);
+    const credit = unsplashSource(f.name);
+    await ingestOne(local, { license: credit ? null : `Supplied by ${reviewer} through the Drive photo library` }, lib, photosDir);
+    const p = lib.photos.find((x) => x.id === id);
+    if (credit) p.source = credit;
+    const reading = await proposeTags({ provider, buffer: data, id, lib, brandName: config.brand || 'the brand' });
+    Object.assign(p, {
+      subject: reading.subject, time: reading.time, people: reading.people, tags: reading.tags, focus: reading.focus,
+      description: reading.description,
+      reviewed: true,
+      reviewedBy: `vision reading; ${approvedBy}`,
+      reviewedOn: at.slice(0, 10),
+      drive: { fileId: f.id, md5: sum, name: f.name },
+    });
+    byFile.set(f.id, p);
+    byMd5.set(sum, p);
+    seen.add(f.id);
+    log({ step: 'photo', id, concerns: reading.concerns });
+    return { p, reading };
+  };
+  const duplicateOf = async (f, from) => {
+    const data = await drive.download(f.id);
+    const sum = f.md5Checksum || md5(data);
+    const dupe = byMd5.get(sum);
+    if (!dupe) return { data, sum };
+    await drive.move(f.id, { to: folders.retired, from });
+    await drive.describe(f.id, `Retired: the same photo is already in the library as ${dupe.id}.`);
+    result.duplicates.push({ name: f.name, of: dupe.id });
+    seen.add(f.id);
+    return null;
+  };
+
   try {
+    /* -- Inbox: new photos --------------------------------------------- */
+    const inbox = (await drive.listFolder(folders.inbox)).filter((f) => IMAGE.test(f.name) || /^image\//.test(f.mimeType || ''));
     for (const f of inbox) {
-      const data = await drive.download(f.id);
-      const sum = f.md5Checksum || md5(data);
-      const dupe = byMd5.get(sum);
-      if (dupe) {
-        await drive.move(f.id, { to: folders.retired, from: folders.inbox });
-        await drive.describe(f.id, `Retired: the same photo is already in the library as ${dupe.id}.`);
-        result.duplicates.push({ name: f.name, of: dupe.id });
-        continue;
-      }
-      const id = uniqueId(lib, slugify(f.name));
-      const local = path.join(tmp, `${id}${path.extname(f.name).toLowerCase() || '.jpg'}`);
-      fs.writeFileSync(local, data);
-      const credit = unsplashSource(f.name);
-      await ingestOne(local, { license: credit ? null : `Supplied by ${reviewer} through the Drive photo library` }, lib, photosDir);
-      const p = lib.photos.find((x) => x.id === id);
-      if (credit && !p.source) p.source = credit;
-      const reading = await proposeTags({ provider, buffer: data, id, lib, brandName: config.brand || 'the brand' });
-      Object.assign(p, {
-        subject: reading.subject, time: reading.time, people: reading.people, tags: reading.tags, focus: reading.focus,
-        description: reading.description,
-        reviewed: true,
-        reviewedBy: `vision reading; uploaded by ${reviewer}`,
-        reviewedOn: at.slice(0, 10),
-        drive: { fileId: f.id, md5: sum, name: f.name },
-      });
+      const fresh = await duplicateOf(f, folders.inbox);
+      if (!fresh) continue;
+      const { p, reading } = await addPhoto(f, fresh.data, fresh.sum, `uploaded by ${reviewer}`);
       if (reading.concerns.length) {
         p.restricted = true;
         p.restrictedReason = reading.concerns.join('; ');
         p.drive.folder = 'needsLook';
         await drive.move(f.id, { to: folders.needsLook, from: folders.inbox });
-        result.needsLook.push({ id, name: f.name, concerns: reading.concerns });
+        result.needsLook.push({ id: p.id, name: f.name, concerns: reading.concerns });
       } else {
         p.drive.folder = 'active';
         await drive.move(f.id, { to: folders.active, from: folders.inbox });
-        result.added.push({ id, name: f.name, subject: p.subject });
+        result.added.push({ id: p.id, name: f.name, subject: p.subject });
       }
-      byFile.set(f.id, p);
-      byMd5.set(sum, p);
-      seen.add(f.id);
-      log({ step: 'photo', id, concerns: reading.concerns });
+    }
+
+    /* -- state folders: the reviewer's moves --------------------------- */
+    for (const role of STATE_FOLDERS) {
+      for (const f of await drive.listFolder(folders[role])) {
+        seen.add(f.id);
+        const p = byFile.get(f.id);
+        if (!p) {
+          // A suggestion moved to Active, or a photo dropped straight in: the move is the approval.
+          if (role !== 'active' || !(IMAGE.test(f.name) || /^image\//.test(f.mimeType || ''))) continue;
+          const fresh = await duplicateOf(f, folders.active);
+          if (!fresh) continue;
+          const added = await addPhoto(f, fresh.data, fresh.sum, `moved to Active by ${reviewer}`);
+          added.p.drive.folder = 'active';
+          if (added.reading.concerns.length) {
+            added.p.notes = `${added.p.notes ? `${added.p.notes} ` : ''}The reading noted: ${added.reading.concerns.join('; ')}; in rotation because ${reviewer} put it in Active.`.trim();
+          }
+          result.added.push({ id: added.p.id, name: f.name, subject: added.p.subject, concerns: added.reading.concerns, adopted: true });
+          continue;
+        }
+        const was = p.drive.folder;
+        if (was === role) continue;
+        p.drive.folder = role;
+        p.parked = role === 'parked';
+        p.retired = role === 'retired';
+        if (role === 'active' && p.restricted) {
+          // Moving a flagged photo to Active is a person's decision to use it.
+          p.restricted = false;
+          p.notes = `${p.notes ? `${p.notes} ` : ''}${p.restrictedReason ? `Flagged "${p.restrictedReason}"; ` : ''}moved to Active by ${reviewer} on ${at.slice(0, 10)}.`.trim();
+          p.restrictedReason = null;
+          result.overrides.push(p.id);
+        }
+        if (role === 'needsLook' && !p.restricted) {
+          p.restricted = true;
+          p.restrictedReason = p.restrictedReason || `moved to Needs a look by ${reviewer}`;
+        }
+        result.moved.push({ id: p.id, from: was, to: role });
+      }
     }
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
-  }
-
-  /* -- state folders: the reviewer's moves --------------------------- */
-  for (const role of STATE_FOLDERS) {
-    for (const f of await drive.listFolder(folders[role])) {
-      seen.add(f.id);
-      const p = byFile.get(f.id);
-      if (!p) continue; // Not the library's (a duplicate, or a file the engine never saw): left alone.
-      const was = p.drive.folder;
-      if (was === role) continue;
-      p.drive.folder = role;
-      p.parked = role === 'parked';
-      p.retired = role === 'retired';
-      if (role === 'active' && p.restricted) {
-        // Moving a flagged photo to Active is a person's decision to use it.
-        p.restricted = false;
-        p.notes = `${p.notes ? `${p.notes} ` : ''}${p.restrictedReason ? `Flagged "${p.restrictedReason}"; ` : ''}moved to Active by ${reviewer} on ${at.slice(0, 10)}.`.trim();
-        p.restrictedReason = null;
-        result.overrides.push(p.id);
-      }
-      if (role === 'needsLook' && !p.restricted) {
-        p.restricted = true;
-        p.restrictedReason = p.restrictedReason || `moved to Needs a look by ${reviewer}`;
-      }
-      result.moved.push({ id: p.id, from: was, to: role });
-    }
   }
 
   /* -- deleted in Drive ------------------------------------------------ */
@@ -250,7 +280,7 @@ async function seedDrive({ config, drive, lib, photosDir, log = () => {} }) {
 /** A message for the reviewer about what the sync did, or null. */
 function summaryMessage(r) {
   const lines = [];
-  if (r.added.length) lines.push(`${r.added.length} new photo${r.added.length === 1 ? ' is' : 's are'} in rotation: ${r.added.map((a) => `${a.name} (${a.subject})`).join(', ')}.`);
+  if (r.added.length) lines.push(`${r.added.length} new photo${r.added.length === 1 ? ' is' : 's are'} in rotation: ${r.added.map((a) => `${a.name} (${a.subject}${a.concerns && a.concerns.length ? `; the reading noted ${a.concerns.join(', ')}` : ''})`).join(', ')}.`);
   for (const n of r.needsLook) lines.push(`${n.name} is in Needs a look: ${n.concerns.join('; ')}. Move it to Active to use it anyway, or to Retired.`);
   for (const d of r.duplicates) lines.push(`${d.name} is already in the library (${d.of}); the copy is in Retired.`);
   for (const a of r.autoRetired) lines.push(`${a.id} was used ${a.uses} times and is now in Retired.`);
