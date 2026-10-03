@@ -121,11 +121,14 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
         reviewerFeedback: feedbackLog.summary(feedbackLog.load(feedbackFile), { reviewer: bc.reviewerName || 'The reviewer' }),
       };
     }
+    const priors = b.priors || (b.priors = priorLedgers(content, b.name));
     return {
       ...ctx,
+      // A new photo for a revision respects the reuse window across batches.
+      library: lib.withLedgerUsage(library, priors),
       plan: b.plan || (b.plan = read(path.join(b.dir, 'plan.json'))),
       ledger: b.ledger,
-      priors: b.priors || (b.priors = priorLedgers(content, b.name)),
+      priors,
       batchNo: b.no,
       stagingDir: path.join(stagingDir || path.join(ws.root, '.staging'), b.name),
     };

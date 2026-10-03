@@ -68,6 +68,21 @@ function select(lib, { tags = [], need = 'any', orientation, days = 30, exclude 
     .sort((a, b) => lastUsed(lib, a.id) - lastUsed(lib, b.id) || a.id.localeCompare(b.id));
 }
 
+/**
+ * The library with every photo the batch ledgers used counted as a use on
+ * the post's date. The ledgers are the record of use: a photo in a planned
+ * or published post is used, whether or not anyone called recordUse. A
+ * draft the reviewer deleted does not count.
+ */
+function withLedgerUsage(lib, ledgers) {
+  const usage = [...lib.usage];
+  for (const p of ledgers.flatMap((l) => (Array.isArray(l) ? l : l.posts || []))) {
+    if (!p || (p.buffer && p.buffer.status === 'deleted')) continue;
+    for (const photo of p.photos || []) usage.push({ photo, post: p.id, date: p.dueAt || p.date });
+  }
+  return { photos: lib.photos, usage };
+}
+
 function recordUse(lib, { photo, post, date }) {
   if (!lib.photos.some((p) => p.id === photo)) throw new Error(`Unknown photo "${photo}"`);
   lib.usage.push({ photo, post, date });
@@ -79,4 +94,4 @@ function get(lib, id) {
   return p;
 }
 
-module.exports = { load, save, select, recordUse, get, lastUsed, libraryPath };
+module.exports = { load, save, select, recordUse, withLedgerUsage, get, lastUsed, libraryPath };

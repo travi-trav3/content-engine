@@ -142,7 +142,7 @@ async function runBatch(opts = {}) {
   const stagingRoot = opts.stagingDir || path.join(ws.root, '.staging');
   const brandDir = ws.brandDir;
   const brand = read(path.join(brandDir, 'render.json'));
-  const library = opts.library || photoLib.load();
+  const ownLibrary = opts.library || photoLib.load();
   const provider = opts.provider || createProvider(config);
   const log = opts.log || (() => {});
   const events = [];
@@ -151,6 +151,8 @@ async function runBatch(opts = {}) {
   const libraryErrors = validateLibrary(config);
   if (libraryErrors.length) throw new Error(`config.json cta library: ${libraryErrors.join('; ')}`);
   const priors = priorLedgers(contentDir);
+  // Photos the earlier batches used count against the 30-day reuse window.
+  const library = photoLib.withLedgerUsage(ownLibrary, priors);
   const batchNo = opts.batchNo || nextBatchNo(contentDir);
   const nn = String(batchNo).padStart(2, '0');
   const start = opts.start || defaultStart(priors, now);

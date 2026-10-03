@@ -60,6 +60,15 @@ check('photos taken earlier in the batch are excluded',
   !library.select(lib, { exclude: ['a-course'], now: NOW }).some((p) => p.id === 'a-course'));
 library.recordUse(lib, { photo: 'a-course', post: 'b06-p01', date: new Date(NOW).toISOString() });
 check('a recorded use takes the photo out of rotation', !library.select(lib, { now: NOW }).some((p) => p.id === 'a-course'));
+const priorBatch = { posts: [
+  { id: 'b05-02', dueAt: daysAgo(5), photos: ['b-marina'] },
+  { id: 'b05-04', dueAt: daysAgo(3), photos: ['g-used-long-ago'], buffer: { status: 'deleted' } },
+] };
+const withPriors = library.withLedgerUsage(lib, [priorBatch]);
+check('a photo an earlier batch used is out of rotation for 30 days', !library.select(withPriors, { now: NOW }).some((p) => p.id === 'b-marina'),
+  ids(library.select(withPriors, { now: NOW })));
+check('a draft the reviewer deleted does not count as a use', library.select(withPriors, { now: NOW }).some((p) => p.id === 'g-used-long-ago'));
+check('the library itself is left as it was', lib.usage.length === 3);
 let threw = null;
 try { library.recordUse(lib, { photo: 'nope', post: 'x', date: 'y' }); } catch (e) { threw = e.message; }
 check('recording a use of an unknown photo fails', /Unknown photo/.test(threw || ''), threw || 'accepted');

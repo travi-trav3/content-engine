@@ -53,4 +53,6 @@ node engine/photos/review.js review.json --by "Your name"
 
 `library.select()` offers only reviewed, unrestricted photos with the resolution the layout needs,
 skips anything used in the last 30 days or already taken in the batch, and puts the least recently
-used first. Record a use with `library.recordUse()` when a post is scheduled.
+used first. A use is any earlier post in a batch ledger that carried the photo, on the post's date
+(`library.withLedgerUsage()`; a draft the reviewer deleted does not count). `library.recordUse()` is
+only for uses outside the engine, such as a photo posted by hand.
