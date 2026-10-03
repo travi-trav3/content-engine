@@ -203,6 +203,9 @@
   "humor": {
     "every": 5
   },
+  "brief": {
+    "minShare": 0.3
+  },
   "excludePillars": [],
   "excludeLayouts": [],
   "maxRevisions": {

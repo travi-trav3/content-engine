@@ -49,6 +49,7 @@ const { writePost, coverPhotoSpec } = require('./write');
 const { assignVariants, assignEndCards, validateLibrary } = require('./cta');
 const { ledgerEntry } = require('./ledger');
 const feedbackLog = require('../feedback/log');
+const briefMode = require('./brief');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const today = (now) => new Date(now).toISOString().slice(0, 10);
@@ -167,10 +168,17 @@ async function runBatch(opts = {}) {
   const window = `${slots[0].date} to ${slots[slots.length - 1].date}`;
   const result = { batch: `batch-${nn}`, window, dir: batchDir, stage: 'plan', ok: false };
 
+  /* -- the brief: the reviewer's own plan for the month, if any ------- */
+  const briefsDir = opts.briefsDir || path.join(ws.dir, 'briefs');
+  const { briefs, unread } = await briefMode.loadBriefs({ dir: briefsDir, provider, log: note });
+  const brief = briefs.length ? briefMode.activeBrief({ briefs, slots, priors, config }) : null;
+  const briefFindings = brief ? brief.briefs.flatMap((b) => briefMode.checkBrief(b, brandDir)) : [];
+  result.brief = { unread, active: brief ? brief.briefs.map((b) => b.name) : [] };
+
   /* -- 1. plan ------------------------------------------------------- */
   const plan = await makePlan({
     provider, brandDir, brand, config, catalog, library, lib: photoLib, slots, priors, batchNo,
-    plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), reviewerFeedback, log: note,
+    plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), reviewerFeedback, brief, log: note,
   });
   if (!plan.failures.length) {
     assignVariants(plan.entries, priors, config);
@@ -184,22 +192,29 @@ async function runBatch(opts = {}) {
     posts: plan.entries,
   };
   fs.writeFileSync(path.join(batchDir, 'plan.json'), `${JSON.stringify(planDoc, null, 2)}\n`);
+  const briefReport = briefMode.coverageReport({ active: brief, entries: plan.entries, checks: briefFindings });
   if (plan.failures.length) {
     result.failures = plan.failures;
-    writeReport({ result, planDoc, ledger: null, gates: null, events, batchDir });
+    writeReport({ result, planDoc, ledger: null, gates: null, events, batchDir, briefReport });
     return result;
   }
   if (opts.planOnly || config.review === 'plan-approval') {
     result.stage = config.review === 'plan-approval' ? 'awaiting-plan-approval' : 'planned';
     result.ok = true;
-    writeReport({ result, planDoc, ledger: null, gates: null, events, batchDir });
+    writeReport({ result, planDoc, ledger: null, gates: null, events, batchDir, briefReport });
     return result;
   }
 
   /* -- 2. write ------------------------------------------------------ */
   result.stage = 'write';
   const brandText = brandContext(brandDir);
-  const work = plan.entries.map((e, i) => workEntry(e, i, byLayout, brand));
+  const briefItems = new Map((brief ? brief.available : []).map((it) => [it.id, it]));
+  const work = plan.entries.map((e, i) => {
+    const w = workEntry(e, i, byLayout, brand);
+    const item = e.briefItem && briefItems.get(e.briefItem);
+    if (item) w.briefDetail = { item, rules: (brief.briefs.find((b) => b.name === item.brief) || {}).rules || [] };
+    return w;
+  });
   const written = new Map();
   const usedBy = new Map();
   const usedPhotos = (exceptId) => [...usedBy].filter(([id]) => id !== exceptId).flatMap(([, ps]) => ps);
@@ -308,11 +323,11 @@ async function runBatch(opts = {}) {
   result.stage = 'done';
   result.ok = gates.every((g) => g.pass) && ledger.posts.every((p) => p.status === 'rendered');
   result.renders = files;
-  writeReport({ result, planDoc, ledger, gates, events, batchDir });
+  writeReport({ result, planDoc, ledger, gates, events, batchDir, briefReport });
   return result;
 }
 
-function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
+function writeReport({ result, planDoc, ledger, gates, events, batchDir, briefReport = [] }) {
   const lines = [`# ${planDoc.batch}`, '', `Window: ${planDoc.window}. Review: ${planDoc.review}. ${planDoc.plannedBy}.`, ''];
   const verdict = {
     plan: 'The plan did not pass its checks after every revision. Nothing was written.',
@@ -333,6 +348,11 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir }) {
     lines.push(`| ${i + 1} | ${String(p.dueAt || p.date).slice(0, 16).replace('T', ' ')} | ${p.channel} | ${p.pillar} | ${shape} (${p.renderSurface}) | ${head} | ${photo} | ${p.ctaVariant || (p.endCard ? `end card: ${p.endCard}` : '')} | ${p.status || 'planned'} |`);
   });
   lines.push('');
+  if (briefReport.length || (result.brief && result.brief.unread && result.brief.unread.length)) {
+    lines.push('## Brief', '');
+    if (result.brief && result.brief.unread && result.brief.unread.length) lines.push(`Not read (no provider): ${result.brief.unread.join(', ')}`, '');
+    lines.push(...briefReport);
+  }
   if (result.unresolved) {
     lines.push('## Needs a person', '', 'These posts still failed after every rewrite. Fix the copy in ledger.json and re-run, or drop the post.', '');
     for (const [id, f] of Object.entries(result.unresolved)) lines.push(`- **${id}**`, ...f.map((x) => `  - ${x}`));

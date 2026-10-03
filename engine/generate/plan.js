@@ -20,6 +20,7 @@ const { PHOTO_VOCAB } = require('./catalog');
 const { brandContext, historySummary, photoSummary, layoutMenu } = require('./context');
 const { ctaTypesOf, ctaRange } = require('./cta');
 const { KINDS, everyRange, carouselRange } = require('./carousel');
+const { briefRules, briefChecks } = require('./brief');
 
 const CHECKLIST = ['interestingWithoutPurchase', 'peerToPeer', 'credibleScenario', 'oneThought',
   'captionAddsLayer', 'worksWithoutCta', 'buildsTrust', 'hasDistribution'];
@@ -28,7 +29,7 @@ const THREAD_INTERACTION = { 'message-thread': 'answer', 'photo-thread': 'answer
 
 const nullable = (schema) => ({ ...schema, type: [schema.type, 'null'], ...(schema.enum ? { enum: [...schema.enum, null] } : {}) });
 
-function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount, carousels = false }) {
+function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount, carousels = false, briefItems = [] }) {
   const layouts = [...catalog.filter((c) => c.eligible).map((c) => c.id), ...(carousels ? ['carousel'] : [])];
   const entry = {
     slot: { type: 'integer', description: `The slot index this entry fills, 0 to ${slotCount - 1}.` },
@@ -56,6 +57,7 @@ function planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount, carousel
     ctaType: { type: 'string', enum: ['none', ...ctaTypes] },
     ...Object.fromEntries(CHECKLIST.map((k) => [k, { type: 'boolean' }])),
     rationale: nullable({ type: 'string', description: 'Required when any checklist answer is false.' }),
+    ...(briefItems.length ? { briefItem: nullable({ type: 'string', enum: briefItems, description: 'The brief item this post takes its idea from, or null.' }) } : {}),
   };
   return {
     type: 'object',
@@ -92,6 +94,7 @@ function planRequest({ ctx, slots, rules, revision }) {
     '<photo_library>', ctx.photos, '</photo_library>',
     '<layouts>', ctx.layouts, '</layouts>',
     ...(ctx.feedback ? ['<reviewer_feedback>', ctx.feedback, '</reviewer_feedback>'] : []),
+    ...(ctx.brief ? [ctx.brief] : []),
     '<task>',
     `Plan one post for each of these ${slots.length} slots:`,
     slotLines,
@@ -109,7 +112,7 @@ function planRequest({ ctx, slots, rules, revision }) {
   return parts.join('\n');
 }
 
-function batchRules({ slots, pillars, config, factIds, demoClubs }) {
+function batchRules({ slots, pillars, config, factIds, demoClubs, brief }) {
   const n = slots.length;
   const cta = ctaRange(n, config);
   const car = carouselRange(n, config);
@@ -134,6 +137,7 @@ function batchRules({ slots, pillars, config, factIds, demoClubs }) {
     `A post that depicts a club scenario sets depictsScenario true and an operationalCheck that starts with one of these fact ids: ${factIds.join(', ')}. If no fact covers the scenario, choose another scenario.`,
     'Photo layouts set photoSubject to a subject the library has (see photo_library), a photoBrief and an artDirectionMatch. Other layouts set all three null.',
     'Every checklist answer is true, except worksWithoutCta may be false on the single promote post; any false needs a rationale.',
+    ...briefRules(brief),
   ];
 }
 
@@ -194,6 +198,7 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
     if (p.artDirectionMatch) entry.artDirectionMatch = p.artDirectionMatch;
     for (const k of CHECKLIST) entry[k] = p[k];
     if (p.rationale) entry.rationale = p.rationale;
+    if (p.briefItem) entry.briefItem = p.briefItem;
     if (config.review === 'plan-approval') entry.approvedBy = '';
     else entry.review = planGate.REVIEW_IN_BUFFER;
     entry.plannedBy = `engine, ${plannedOn}`;
@@ -202,7 +207,7 @@ function toPlanEntries(response, { slots, catalog, batchNo, config, plannedOn })
 }
 
 /** The engine's own consistency rules, which no gate covers because only generated plans name layouts. */
-function engineChecks(entries, { slots, catalog, pillars, library, lib, config = {} }) {
+function engineChecks(entries, { slots, catalog, pillars, library, lib, config = {}, brief = null }) {
   const failures = [];
   const byId = new Map(catalog.map((c) => [c.id, c]));
   const seenSlots = entries.map((e) => e.date + e.channel);
@@ -273,6 +278,7 @@ function engineChecks(entries, { slots, catalog, pillars, library, lib, config =
     const have = lib.select(library, { tags: [subject] }).length;
     if (have < n) failures.push(`${n} posts want a "${subject}" photo and the library has ${have} available`);
   }
+  failures.push(...briefChecks(entries, brief));
   return failures;
 }
 
@@ -291,18 +297,20 @@ function gateFailures(entries, priors, { awaitingApproval = false } = {}) {
  * Plans a batch, revising until the plan passes or the revision budget runs
  * out. Returns { entries, failures, rounds }; failures is empty on success.
  */
-async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, reviewerFeedback, log = () => {} }) {
+async function makePlan({ provider, brandDir, brand, config, catalog, library, lib, slots, priors, batchNo, plannedOn, demoClubs, factIds, reviewerFeedback, brief = null, log = () => {} }) {
   const pillars = planGate.PILLARS.filter((p) => !(config.excludePillars || []).includes(p));
   const ctaTypes = ctaTypesOf(config);
-  const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length, carousels: Boolean(config.carousel && config.carousel.every) });
+  const briefItems = brief ? brief.available.map((it) => it.id) : [];
+  const schema = planSchema({ catalog, pillars, demoClubs, ctaTypes, slotCount: slots.length, carousels: Boolean(config.carousel && config.carousel.every), briefItems });
   const ctx = {
     brand: brandContext(brandDir),
     history: historySummary(priors, slots[0].date),
     photos: photoSummary(library, lib, Date.parse(`${slots[0].date}T12:00:00Z`)),
     layouts: layoutMenu(catalog, brand, config),
     feedback: reviewerFeedback || '',
+    brief: brief && brief.available.length ? brief.text : '',
   };
-  const rules = batchRules({ slots, pillars, config, factIds, demoClubs });
+  const rules = batchRules({ slots, pillars, config, factIds, demoClubs, brief });
   const maxRounds = 1 + ((config.maxRevisions && config.maxRevisions.plan) ?? 3);
   let revision = null;
   let entries = [];
@@ -319,7 +327,7 @@ async function makePlan({ provider, brandDir, brand, config, catalog, library, l
     });
     log({ step: 'plan', round, usage });
     entries = toPlanEntries(data, { slots, catalog, batchNo, config, plannedOn });
-    failures = [...engineChecks(entries, { slots, catalog, pillars, library, lib, config }),
+    failures = [...engineChecks(entries, { slots, catalog, pillars, library, lib, config, brief }),
       ...gateFailures(entries, priors, { awaitingApproval: config.review === 'plan-approval' })];
     log({ step: 'plan', round, failures });
     if (!failures.length) break;

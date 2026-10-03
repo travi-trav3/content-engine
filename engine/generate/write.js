@@ -101,13 +101,23 @@ Return only the JSON the schema asks for. Optional props you do not use are null
 
 function writeRequest({ brandText, entry, layoutInfo, revision, reviewerFeedback }) {
   const plan = { ...entry };
-  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant', 'endCard', 'endCardProps']) delete plan[k];
+  for (const k of ['fixed', 'photoProps', 'layoutInfo', 'layoutModule', 'slotIndex', 'ctaLine', 'ctaVariant', 'endCard', 'endCardProps', 'briefDetail']) delete plan[k];
   const parts = [brandText];
   if (reviewerFeedback) parts.push('<reviewer_feedback>', reviewerFeedback, '</reviewer_feedback>');
   parts.push(
     '<layout>', layoutInfo, '</layout>',
     '<plan_entry>', JSON.stringify(plan, null, 1), '</plan_entry>',
   );
+  if (entry.briefDetail) {
+    const { item, rules } = entry.briefDetail;
+    const keep = ['title', 'hook', 'beats', 'reveal', 'body', 'visual', 'tryAtYourClub', 'anchor', 'sources'];
+    parts.push('<brief_item>',
+      'This post comes from the reviewer\'s own brief. Keep its idea, its hook and its reveal, adapted to this layout and its limits; its format is a suggestion, the layout above is the decision.',
+      'Its numbers are usable only as approved-stats.json allows: leave out a number the file does not have, rather than rewording or rounding it. Where it sets channels against each other, keep the idea and drop the comparison.',
+      ...(rules && rules.length ? ['The brief\'s creative rules:', ...rules.map((r) => `- ${r}`)] : []),
+      JSON.stringify(Object.fromEntries(keep.filter((k) => item[k] !== null && item[k] !== undefined && !(Array.isArray(item[k]) && !item[k].length)).map((k) => [k, item[k]])), null, 1),
+      '</brief_item>');
+  }
   if (entry.ctaLine) parts.push(`<cta>The engine ends this caption with: ${entry.ctaLine}</cta>`);
   if (entry.channel === 'instagram') parts.push('<channel>Instagram: the caption can be short; the first line must stand alone.</channel>');
   else parts.push('<channel>LinkedIn company page: the caption can run longer and reason more; the first two lines show before "see more".</channel>');

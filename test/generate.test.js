@@ -170,7 +170,12 @@ function strict(schema, at = '$') {
   const { planSchema } = require('../engine/generate/plan');
   const pillars = require('../engine/gates/plan-gate').PILLARS.filter((p) => !config.excludePillars.includes(p));
   const demoClubs = JSON.parse(fs.readFileSync(path.join(WS.brandDir, 'demo-clubs.json'), 'utf8')).clubs.map((c) => c.name);
-  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: ctaTypesOf(config), slotCount: 10, carousels: true });
+  const briefMode = require('../engine/generate/brief');
+  const octSlots = slotsFor({ cadence: config.cadence, start: '2026-10-05', timeZone: config.timezone });
+  const shippedPriors = ['01', '02', '03', '04', '05'].map((n) => JSON.parse(fs.readFileSync(path.join(WS.contentDir, `batch-${n}`, 'ledger.json'), 'utf8')));
+  const briefLoad = await briefMode.loadBriefs({ dir: path.join(WS.dir, 'briefs') });
+  const octActive = briefMode.activeBrief({ briefs: briefLoad.briefs, slots: octSlots, priors: shippedPriors, config });
+  const pSchema = planSchema({ catalog, pillars, demoClubs, ctaTypes: ctaTypesOf(config), slotCount: 10, carousels: true, briefItems: octActive.available.map((it) => it.id) });
   const planErrs = conforms(pSchema, planFixture);
   check('the recorded plan fits the plan schema', planErrs.length === 0, planErrs.slice(0, 5).join('; '));
 
@@ -267,6 +272,59 @@ function strict(schema, at = '$') {
   ] }], ['b06-07-x']);
   check('a slide\'s gate finding goes back to its post, naming the slide',
     routed.size === 1 && routed.get('b06-07-x')[0] === 'slide 6: brand.copyCap.card: too long', JSON.stringify([...routed]));
+
+  console.log('== brief mode: the October map steers, the engine decides the format ==');
+  check('the October map is read from its saved reading, no model call', briefLoad.briefs.length === 1 && !briefLoad.unread.length
+    && briefLoad.briefs[0].items.length === 18 && briefLoad.briefs[0].month === '2026-10');
+  const octText = briefMode.docxText(fs.readFileSync(path.join(WS.dir, 'briefs', '2026-10-october-content-map.docx')));
+  check('a Word brief is read without dependencies', /TRY THE FLIP AT YOUR CLUB/.test(octText) && /One Member\. Four Channels\. One History\?/.test(octText));
+  check('a batch over Oct 5 to 18 is offered the ideas for weeks 1 to 3, not week 4',
+    octActive.available.map((it) => it.id.split('/')[1]).join() === 'ig-01,ig-02,ig-03,ig-04,ig-05,ig-06,ig-07,ig-08,ig-09', octActive.available.map((it) => it.id).join());
+  check('the founder\'s LinkedIn topics and the blog posts wait for their own modes',
+    octActive.setAside.filter((it) => it.channel === 'founder').length === 4 && octActive.setAside.filter((it) => it.channel === 'blog').length === 2);
+  check('at least three of ten posts must come from the brief (brief.minShare 0.3)', octActive.min === 3);
+  check('the planner is told the weeks this batch falls in', /Week 2 \(Oct 8 to 14\): Give members the choice/.test(octActive.text) && !/Week 4/.test(octActive.text));
+  const briefPlanCall = mock.calls.find((c) => c.key === 'plan');
+  check('the plan prompt carries the brief and its rule', briefPlanCall.user.includes('<brief name="2026-10-october-content-map"') && /at least 3 posts take their idea from a brief item/.test(briefPlanCall.user));
+  const fromBrief = ledger.posts.filter((p) => p.briefItem);
+  check('three posts carry their brief item into the ledger', fromBrief.map((p) => `${p.id.slice(0, 6)}:${p.briefItem.split('/')[1]}`).join() === 'b06-05:ig-04,b06-06:ig-06,b06-10:ig-09',
+    fromBrief.map((p) => p.briefItem).join());
+  check('and they ran in the layouts the batch needed, not all as flips', new Set(fromBrief.map((p) => p.layout)).size === 3, fromBrief.map((p) => p.layout).join());
+  const writeFromBrief = mock.calls.find((c) => c.key === 'post-4');
+  check('the writer gets the brief item, with the rule on numbers', writeFromBrief.user.includes('<brief_item>')
+    && writeFromBrief.user.includes('A member emails Monday, texts Wednesday') && /leave out a number the file does not have/.test(writeFromBrief.user));
+  check('posts without a brief item get no brief block', !mock.calls.find((c) => c.key === 'post-0').user.includes('<brief_item>'));
+  const report = fs.readFileSync(path.join(batchDir, 'report.md'), 'utf8');
+  check('the report says what the brief gave this batch and what is still open',
+    /## Brief/.test(report) && /b06-05-where-communication-heads-li \(communication-hub\) <- 04 "One Member\. Four Channels\. One History\?"/.test(report)
+      && /Still open: 01 \(week 1\)[^\n]*12 \(week 4\)\./.test(report) && /For the founder's own LinkedIn/.test(report) && /Blog posts/.test(report), report.slice(report.indexOf('## Brief'), report.indexOf('## Brief') + 900));
+  check('and what in the brief trips a gate before anyone writes from it',
+    /03 "Wondering Which Channel Performs Best for Club Communication\?": numbers not in approved-stats\.json: 43\.46%, 2\.09%/.test(report)
+      && /05 "Would You Rather Get This by Email or Text\?": Channel-versus-channel framing[^\n]*\(brand\.channelVersus\)/.test(report));
+  check('the brief\'s own cadence is reported against the configured one', /The brief's cadence: Instagram 3 \/ week/.test(report));
+  const at = (id, date) => ({ id, date, briefItem: `2026-10-october-content-map/${id.split(':')[1]}` });
+  const bc = (entries) => briefMode.briefChecks(entries, octActive);
+  check('a week-3 idea cannot run in week 1', bc([at('x:ig-09', '2026-10-05'), at('y:ig-01', '2026-10-06'), at('z:ig-02', '2026-10-07')]).some((f) => /belongs to week 3/.test(f)));
+  check('an idea runs once', bc([at('x:ig-01', '2026-10-05'), at('y:ig-01', '2026-10-06'), at('z:ig-02', '2026-10-07')]).some((f) => /already used by x/.test(f)));
+  check('an idea from a later week is not offered at all', bc([at('x:ig-10', '2026-10-25')]).some((f) => /not a brief item this batch can use/.test(f)));
+  check('too few brief posts fails', bc([at('x:ig-01', '2026-10-05')]).some((f) => /needs at least 3/.test(f)));
+  const later = briefMode.activeBrief({ briefs: briefLoad.briefs, slots: slotsFor({ cadence: config.cadence, start: '2026-10-19', timeZone: config.timezone }), priors: [...shippedPriors, ledger], config });
+  check('the next batch is offered what is left, week 4 included', !later.available.some((it) => /ig-0[469]$/.test(it.id)) && later.available.some((it) => /ig-12$/.test(it.id)),
+    later.available.map((it) => it.id.split('/')[1]).join());
+  // A changed source is read again; the reading is saved with stable ids.
+  const briefTmp = path.join(OUT, 'brief');
+  fs.rmSync(briefTmp, { recursive: true, force: true });
+  fs.mkdirSync(briefTmp, { recursive: true });
+  fs.copyFileSync(path.join(WS.dir, 'briefs', '2026-10-october-content-map.docx'), path.join(briefTmp, '2026-10-october-content-map.docx'));
+  fs.writeFileSync(path.join(briefTmp, '2026-10-october-content-map.json'), JSON.stringify({ sourceSha256: 'stale' }));
+  check('without a provider, a changed brief is reported unread', (await briefMode.loadBriefs({ dir: briefTmp })).unread.length === 1);
+  const briefMock = createMock({ dir: path.join(__dirname, 'fixtures', 'brief') });
+  const reread = await briefMode.loadBriefs({ dir: briefTmp, provider: briefMock });
+  const reading = JSON.parse(fs.readFileSync(path.join(briefTmp, '2026-10-october-content-map.json'), 'utf8'));
+  check('with one, it is read once and saved with its hash and stable ids', briefMock.calls.length === 1 && reread.briefs.length === 1
+    && reading.sourceSha256 === briefLoad.briefs[0].sourceSha256 && reading.items.map((it) => it.id).join() === briefLoad.briefs[0].items.map((it) => it.id).join());
+  await briefMode.loadBriefs({ dir: briefTmp, provider: briefMock });
+  check('and not again while the source is unchanged', briefMock.calls.length === 1);
 
   console.log('== humor: a regular part of the plan ==');
   const jokes = ledger.posts.filter((p) => p.pillar === 'Humor');

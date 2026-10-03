@@ -80,6 +80,28 @@ named mechanism, never blaming or mocking a member, landing without a footer, an
 the assistant doing something. It goes to Buffer as a draft like everything else; Byron approving the
 draft is the review the editorial gate requires.
 
+## Briefs
+
+A brief is the reviewer's own plan: a monthly content map, a list of ideas, anything with post ideas in
+it, dropped into `briefs/` as Word, Markdown or text (`node engine/generate/brief.js` reads it; the
+instance's `brief.yml` does it on push and messages the reviewer). The model reads it once into
+structured items (the month, its story, weekly themes, creative rules, and every post idea with its
+hook, beats, reveal, body and sources, copied as written) and the reading is saved beside the source as
+`<name>.json` with the source's hash. It is read again only when the source changes, and a person can
+correct the reading by editing the JSON.
+
+A batch is offered the brief's ideas whose week has started by the end of its window and that no
+earlier post has used. At least `brief.minShare` of its posts (0.3: three of ten) take their idea from
+one (`briefItem` in the plan and the ledger), each idea once, never before its week; the rest come from
+the pillars as usual. The idea, hook and reveal carry into the post; the format does not: the rotation,
+the carousel and humor shares and every gate still decide. A brief that plans twelve flip carousels gets
+its twelve ideas in the layouts the batch needs.
+
+Ideas for the founder's own LinkedIn wait for source mode; blog posts are outside the engine. Before
+anything is written, every idea runs through the content gates, so the reviewer hears about an
+unapproved number or a channel-versus-channel comparison the day the brief lands, not in a draft. The
+report lists what each batch used, what is still open, and those findings.
+
 ## Calls to action
 
 `cta.every` sets how often a post asks (4: one post in four, rounded either way per batch). The plan
@@ -114,6 +136,7 @@ account when the key is set up, and run one batch with `--plan-only` first.
   "cta": { "every": 4, "type": "demo", "link": "https://...", "variants": [ { "id": "...", "linkedin": "... https://...", "instagram": "... Link in bio." } ] },
   "carousel": { "every": 3, "channels": ["instagram", "linkedin_page"], "minSlides": 4, "maxSlides": 8 },
   "humor": { "every": 5 },
+  "brief": { "minShare": 0.3 },
   "excludePillars": [],
   "excludeLayouts": [],
   "maxRevisions": { "plan": 3, "post": 2 }

@@ -468,3 +468,31 @@ Open:
 - LinkedIn document posts through the API are untested against a live account; run 1 settles it
   (fallback: `buffer.linkedinCarousel: "images"`).
 - Promised to Byron in Slack, not built: the monthly theme input (brief mode).
+
+### 2026-10-03, increment 8 (brief mode)
+
+The monthly theme input promised to Byron in Slack. Byron's October map is the acceptance test.
+
+Done:
+- `engine/generate/brief.js`: a brief is any file in `briefs/` (Word, Markdown, text). The model reads
+  it once into structured items (month, story, weekly themes, creative rules, each idea's hook, beats,
+  reveal, body, sources, copied as written), saved beside it as JSON with the source hash. A batch is
+  offered the ideas whose week has started and that nothing used; at least `brief.minShare` (0.3) of
+  its posts take one, each once, never before its week. Format stays the engine's: the rotation, the
+  carousel and humor shares and the gates still decide. Founder ideas wait for source mode; blog posts
+  are outside the engine.
+- Every idea runs through the content gates when the brief is read. On the October map: idea 03 cites
+  four numbers that are not in approved-stats.json (43.46%, 2.09%, 7%, 3.6 million) and compares
+  channels by the numbers (retired by Byron on Aug 26); idea 05 sets an email announcement against a
+  text update; Byron's week-4 topic cites "40+ integrations". The writer is told to keep the idea and
+  drop the number or the comparison.
+- Instance workflow `brief.yml`: a brief pushed to `briefs/` is read and the reviewer messaged with what
+  the engine will use and what trips a check. Batch reports list what each batch used and what is open.
+- The recorded batch (Oct 5 to 18) now takes three ideas from the October map (04, 06, 09), each in a
+  different layout (hub diagram, list carousel, message thread).
+
+Decisions for Byron:
+- Approve the four benchmark numbers in idea 03 with their sources, or let the post run without them.
+- The map's cadence (Instagram 3 a week, Byron's LinkedIn 1 a week) against the engine's (5 company-page
+  LinkedIn + 5 Instagram per two weeks, LinkedIn at least half by the plan gate). Unresolved since Sep 30.
+- How Byron gets a brief in: GitHub upload today; a Drive "Briefs" folder with the Drive sync.

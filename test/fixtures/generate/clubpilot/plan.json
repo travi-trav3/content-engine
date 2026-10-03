@@ -32,7 +32,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": null
   },
   {
    "slot": 1,
@@ -66,7 +67,8 @@
    "captionAddsLayer": true,
    "worksWithoutCta": true,
    "buildsTrust": true,
-   "hasDistribution": true
+   "hasDistribution": true,
+   "briefItem": null
   },
   {
    "slot": 2,
@@ -100,7 +102,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": null
   },
   {
    "slot": 3,
@@ -134,7 +137,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": null
   },
   {
    "slot": 4,
@@ -168,7 +172,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": "2026-10-october-content-map/ig-04"
   },
   {
    "slot": 5,
@@ -202,7 +207,8 @@
    "captionAddsLayer": true,
    "worksWithoutCta": true,
    "buildsTrust": true,
-   "hasDistribution": true
+   "hasDistribution": true,
+   "briefItem": "2026-10-october-content-map/ig-06"
   },
   {
    "slot": 6,
@@ -236,7 +242,8 @@
    "captionAddsLayer": true,
    "worksWithoutCta": true,
    "buildsTrust": true,
-   "hasDistribution": true
+   "hasDistribution": true,
+   "briefItem": null
   },
   {
    "slot": 7,
@@ -270,7 +277,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": null
   },
   {
    "slot": 8,
@@ -304,7 +312,8 @@
    "captionAddsLayer": true,
    "worksWithoutCta": true,
    "buildsTrust": true,
-   "hasDistribution": true
+   "hasDistribution": true,
+   "briefItem": null
   },
   {
    "slot": 9,
@@ -338,7 +347,8 @@
    "hasDistribution": true,
    "rationale": null,
    "carouselKind": null,
-   "slideCount": null
+   "slideCount": null,
+   "briefItem": "2026-10-october-content-map/ig-09"
   }
  ]
 }

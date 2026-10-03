@@ -145,6 +145,7 @@ function ledgerEntry({ index, entry, layout, post, render, size, batchNo, draft 
       observableAnswer: post.observableAnswer,
       standsWithoutFooter: post.standsWithoutFooter,
     } : {}),
+    briefItem: entry.briefItem || null,
     ctaType: entry.ctaType,
     ctaVariant: entry.ctaVariant || null,
     endCard: entry.endCard || null,

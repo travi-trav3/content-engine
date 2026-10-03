@@ -11,7 +11,7 @@ it in their own GitHub organization. Club Pilot is the first brand and lives her
 ```
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
 engine/gates/      the checks; check-batch.js runs all of them for one batch
-engine/generate/   plan, write, gate, render a batch (batch.js); providers/ (openai, mock); see its README
+engine/generate/   plan, write, gate, render a batch (batch.js); brief.js (the reviewer's briefs); providers/; see its README
 engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js, pdf.js (LinkedIn carousels)
 engine/photos/     library.js (selection), ingest.js, review.js; see engine/photos/README.md
 engine/buffer/     client.js, mock.js, push.js (drafts), sync.js (notes, edits, approvals); see its README
@@ -34,6 +34,7 @@ CE_WORKSPACE=brands/clubpilot node engine/gates/check-batch.js 05
 CE_WORKSPACE=brands/clubpilot npm run generate -- --plan-only          # needs OPENAI_API_KEY
 CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir test/fixtures/generate/clubpilot --start 2026-10-05
 CE_WORKSPACE=brands/clubpilot npm run push -- --batch 06 --dry-run              # what would go to Buffer
+CE_WORKSPACE=brands/clubpilot node engine/generate/brief.js                   # read briefs, print their checks
 BUFFER_API_KEY=... node engine/buffer/setup.js                                 # organization and channel ids
 CE_WORKSPACE=brands/clubpilot npm run render -- --layout type-card \
   --props brands/clubpilot/test-props/type-card.json --out /tmp/renders
@@ -90,8 +91,10 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: source mode (founder posts from material Byron supplies), brief mode (a monthly theme or
-  map from the reviewer), the brand-update inbox, Drive photo sync and the weekly photo scout.
+- Not built yet: source mode (founder posts from material Byron supplies), the brand-update inbox, Drive
+  photo sync (and a Drive folder for briefs) and the weekly photo scout.
+- A brief's reading (`briefs/<name>.json`) is the model's; it can misplace an idea's week or channel.
+  The October map gives no week per Instagram idea, so its reading places them three a week in order.
 - Not yet exercised against a live Buffer account: a LinkedIn document (PDF) post created through the
   API, and Buffer's own normalization of caption text. Run 1 settles both (engine/buffer/README.md).
 - A note cannot turn a single image into a carousel or back, or add or remove a message thread; it
