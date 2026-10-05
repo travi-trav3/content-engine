@@ -40,4 +40,5 @@ The workflows need `contents: write` on the instance repository (set in each fil
 
 `config.json`: `buffer.organizationId` and `buffer.channels` (from `node engine/buffer/setup.js`),
 `buffer.reviewers` (the reviewer's Buffer email), `assets.repo`, and the model name under `provider`.
-Then run `batch` by hand with "force" and read the drafts in Buffer before the schedule takes over.
+Then run `node engine/doctor.js` (with the secrets exported) until it says "Ready", run `batch` by hand
+with "force", and read the drafts in Buffer before the schedule takes over.

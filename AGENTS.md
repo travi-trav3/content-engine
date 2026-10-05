@@ -19,6 +19,7 @@ engine/buffer/     client.js, mock.js, push.js (drafts), sync.js (notes, edits, 
 engine/feedback/   revise.js (a note becomes a new version), log.js (feedback/log.jsonl and its summary)
 engine/publish/    host.js: renders to the public assets repository, content-hashed and verified
 engine/notify.js   messages to the reviewer (Slack webhook or console)
+engine/doctor.js   the preflight: every key, channel and permission a live run needs, each failure with its fix
 instance/          files only a client instance gets: the batch and sync workflows
 layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
 brands/<name>/     a brand fixture: brand/, content/, photos/, test-props/, goldens/
@@ -37,6 +38,7 @@ CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir tes
 CE_WORKSPACE=brands/clubpilot npm run push -- --batch 06 --dry-run              # what would go to Buffer
 CE_WORKSPACE=brands/clubpilot node engine/generate/brief.js                   # read briefs, print their checks
 BUFFER_API_KEY=... node engine/buffer/setup.js                                 # organization and channel ids
+node engine/doctor.js [--offline] [--slack-test]                               # is this instance ready to run live?
 CE_WORKSPACE=brands/clubpilot node engine/photos/drive-sync.js --drive mock --seed  # the Drive sync, dry
 CE_WORKSPACE=brands/clubpilot npm run render -- --layout type-card \
   --props brands/clubpilot/test-props/type-card.json --out /tmp/renders
