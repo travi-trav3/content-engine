@@ -14,7 +14,8 @@
  * organization, every cadence channel connected and unlocked), the public
  * assets repository and its token, a cadence the plan gate accepts, the
  * brand files and the CTA library. Optional, reported as warnings: Slack,
- * the reviewer allowlist, the Drive photo library, the Unsplash scout.
+ * the reviewer allowlist, the Drive photo library, the Unsplash scout, and
+ * founder posts (the founder's channel, material, the transcription model).
  * Exit 1 when anything required fails.
  */
 
@@ -60,7 +61,7 @@ async function preflight({ config, env = process.env, fetchImpl = fetch, live = 
     if (!(b.channels || {})[ch]) add('buffer', FAIL, `no Buffer channel id for ${ch}, which the cadence posts to`, 'Run node engine/buffer/setup.js and copy the channel id into buffer.channels.');
   }
   for (const [ch, id] of Object.entries(b.channels || {})) {
-    if (!id && !cadenceChannels.includes(ch)) add('buffer', WARN, `${ch} has no Buffer channel yet (not in the cadence, so nothing is lost)`, null, false);
+    if (!id && !cadenceChannels.includes(ch) && !((config.founder || {}).enabled && ch === (config.founder.channel || 'linkedin_byron'))) add('buffer', WARN, `${ch} has no Buffer channel yet (not in the cadence, so nothing is lost)`, null, false);
   }
   if (live && bufferKey && b.organizationId) {
     const { createBuffer } = require('./buffer/client');
@@ -166,6 +167,25 @@ async function preflight({ config, env = process.env, fetchImpl = fetch, live = 
   else if (live) {
     const res = await fetchImpl('https://api.unsplash.com/search/photos?query=golf&per_page=1', { headers: { authorization: `Client-ID ${unsplashKey}` } }).catch((e) => ({ status: 0, error: e }));
     add('scout', res.status === 200 ? OK : FAIL, res.status === 200 ? 'Unsplash key works' : `Unsplash answered ${res.status || res.error.message}`, res.status === 200 ? null : 'Check the access key.', false);
+  }
+
+  /* -- founder posts (optional) ----------------------------------------- */
+  const f = config.founder || {};
+  if (f.enabled) {
+    const ch = f.channel || 'linkedin_byron';
+    if (!(b.channels || {})[ch]) add('founder', WARN, `founder posts are on, but ${ch} has no Buffer channel: they are written and wait, undrafted`, `Connect the founder's LinkedIn in Buffer and put its id in buffer.channels.${ch}.`, false);
+    if (!(f.slots || []).length) add('founder', WARN, 'founder posts are on, with no founder.slots', 'Add the founder\'s posting days and times to config.json founder.slots.', false);
+    if (!(f.names || []).length) add('founder', WARN, 'founder.names is empty: no turn in a call transcript can be recognized as the founder\'s', 'List the names the founder appears under in transcripts.', false);
+    const sourcesDir = path.join(ws.dir, 'sources');
+    const files = fs.existsSync(sourcesDir) ? fs.readdirSync(sourcesDir).filter((x) => !x.startsWith('.') && !x.endsWith('.json') && !/^readme/i.test(x)) : [];
+    if (files.length) add('founder', OK, `${files.length} source file${files.length === 1 ? '' : 's'} in the founder's own words`, null, false);
+    else add('founder', WARN, 'no material from the founder yet: each founder slot will ask for it with questions', 'A voice memo in the Drive folder Sources, or a note in sources/, gives the founder posts their words.', false);
+    const tm = f.transcribeModel || 'gpt-4o-transcribe';
+    if (live && openaiKey) {
+      const res = await fetchImpl(`https://api.openai.com/v1/models/${encodeURIComponent(tm)}`, { headers: { authorization: `Bearer ${openaiKey}` } }).catch((e) => ({ status: 0, error: e }));
+      if (res.status === 200) add('founder', OK, `${tm} (voice memos) is available to this key`, null, false);
+      else add('founder', WARN, `${tm} is not available to this key (${res.status || res.error.message}): voice memos cannot be transcribed`, 'Set config.json founder.transcribeModel to a transcription model the account can use; documents still work.', false);
+    }
   }
 
   const ready = !checks.some((c) => c.required && c.status === FAIL);

@@ -109,6 +109,7 @@ function stubFetch(handler) {
   fs.rmSync(OUT, { recursive: true, force: true });
   const photosDir = path.join(OUT, 'photos');
   const briefsDir = path.join(OUT, 'briefs');
+  const sourcesDir = path.join(OUT, 'sources');
   fs.mkdirSync(photosDir, { recursive: true });
   const real = photoLib.load();
   const keep = ['50m-above-gf5xptsylnu', 'alexander-lli9yoy5cm8', 'cardmapr-nl-au-tyt7e0lw'];
@@ -125,8 +126,8 @@ function stubFetch(handler) {
   const inFolder = (name) => [...drive.files.values()].filter((f) => f.parent === folderId(name) && !f.trashed);
   check('the library is seeded once, each photo in the folder for its state', seeded.uploaded === 3
     && inFolder('Active').length === 2 && inFolder('Needs a look').map((f) => f.name).join() === 'cardmapr-nl-au-tyt7e0lw.jpg');
-  check('the folders exist: Inbox, Active, Parked, Retired, Needs a look, Briefs',
-    ['Inbox', 'Active', 'Parked', 'Retired', 'Needs a look', 'Briefs'].every((n) => { try { return Boolean(folderId(n)); } catch { return false; } }));
+  check('the folders exist: Inbox, Active, Parked, Retired, Needs a look, Briefs, Sources',
+    ['Inbox', 'Active', 'Parked', 'Retired', 'Needs a look', 'Briefs', 'Sources'].every((n) => { try { return Boolean(folderId(n)); } catch { return false; } }));
   check('every Drive file says what the library holds', inFolder('Active').every((f) => /In rotation\./.test(f.description) && /Library id:/.test(f.description)));
   check('seeding again uploads nothing', (await seedDrive({ config, drive, lib, photosDir })).uploaded === 0);
 
@@ -139,9 +140,12 @@ function stubFetch(handler) {
   drive.human.drop(folderId('Briefs'), 'November map.docx', fs.readFileSync(path.join(WS.dir, 'briefs', '2026-10-october-content-map.docx')), 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
   drive.human.drop(folderId('Briefs'), 'Ideas for December', Buffer.from('PK fake doc'), GOOGLE_DOC);
   drive.human.drop(folderId('Briefs'), 'logo.png', Buffer.from('not a brief'), 'image/png');
+  drive.human.drop(folderId('Sources'), 'New Recording 12.m4a', Buffer.from('a voice memo'), 'audio/x-m4a');
+  drive.human.drop(folderId('Sources'), 'Answers for October', Buffer.from('PK fake doc'), GOOGLE_DOC);
+  drive.human.drop(folderId('Sources'), 'headshot.jpg', Buffer.from('not words'), 'image/jpeg');
   const usedFive = { posts: [1, 2, 3, 4, 5].map((n) => ({ id: `b05-0${n}`, dueAt: `2026-09-0${n}T09:00:00-07:00`, photos: ['alexander-lli9yoy5cm8'] })) };
   const provider = createMock({ dir: FIXTURES });
-  const r1 = await syncDrive({ config, drive, provider, lib, photosDir, briefsDir, ledgers: [usedFive], now: NOW });
+  const r1 = await syncDrive({ config, drive, provider, lib, photosDir, briefsDir, sourcesDir, ledgers: [usedFive], now: NOW });
   const photo = (id) => lib.photos.find((p) => p.id === id);
   const dawn = photo('dawn-fairway');
   check('a clean photo from Inbox is ingested, read and put in rotation', dawn && dawn.reviewed && !dawn.restricted && dawn.subject === 'course'
@@ -161,6 +165,9 @@ function stubFetch(handler) {
     /Used 5 times, last Sep 5, 2026 \(b05-05\)/.test(inFolder('Retired').find((f) => f.name === 'alexander-lli9yoy5cm8.jpg').description));
   check('briefs in the Briefs folder are copied, a Google Doc as Word, other files ignored',
     fs.existsSync(path.join(briefsDir, 'november-map.docx')) && fs.existsSync(path.join(briefsDir, 'ideas-for-december.docx')) && !fs.existsSync(path.join(briefsDir, 'logo.png')));
+  check('the founder\'s memos and documents in Sources are copied for source mode; a photo there is not',
+    r1.sources.sort().join() === 'answers-for-october.docx,new-recording-12.m4a' && fs.existsSync(path.join(sourcesDir, 'new-recording-12.m4a'))
+    && !fs.existsSync(path.join(sourcesDir, 'headshot.jpg')), r1.sources.join());
   const msg = summaryMessage(r1);
   check('the reviewer is told what came in and what needs a look', /1 new photo is in rotation: Dawn Fairway\.jpg \(course\)/.test(msg)
     && /Member at the net\.jpg is in Needs a look: recognizable face/.test(msg) && /already in the library/.test(msg), msg);

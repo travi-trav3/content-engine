@@ -169,7 +169,8 @@ function stubFetch(script) {
   const library = photoLib.load();
   const pushed = await pushBatch({ batchNo: 6, config, buffer, host, notifier, contentDir, stagingDir: path.join(stagingDir, 'batch-06'), library, now: NOW });
   const ledger = read(ledgerFile);
-  check('ten drafts, none skipped', pushed.drafted.length === 10 && pushed.skipped.length === 0, JSON.stringify(pushed.skipped));
+  check('ten drafts; only the two founder slots wait, for the founder\'s own words', pushed.drafted.length === 10 && pushed.skipped.length === 2
+    && pushed.skipped.every((x) => /^b06-f\d$/.test(x.id) && x.waiting && /founder's own words/.test(x.reason)), JSON.stringify(pushed.skipped));
   check('a missing render is re-rendered byte for byte', pushed.warnings.length === 0, pushed.warnings.join('; '));
   const creates = buffer.calls.filter((c) => c.op === 'createPost').map((c) => c.input);
   check('every one is a draft at its planned time, never scheduled',
@@ -192,8 +193,10 @@ function stubFetch(script) {
   check('the ledger records each draft', ledger.posts.every((p) => p.buffer && p.buffer.id && p.buffer.status === 'draft' && p.buffer.tagIds.engine));
   fs.writeFileSync(path.join(OUT, 'push-message.txt'), `${notifier.sent.join('\n\n---\n\n')}\n`);
   check('the reviewer is told, with the contact sheet', notifier.sent.length === 1 && /10 drafts to review/.test(notifier.sent[0]) && /contact-sheet/.test(notifier.sent[0]), notifier.sent[0]);
+  check('and asked, once, for the founder posts\' material', /Byron's LinkedIn post for Tue, Oct 6/.test(notifier.sent[0]) && /Drive folder Sources/.test(notifier.sent[0])
+    && ledger.founder.every((p) => p.askedAt));
   const again = await pushBatch({ batchNo: 6, config, buffer, host, notifier, contentDir, stagingDir: path.join(stagingDir, 'batch-06'), library, now: NOW });
-  check('pushing again drafts nothing twice', again.drafted.length === 0 && buffer.posts.size === 10);
+  check('pushing again drafts nothing twice, and does not ask again', again.drafted.length === 0 && buffer.posts.size === 10 && notifier.sent.length === 1);
   check('a post that fails a gate is never drafted', /fails its gates/.test(skipReason({ status: 'rendered' }, { gateFindings: ['brand.emDash: x'], channelId: 'c', now: NOW })));
   check('a channel not yet in Buffer is skipped, with the reason', /no Buffer channel/.test(skipReason({ status: 'rendered', channel: 'linkedin_byron' }, { channelId: null, now: NOW })));
   check('a slot that has passed is skipped', /has passed/.test(skipReason({ status: 'rendered', dueAt: '2026-09-01T09:00:00-07:00' }, { channelId: 'c', now: NOW })));

@@ -32,6 +32,9 @@ const { createMockBuffer } = require('./mock');
 const { createHost } = require('../publish/host');
 const { createNotifier } = require('../notify');
 const { ensureRenders, publishMedia, draftInput } = require('./media');
+const { loadSources } = require('../generate/sources');
+const { founderConfig, askMessage } = require('../generate/founder');
+const { checkFounderPosts, findingsOf } = require('../gates/source-gate');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const write = (f, v) => fs.writeFileSync(f, `${JSON.stringify(v, null, 2)}\n`);
@@ -44,29 +47,32 @@ function bufferConfig(config) {
   return { ...b, tags: { ...DEFAULT_TAGS, ...(b.tags || {}) }, channels: b.channels || {} };
 }
 
-/** Why a post may not be drafted, or null. */
+/** Why a post may not be drafted, or null. A founder post is text only: written, not rendered. */
 function skipReason(post, { gateFindings, channelId, now }) {
   if (post.buffer && post.buffer.id) return 'already drafted';
-  if (post.status !== 'rendered') return `not rendered clean (status ${post.status})`;
+  if (post.layout === 'text') {
+    if (post.status === 'needs-source') return 'waiting for the founder\'s own words on its topic';
+    if (post.status !== 'written') return `not written (status ${post.status})`;
+  } else if (post.status !== 'rendered') return `not rendered clean (status ${post.status})`;
   if (gateFindings && gateFindings.length) return `fails its gates: ${gateFindings.join('; ')}`;
   if (!channelId) return `no Buffer channel for ${post.channel} in config.json buffer.channels`;
   if (Date.parse(post.dueAt) <= now) return `its slot (${post.dueAt}) has passed`;
   return null;
 }
 
-async function pushBatch({ batchNo, config, buffer, host, notifier, contentDir, stagingDir, renderer, library, now = Date.now(), dryRun = false, log = () => {} }) {
+async function pushBatch({ batchNo, config, buffer, host, notifier, contentDir, stagingDir, sourcesDir, renderer, library, now = Date.now(), dryRun = false, founderOnly = false, log = () => {} }) {
   const ws = workspace();
   const nn = String(batchNo).padStart(2, '0');
   const batchDir = path.join(contentDir || ws.contentDir, `batch-${nn}`);
   const ledgerFile = path.join(batchDir, 'ledger.json');
   const ledger = read(ledgerFile);
-  const plan = read(path.join(batchDir, 'plan.json'));
+  const plan = founderOnly ? null : read(path.join(batchDir, 'plan.json'));
   const stage = stagingDir || path.join(ws.root, '.staging', `batch-${nn}`);
   const bc = bufferConfig(config);
   if (!dryRun && !bc.organizationId) throw new Error('config.json buffer.organizationId is not set');
 
-  const priors = priorLedgers(contentDir || ws.contentDir, `batch-${nn}`);
-  const gates = checkAll({ plan, ledger, priors, brandDir: ws.brandDir });
+  const priors = founderOnly ? [] : priorLedgers(contentDir || ws.contentDir, `batch-${nn}`);
+  const gates = founderOnly ? [] : checkAll({ plan, ledger, priors, brandDir: ws.brandDir });
   const byPost = findingsByPost(gates, ledger.posts.map((p) => p.id));
   const batchLevel = gates.flatMap((g) => g.failures.filter((f) => !ledger.posts.some((p) => String(f.id).startsWith(p.id))).map((f) => `${f.rule}: ${f.detail}`));
 
@@ -74,7 +80,7 @@ async function pushBatch({ batchNo, config, buffer, host, notifier, contentDir, 
   const result = { batch: `batch-${nn}`, drafted: [], skipped: [], warnings: [], batchLevel };
   let ownRenderer = null;
   try {
-    for (const post of ledger.posts) {
+    for (const post of founderOnly ? [] : ledger.posts) {
       const channelId = bc.channels[post.channel];
       const reason = skipReason(post, { gateFindings: byPost.get(post.id), channelId, now });
       if (reason) {
@@ -112,11 +118,52 @@ async function pushBatch({ batchNo, config, buffer, host, notifier, contentDir, 
       result.drafted.push({ id: post.id, bufferId: created.id });
       log({ step: 'push', id: post.id, bufferId: created.id });
     }
+
+    /* -- founder posts: text only, checked again against the sources ---- */
+    const founder = ledger.founder || [];
+    if (founder.length) {
+      const fc = founderConfig(config);
+      const { sources } = await loadSources({ dir: sourcesDir || path.join(ws.dir, 'sources'), founderNames: fc.names });
+      const found = findingsOf(checkFounderPosts({ posts: founder.filter((p) => p.status === 'written'), sources, config, brandDir: ws.brandDir }));
+      for (const post of founder) {
+        const channelId = bc.channels[post.channel];
+        const reason = skipReason(post, { gateFindings: found.get(post.id), channelId, now });
+        if (reason) {
+          if (reason !== 'already drafted') result.skipped.push({ id: post.id, reason, waiting: post.status === 'needs-source' });
+          continue;
+        }
+        if (dryRun) {
+          result.drafted.push({ id: post.id, dryRun: true, files: [] });
+          continue;
+        }
+        const input = draftInput(post, { channelId, media: [], tagIds: [tagIds.engine] });
+        const created = await buffer.createPost(input);
+        post.buffer = {
+          id: created.id,
+          channelId,
+          status: created.status,
+          pushedAt: new Date(now).toISOString(),
+          text: String(created.text || input.text).replace(/\r\n/g, '\n').trim(),
+          tagIds,
+          tagRoles: ['engine'],
+          firstComment: null,
+          media: [],
+          notesSeen: [],
+          revisions: [],
+        };
+        write(ledgerFile, ledger);
+        result.drafted.push({ id: post.id, bufferId: created.id });
+        log({ step: 'push', id: post.id, bufferId: created.id });
+      }
+    }
   } finally {
     if (ownRenderer) await ownRenderer.close();
   }
 
-  if (!dryRun && notifier && (result.drafted.length || result.skipped.length)) {
+  // Founder slots waiting on the founder's words get their questions once;
+  // a re-push that only finds them still waiting says nothing.
+  const asking = dryRun ? [] : (ledger.founder || []).filter((p) => p.status === 'needs-source' && !p.askedAt);
+  if (!dryRun && notifier && (result.drafted.length || result.skipped.some((s) => !s.waiting) || asking.length)) {
     let sheet = null;
     const sheetFile = path.join(batchDir, 'contact-sheet.jpg');
     if (host && fs.existsSync(sheetFile)) sheet = (await host.publish(sheetFile, `batch-${nn}/contact-sheet.jpg`)).url;
@@ -125,6 +172,12 @@ async function pushBatch({ batchNo, config, buffer, host, notifier, contentDir, 
     if (sheet) lines.push(`All posts at a glance: ${sheet}`);
     if (result.skipped.length) lines.push('', 'Not drafted:', ...result.skipped.map((s) => `- ${s.id}: ${s.reason}`));
     if (batchLevel.length) lines.push('', 'Batch checks that failed (the drafts are there; worth a look):', ...batchLevel.map((b) => `- ${b}`));
+    const ask = askMessage(asking, config);
+    if (ask) {
+      lines.push('', ask);
+      for (const p of asking) p.askedAt = new Date(now).toISOString();
+      write(ledgerFile, ledger);
+    }
     await notifier.send(lines.join('\n'));
   }
   return result;

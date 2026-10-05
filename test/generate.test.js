@@ -224,6 +224,24 @@ function strict(schema, at = '$') {
   check('the report and contact sheet are written', fs.existsSync(path.join(batchDir, 'report.md')) && fs.existsSync(path.join(batchDir, 'contact-sheet.jpg')));
   check('renders stay out of the content folder', !fs.readdirSync(batchDir).some((f) => f.endsWith('.png')));
 
+  console.log('== founder posts: planned beside the feed, written only from the founder\'s words ==');
+  const fp = ledger.founder || [];
+  check('two founder slots, Tuesdays, on the founder\'s channel, outside the company plan',
+    fp.length === 2 && fp.every((p) => p.channel === 'linkedin_byron' && p.layout === 'text' && p.founderVoice === true && /T07:40/.test(p.dueAt))
+    && fp.map((p) => p.date).join() === '2026-10-06,2026-10-13' && planDoc.posts.every((p) => p.channel !== 'linkedin_byron'), JSON.stringify(fp.map((p) => [p.id, p.date, p.channel])));
+  check('they take the brief\'s founder ideas in week order', fp.map((p) => p.briefItem).join() === '2026-10-october-content-map/founder-w1,2026-10-october-content-map/founder-w2',
+    fp.map((p) => p.briefItem).join());
+  check('with no material from the founder, nothing is written: each slot asks questions instead',
+    fp.every((p) => p.status === 'needs-source' && p.questions.length >= 3 && !p.caption && p.sourcesKey), fp.map((p) => p.status).join());
+  check('the topic reached the writer as a topic, not as a source', /<topic>\nTitle: Email Isn’t the Problem/.test((mock.calls.find((c) => c.key === 'founder-b06-f1') || {}).user || '')
+    && /<sources founder="Byron">\n\(none yet\)/.test((mock.calls.find((c) => c.key === 'founder-b06-f1') || {}).user || ''));
+  const reportText = fs.readFileSync(path.join(batchDir, 'report.md'), 'utf8');
+  check('the report lists the founder slots and what each needs', /## Founder posts/.test(reportText) && /b06-f1 .*needs-source.*Needs the founder's words/.test(reportText));
+  const { askMessage } = require('../engine/generate/founder');
+  const ask = askMessage(fp, config);
+  check('the ask names the post, its topic and the questions, and says where the recording goes',
+    /Byron's LinkedIn post for Tue, Oct 6.*"Email Isn’t the Problem"/.test(ask) && /Drive folder Sources/.test(ask) && /\n1\. When did you first see/.test(ask), ask);
+
   console.log('== carousels: one post in three, planned as a whole ==');
   const carousels = ledger.posts.filter((p) => p.layout === 'carousel');
   check('three or four of ten posts are carousels', carousels.length >= 3 && carousels.length <= 4, String(carousels.length));

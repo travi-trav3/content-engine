@@ -1,0 +1,247 @@
+[
+ {
+  "supported": true,
+  "questions": [],
+  "understood": "",
+  "summary": "Why the front desk answers the same questions all day.",
+  "paragraphs": [
+   {
+    "sentences": [
+     {
+      "text": "I ran the front desk at a club for ten years, so I know this problem.",
+      "refs": []
+     },
+     {
+      "text": "The front desk answers the same handful of questions all day.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "The front desk answers the same handful of questions all day."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "Email is dead for quick answers.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Members just want answers fast, and email is dead for that."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "A member does not think in channels. They think about the club.",
+      "refs": [
+       {
+        "source": "dana-notes.md",
+        "quote": "a member does not think in channels. They think about the club."
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "supported": true,
+  "questions": [],
+  "understood": "",
+  "summary": "Email still has a job; members use each channel for its own.",
+  "paragraphs": [
+   {
+    "sentences": [
+     {
+      "text": "The front desk answers the same handful of questions all day.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "The front desk answers the same handful of questions all day."
+       }
+      ]
+     },
+     {
+      "text": "Dining hours, the dress code, whether the pool is open.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Dining hours, the dress code, whether the pool is open."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "Email is still the place a club tells its story.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Email is still the place a club tells its story."
+       }
+      ]
+     },
+     {
+      "text": "The trouble starts when we ask it to also be the place a member gets a quick answer at seven in the morning.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "The problem is asking email to also be the place a member gets a quick answer at seven in the morning."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "Members read the newsletter on Sunday and text the club on Tuesday.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Members read the newsletter on Sunday and text the club on Tuesday."
+       }
+      ]
+     },
+     {
+      "text": "They use different channels for different jobs, and clubs should let them.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "They use different channels for different jobs, and I think clubs should let them."
+       }
+      ]
+     },
+     {
+      "text": "A member does not think in channels. They think about the club.",
+      "refs": [
+       {
+        "source": "dana-notes.md",
+        "quote": "a member does not think in channels. They think about the club."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "What is your front desk answering today?",
+      "refs": []
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "supported": true,
+  "questions": [],
+  "understood": "Make the post shorter and take out the line about the newsletter.",
+  "summary": "The front desk's questions, and why members do not think in channels.",
+  "paragraphs": [
+   {
+    "sentences": [
+     {
+      "text": "The front desk answers the same handful of questions all day.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "The front desk answers the same handful of questions all day."
+       }
+      ]
+     },
+     {
+      "text": "Dining hours, the dress code, whether the pool is open.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Dining hours, the dress code, whether the pool is open."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "A member does not think in channels. They think about the club.",
+      "refs": [
+       {
+        "source": "dana-notes.md",
+        "quote": "a member does not think in channels. They think about the club."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "What is your front desk answering today?",
+      "refs": []
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "supported": true,
+  "questions": [],
+  "understood": "Keep the new first line and cut the closing question.",
+  "summary": "The same morning at every club.",
+  "paragraphs": [
+   {
+    "sentences": [
+     {
+      "text": "Every club I visit has the same morning.",
+      "refs": [
+       {
+        "source": "buffer-edit.md",
+        "quote": "Every club I visit has the same morning."
+       }
+      ]
+     },
+     {
+      "text": "The front desk answers the same handful of questions all day.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "The front desk answers the same handful of questions all day."
+       }
+      ]
+     },
+     {
+      "text": "Dining hours, the dress code, whether the pool is open.",
+      "refs": [
+       {
+        "source": "2026-10-02-call-with-dana.md",
+        "quote": "Dining hours, the dress code, whether the pool is open."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "sentences": [
+     {
+      "text": "A member does not think in channels. They think about the club.",
+      "refs": [
+       {
+        "source": "dana-notes.md",
+        "quote": "a member does not think in channels. They think about the club."
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ }
+]

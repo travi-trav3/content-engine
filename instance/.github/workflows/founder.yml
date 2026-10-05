@@ -1,0 +1,63 @@
+name: founder
+
+# When the founder's own material lands in sources/ (a voice memo, a note, an
+# exported call transcript), the founder posts waiting on material are tried
+# again; what is written goes to Buffer as a text-only draft on the founder's
+# channel, and what still lacks material is asked for, with questions. Memos
+# dropped in the Drive folder Sources are handled by photos.yml, which copies
+# them in (a commit pushed with the workflow's own token starts no workflow).
+
+on:
+  push:
+    paths:
+      - '__WS__/sources/**'
+      - '!__WS__/sources/**/*.json'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Try every open founder slot again, even with no new material
+        type: boolean
+        default: false
+
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
+jobs:
+  founder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Write founder posts from the founder's material
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/generate/founder.js --fill --push ${{ inputs.force && '--force' || '' }}
+
+      - name: Commit what changed
+        if: always()
+        run: |
+          git config user.name "content-engine"
+          git config user.email "content-engine@users.noreply.github.com"
+          for d in sources content; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
+          git diff --cached --quiet && exit 0
+          git commit -m "founder: posts from new material [skip ci]"
+          git pull --rebase
+          git push

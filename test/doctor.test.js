@@ -105,7 +105,9 @@ const has = (r, status, re) => r.checks.some((c) => c.status === status && re.te
   const bare = await preflight({ config: base, env: {}, live: false, fetchImpl: offlineFetch, ws: WS });
   check('every missing secret and id is listed, with the fix', !bare.ready
     && ['OPENAI_API_KEY', 'BUFFER_API_KEY', 'buffer.organizationId', 'assets.repo', 'ASSETS_PUSH_TOKEN'].every((s) => has(bare, 'fail', new RegExp(s.replace('.', '\\.')))));
-  check('the optional services only warn', ['notify', 'drive', 'scout'].every((a) => bare.checks.filter((c) => c.area === a).every((c) => c.status === 'warn')));
+  check('the optional services only warn', ['notify', 'drive', 'scout', 'founder'].every((a) => bare.checks.filter((c) => c.area === a).every((c) => c.status === 'warn' && !c.required)));
+  check('founder posts with no channel and no material warn, and say what each needs',
+    has(bare, 'warn', /linkedin_byron has no Buffer channel: they are written and wait/) && has(bare, 'warn', /no material from the founder yet/));
   check('and nothing touched the network', offlineFetch.calls.length === 0, String(offlineFetch.calls.length));
   const keysOnly = services({});
   await preflight({ config, env, live: false, fetchImpl: keysOnly, ws: WS });

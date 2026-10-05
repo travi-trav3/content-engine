@@ -557,3 +557,37 @@ fixtures under their brand first.
 Cutover, once the dependencies exist: `node scripts/make-instance.js --brand clubpilot --out <dir>`,
 push to Byron's private repository, add the six secrets, fill `config.json` from
 `node engine/buffer/setup.js`, `npm run doctor` until ready, then run `batch` by hand with "force".
+
+### 2026-10-05, increment 12 (source mode: Byron's own LinkedIn)
+
+Done:
+- `engine/generate/sources.js`: Byron's material in `sources/`. Documents, call transcripts (only his turns
+  count; an interviewer's words are never his), and voice memos from his phone, transcribed once by the
+  OpenAI provider (`founder.transcribeModel`) and saved beside the audio. The Drive folder `Sources` is
+  copied in by the Drive sync.
+- `engine/gates/source-gate.js`: every sentence of a founder post carries the exact quotes it restates.
+  Quote found word for word, in Byron's turn; numbers, names, at least 60% of the words, and any negation
+  carried by the quotes; caption exactly the sentences plus the sign-off; no first comment. Regression
+  cases: the Aug 24 post fails, and so does his Aug 21 complaint turned into his biography.
+- `engine/generate/founder.js`: two founder slots a batch (Tuesdays 7:40) on `linkedin_byron`, in
+  `ledger.founder`, outside the company plan and rotation. Each takes the October map's founder idea for
+  its week. Written, gated, rewritten with findings. Without enough of Byron's words on the topic,
+  nothing is written: the slot waits and Byron gets three to five questions to answer out loud into his
+  phone. New material retries the waiting slots (`founder.yml` on push, and `photos.yml` after the Drive
+  sync). Drafts are text only; a note on one is revised from the same material, and a caption Byron edited
+  in Buffer counts as his words.
+- Preflight warns when founder posts are on without his channel or material.
+
+Decisions for Byron:
+- The sign-off. BRAND.md says founder copy signs "Cheers, Byron White, Founder, Club Pilot", so
+  `founder.signOff` carries it. On his own profile it repeats his name under his name. Recommend
+  dropping it there (one config line).
+- Cadence: one post a week, as his October map says. BRAND.md targets 3 to 5 a week on his profile;
+  each more a week needs about one more voice memo a week.
+- Weeks 2 and 4 of the October map ask him to talk about connecting with operational providers and
+  "40+ integrations". The capability gate fails any claim that Club Pilot connects to, syncs with or reads
+  from club systems, and "40" is not an approved number. His own recorded words do not override either.
+  If partnerships are a story he wants to tell, BRAND.md needs a line on how: ambition and philosophy,
+  never a present integration.
+- His LinkedIn is locked in Buffer (5 channels on a 4-channel plan). Until it is connected, founder
+  posts are written and wait, undrafted.

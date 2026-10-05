@@ -42,11 +42,12 @@ check('npm test in the instance runs every suite but this one, which needs the p
   !exists('test/instance.test.js') && !pkg.scripts['test:instance'] && !pkg.scripts.test.includes('instance')
   && pkg.scripts.test.split(' && ').length === JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).scripts.test.split(' && ').length - 1
   && pkg.scripts.test.split(' && ').every((s) => exists(s.replace(/^node /, ''))), pkg.scripts.test);
-const wfs = ['batch.yml', 'brief.yml', 'photos.yml', 'scout.yml', 'sync.yml'];
-check('the five instance workflows are installed beside CI', wfs.every((f) => exists(`.github/workflows/${f}`)) && r.workflows.length === 5);
+const wfs = ['batch.yml', 'brief.yml', 'founder.yml', 'photos.yml', 'scout.yml', 'sync.yml'];
+check('the six instance workflows are installed beside CI', wfs.every((f) => exists(`.github/workflows/${f}`)) && r.workflows.length === 6);
 check('each is set to the brand workspace, with no placeholder left',
   wfs.every((f) => /\nenv:\n {2}CE_WORKSPACE: brands\/clubpilot\n/.test(read(`.github/workflows/${f}`)) && !read(`.github/workflows/${f}`).includes('__WS__')));
-check('the brief workflow fires on the workspace\'s briefs folder', /- 'brands\/clubpilot\/briefs\/\*\*'/.test(read('.github/workflows/brief.yml')));
+check('the brief and founder workflows fire on the workspace\'s own folders', /- 'brands\/clubpilot\/briefs\/\*\*'/.test(read('.github/workflows/brief.yml'))
+  && /- 'brands\/clubpilot\/sources\/\*\*'/.test(read('.github/workflows/founder.yml')));
 check('commits stage the workspace\'s folders', /git add "\$CE_WORKSPACE\/\$d"/.test(read('.github/workflows/sync.yml')));
 const agents = read('AGENTS.md');
 check('AGENTS.md opens with the instance: where things are and what the reviewer asks for', agents.startsWith('# Club Pilot content engine')

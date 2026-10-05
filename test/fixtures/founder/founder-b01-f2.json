@@ -1,0 +1,21 @@
+{
+ "supported": true,
+ "questions": [],
+ "understood": "",
+ "summary": "Ten years at a club.",
+ "paragraphs": [
+  {
+   "sentences": [
+    {
+     "text": "I ran a club for ten years before I started Club Pilot.",
+     "refs": [
+      {
+       "source": "dana-notes.md",
+       "quote": "a member does not think in channels."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

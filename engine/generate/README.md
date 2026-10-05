@@ -97,10 +97,44 @@ the pillars as usual. The idea, hook and reveal carry into the post; the format 
 the carousel and humor shares and every gate still decide. A brief that plans twelve flip carousels gets
 its twelve ideas in the layouts the batch needs.
 
-Ideas for the founder's own LinkedIn wait for source mode; blog posts are outside the engine. Before
+Ideas for the founder's own LinkedIn go to the founder slots (source mode, below); blog posts are
+outside the engine. Before
 anything is written, every idea runs through the content gates, so the reviewer hears about an
 unapproved number or a channel-versus-channel comparison the day the brief lands, not in a draft. The
 report lists what each batch used, what is still open, and those findings.
+
+## Founder posts (source mode)
+
+Posts for the founder's own LinkedIn, in the founder's first person, written only from the founder's own
+words (`founder.js`, `sources.js`, `engine/gates/source-gate.js`). On Aug 24 a post spoke as Byron about
+an experience he never had; this is the mode that makes that impossible to ship unnoticed.
+
+- **Material** is whatever is in the workspace's `sources/`: Word, Markdown or text the founder wrote, a
+  call transcript with speaker turns (`Name: words`, or a speaker line with a timestamp, as Zoom and Otter
+  export them), or a voice memo from a phone (`.m4a`, `.mp3`, `.wav` and the like, under 25 MB),
+  transcribed once and saved beside it as `<file>.transcript.json`. In a transcript only the turns of a
+  speaker named in `founder.names` are the founder's; everything else is context. Everything in a
+  document without turns is treated as the founder's, so `sources/` holds nothing else. The Drive folder
+  `Sources` is copied in by the Drive sync.
+- **Slots** come from `founder.slots` (Tuesdays at 7:40 for Club Pilot) on `founder.channel`, recorded as
+  `ledger.founder`, beside the company feed and outside its plan and rotation. Each takes the brief's
+  founder idea for its week, if there is one, or the strongest idea in the sources no earlier founder post
+  was built on.
+- **Writing:** the model returns the post sentence by sentence, each with the exact quotes it restates.
+  The source gate checks every quote is in its source word for word and in the founder's turn, and that
+  each sentence's numbers, names and most of its words come from its quotes, without a negation they
+  lack; the caption must be exactly those sentences plus `founder.signOff`. The capability, brand and stat
+  gates read the caption too. Findings go back for a rewrite, as for any post.
+- **Asking:** when the sources do not hold enough of the founder's words on the topic, nothing is written.
+  The slot waits with three to five questions, and the founder is asked once (in the push message, or by
+  `founder.js --fill`) to answer them out loud and drop the recording in `Sources`. New material retries
+  every waiting slot that is at least `founder.minLeadHours` away.
+- **Drafts** are text only, on the founder's channel. A note on one is revised by the same writer and
+  gates; a caption the founder edited in Buffer counts as the founder's own words for that revision.
+
+The gate is lexical. It catches invented experience, borrowed words, stray numbers and names, reversed
+claims and drift; it cannot tell whether a faithful-looking restatement bends the meaning. The founder
+reviews every founder draft, and that review is the last check.
 
 ## Calls to action
 
@@ -137,6 +171,9 @@ account when the key is set up, and run one batch with `--plan-only` first.
   "carousel": { "every": 3, "channels": ["instagram", "linkedin_page"], "minSlides": 4, "maxSlides": 8 },
   "humor": { "every": 5 },
   "brief": { "minShare": 0.3 },
+  "founder": { "enabled": true, "channel": "linkedin_byron", "pillar": "...", "name": "Byron", "names": ["Byron", "Byron White"],
+               "slots": [ { "dayOfBatch": 1, "time": "07:40" } ], "signOff": "...", "minWords": 90, "maxWords": 220,
+               "minOverlap": 0.6, "minLeadHours": 12, "maxSourceChars": 80000, "transcribeModel": "gpt-4o-transcribe", "allowNames": ["Club Pilot"] },
   "excludePillars": [],
   "excludeLayouts": [],
   "maxRevisions": { "plan": 3, "post": 2 }

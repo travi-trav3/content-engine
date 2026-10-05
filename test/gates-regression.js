@@ -180,6 +180,23 @@ pressPasses('featured in Golf Digest', 'As featured in Golf Digest, 2026.');
 pressPasses('the locked quote, verbatim, with its attribution',
   `"${brand.PRESS_QUOTE}" Golf Digest, 2026`);
 
+console.log('== source: founder voice restates a recorded source (Aug 24, Byron Aug 21) ==');
+// Byron's own written words of Aug 21, about the invented Aug 24 post. As a
+// source they are his; a post that turns them into his biography is the
+// incident again.
+const sourceGate = require(path.join(GATES, 'source-gate.js'));
+const srcLib = require(path.join(ROOT, 'engine', 'generate', 'sources'));
+const aug21Text = 'just plain confusing like me being an operator, inventor, sitting in a room.';
+const aug21 = { name: 'byron-2026-08-21.md', kind: 'document', sha256: null, text: aug21Text,
+  turns: [{ speaker: null, founder: true, text: aug21Text, tokens: srcLib.tokens(aug21Text) }], founderWords: srcLib.tokens(aug21Text).length };
+const srcRules = (p) => sourceGate.checkPost(p, [aug21], { allowNames: ['Club Pilot'] }).map((f) => f.rule);
+const b308 = ledgers.b3.posts.find((p) => p.id === 'b3-08-founder-li');
+check('fails: the Aug 24 post itself, no sentence sourced (source.noSentences)', srcRules(b308).includes('source.noSentences'), srcRules(b308).join(', '));
+const biography = { id: 'bio', paragraphs: [{ sentences: [{ text: 'I spent years as an operator before I built Club Pilot.', refs: [{ source: aug21.name, quote: 'me being an operator, inventor, sitting in a room' }] }] }] };
+check('fails: his complaint turned into his biography (source.overlap)', srcRules(biography).includes('source.overlap'), srcRules(biography).join(', ') || 'passed');
+const restated = { id: 'ok', paragraphs: [{ sentences: [{ text: 'A post that made me an operator and an inventor sitting in a room was just plain confusing.', refs: [{ source: aug21.name, quote: 'just plain confusing like me being an operator, inventor, sitting in a room.' }] }] }] };
+check('passes: what he said, restated', srcRules(restated).length === 0, srcRules(restated).join(', '));
+
 console.log('== regression: overall gate verdicts ==');
 check('batch 3 fails the combined gates',
   !(b3brand.pass && b3stat.pass && b3div.pass));

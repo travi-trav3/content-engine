@@ -50,6 +50,8 @@ const { assignVariants, assignEndCards, validateLibrary } = require('./cta');
 const { ledgerEntry } = require('./ledger');
 const feedbackLog = require('../feedback/log');
 const briefMode = require('./brief');
+const founder = require('./founder');
+const { loadSources } = require('./sources');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const today = (now) => new Date(now).toISOString().slice(0, 10);
@@ -311,6 +313,17 @@ async function runBatch(opts = {}) {
   };
   gates = checkAll({ plan: planDoc, ledger, priors, brandDir });
   fs.writeFileSync(path.join(batchDir, 'ledger.json'), `${JSON.stringify(ledger, null, 2)}\n`);
+
+  /* -- 6. founder posts, from the founder's own words ----------------- */
+  const fc = founder.founderConfig(config);
+  if (fc.enabled) {
+    result.stage = 'founder';
+    ledger.founder = founder.planFounder({ config, start, batchNo, briefs, priors });
+    const loaded = await loadSources({ dir: opts.sourcesDir || path.join(ws.dir, 'sources'), provider, founderNames: fc.names, model: fc.transcribeModel, log: note });
+    const fr = await founder.fillFounder({ ledger, config, brandDir, brandText, sources: loaded.sources, provider, priors, now, log: note });
+    result.founder = { ...fr, problems: loaded.problems, untranscribed: loaded.untranscribed };
+    fs.writeFileSync(path.join(batchDir, 'ledger.json'), `${JSON.stringify(ledger, null, 2)}\n`);
+  }
   const files = work.filter((w) => renders.has(w.id)).flatMap((w) => {
     const post = written.get(w.id).post;
     return post.slides
@@ -354,6 +367,21 @@ function writeReport({ result, planDoc, ledger, gates, events, batchDir, briefRe
     lines.push('## Brief', '');
     if (result.brief && result.brief.unread && result.brief.unread.length) lines.push(`Not read (no provider): ${result.brief.unread.join(', ')}`, '');
     lines.push(...briefReport);
+  }
+  if (ledger && ledger.founder && ledger.founder.length) {
+    lines.push('## Founder posts', '', 'Written only from the founder\'s own words in sources/; each sentence carries its quotes in ledger.json.', '',
+      '| # | Date | Topic | Status | First line, or what is needed |', '|---|---|---|---|---|');
+    for (const p of ledger.founder) {
+      const what = p.status === 'written' ? p.headline
+        : p.status === 'needs-source' ? `Needs the founder's words: ${(p.questions || []).join(' / ') || 'no material yet'}`
+          : p.status === 'failed' ? `Failed the source checks: ${(p.findings || [])[0] || ''}` : 'not tried (too close to its time)';
+      lines.push(`| ${p.id} | ${String(p.dueAt).slice(0, 16).replace('T', ' ')} | ${p.topic ? p.topic.title : 'from the sources'} | ${p.status} | ${String(what).replace(/\|/g, '/')} |`);
+    }
+    const f = result.founder || {};
+    if ((f.problems || []).length || (f.untranscribed || []).length) {
+      lines.push('', ...(f.problems || []).map((x) => `- ${x}`), ...(f.untranscribed || []).map((x) => `- ${x} is not transcribed yet (no provider).`));
+    }
+    lines.push('');
   }
   if (result.unresolved) {
     lines.push('## Needs a person', '', 'These posts still failed after every rewrite. Fix the copy in ledger.json and re-run, or drop the post.', '');

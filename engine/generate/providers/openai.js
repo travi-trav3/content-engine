@@ -17,6 +17,8 @@
 'use strict';
 
 const API = 'https://api.openai.com/v1/responses';
+const TRANSCRIBE_API = 'https://api.openai.com/v1/audio/transcriptions';
+const DEFAULT_TRANSCRIBE = 'gpt-4o-transcribe';
 const RETRIES = 3;
 const TIMEOUT_MS = 240000;
 
@@ -103,7 +105,42 @@ function createOpenAI({ model, apiKeyEnv = 'OPENAI_API_KEY', reasoningEffort, fe
     throw lastError;
   }
 
-  return { name: 'openai', model, generate };
+  /**
+   * A recording's words, for source mode (the founder's voice memos). Sent as
+   * the file itself; nothing but the transcript comes back or is kept.
+   */
+  async function transcribe({ buffer, filename, model: transcribeModel = DEFAULT_TRANSCRIBE }) {
+    let lastError;
+    for (let attempt = 0; attempt <= RETRIES; attempt += 1) {
+      if (attempt) await sleep(2000 * 2 ** (attempt - 1));
+      const form = new FormData();
+      form.append('file', new Blob([buffer]), filename);
+      form.append('model', transcribeModel);
+      form.append('response_format', 'json');
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+      let res;
+      try {
+        res = await fetchImpl(TRANSCRIBE_API, { method: 'POST', headers: { Authorization: `Bearer ${key}` }, body: form, signal: ctrl.signal });
+      } catch (e) {
+        lastError = new Error(`OpenAI transcription failed: ${e.name === 'AbortError' ? 'timed out' : e.message}`);
+        continue;
+      } finally {
+        clearTimeout(timer);
+      }
+      const json = await res.json().catch(() => ({}));
+      if (res.status === 429 || res.status >= 500) {
+        lastError = new Error(`OpenAI ${res.status}: ${(json.error && json.error.message) || 'retryable error'}`);
+        continue;
+      }
+      if (!res.ok) throw new Error(`OpenAI ${res.status}: ${(json.error && json.error.message) || 'transcription rejected'}`);
+      if (typeof json.text !== 'string') throw new Error('OpenAI transcription returned no text');
+      return { text: json.text, model: transcribeModel };
+    }
+    throw lastError;
+  }
+
+  return { name: 'openai', model, generate, transcribe };
 }
 
 module.exports = { createOpenAI, requestBody, outputText };

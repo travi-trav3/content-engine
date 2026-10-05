@@ -4,7 +4,7 @@
  *
  * Builds a client's repository from the core: the engine, the layouts, the
  * tests and CI, the client's brand workspace, and the instance workflows
- * (batch, brief, photos, scout, sync) set to that workspace. What never
+ * (batch, brief, founder, photos, scout, sync) set to that workspace. What never
  * ships: internal/ (Applied Intelligence's plans and contracts), other
  * clients' brands, this script, and anything generated.
  *
@@ -59,6 +59,7 @@ feedback log. Every workflow sets \`CE_WORKSPACE=${ws}\`; export it when you run
 | New photos | The Drive folder's Inbox (\`photos.yml\` adds them). Locally: \`npm run photos:ingest\` then \`npm run photos:review\`. |
 | "Never say X" / "always say Y" | \`${ws}/brand/BRAND.md\` (Live rule overrides, with the date). If a word must never ship, also a gate rule with a regression case (rule 1 below). |
 | A month's plan, or ideas | A brief in the Drive folder's Briefs, or \`${ws}/briefs/\` (\`brief.yml\` reads it). |
+| Words for the founder's own posts | A voice memo or note in the Drive folder's Sources, or \`${ws}/sources/\` (\`founder.yml\` writes from it). Only the founder's own words go there. |
 | A different cadence or channel mix | \`${ws}/config.json\` \`cadence\`; then \`npm run doctor\`. |
 | Different calls to action | \`${ws}/config.json\` \`cta.variants\` and \`cta.endCards\`. |
 | A change to one draft | A note on the draft in Buffer (\`sync.yml\` revises it). |

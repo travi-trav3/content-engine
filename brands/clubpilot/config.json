@@ -274,6 +274,36 @@
   "brief": {
     "minShare": 0.3
   },
+  "founder": {
+    "enabled": true,
+    "channel": "linkedin_byron",
+    "pillar": "Operator POV, day in the life",
+    "name": "Byron",
+    "names": [
+      "Byron",
+      "Byron White"
+    ],
+    "slots": [
+      {
+        "dayOfBatch": 1,
+        "time": "07:40"
+      },
+      {
+        "dayOfBatch": 8,
+        "time": "07:40"
+      }
+    ],
+    "signOff": "Cheers, Byron White, Founder, Club Pilot",
+    "minWords": 90,
+    "maxWords": 220,
+    "minOverlap": 0.6,
+    "minLeadHours": 12,
+    "maxSourceChars": 80000,
+    "transcribeModel": "gpt-4o-transcribe",
+    "allowNames": [
+      "Club Pilot"
+    ]
+  },
   "excludePillars": [],
   "excludeLayouts": [],
   "maxRevisions": {

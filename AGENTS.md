@@ -10,8 +10,8 @@ it in their own GitHub organization. Club Pilot is the first brand; its workspac
 
 ```
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
-engine/gates/      the checks; check-batch.js runs all of them for one batch
-engine/generate/   plan, write, gate, render a batch (batch.js); brief.js (the reviewer's briefs); providers/; see its README
+engine/gates/      the checks; check-batch.js runs all of them for one batch; source-gate.js checks founder posts
+engine/generate/   plan, write, gate, render a batch (batch.js); brief.js (briefs); founder.js + sources.js (source mode); providers/; see its README
 engine/render/     render.js (library), cli.js, carousel.js, contact-sheet.js, pdf.js (LinkedIn carousels)
 engine/photos/     library.js, ingest.js, review.js, vision.js, drive-sync.js, scout.js, unsplash.js; see its README
 engine/drive/      client.js (Drive API v3, service account), mock.js
@@ -21,7 +21,7 @@ engine/publish/    host.js: renders to the public assets repository, content-has
 engine/notify.js   messages to the reviewer (Slack webhook or console)
 engine/doctor.js   the preflight: every key, channel and permission a live run needs, each failure with its fix
 layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
-brands/<name>/     a brand workspace: brand/, content/, photos/, briefs/, feedback/, test-props/, goldens/
+brands/<name>/     a brand workspace: brand/, content/, photos/, briefs/, sources/, feedback/, test-props/, goldens/
 test/              one suite per area (gates-regression.js, *.test.js) and fixtures/
 ```
 
@@ -41,6 +41,7 @@ CE_WORKSPACE=brands/clubpilot npm run generate -- --plan-only          # needs O
 CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir test/fixtures/generate/clubpilot --start 2026-10-05
 CE_WORKSPACE=brands/clubpilot npm run push -- --batch 06 --dry-run              # what would go to Buffer
 CE_WORKSPACE=brands/clubpilot node engine/generate/brief.js                   # read briefs, print their checks
+CE_WORKSPACE=brands/clubpilot node engine/generate/founder.js --fill [--push]  # founder posts from sources/
 BUFFER_API_KEY=... node engine/buffer/setup.js                                 # organization and channel ids
 node engine/doctor.js [--offline] [--slack-test]                               # is this instance ready to run live?
 CE_WORKSPACE=brands/clubpilot node engine/photos/drive-sync.js --drive mock --seed  # the Drive sync, dry
@@ -101,9 +102,13 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 9. **The reviewer's words are theirs.** Sync never rewrites a caption the reviewer edited; a caption
    edit that trips a gate is tagged and reported. A note changes a post only through the writer, the
    gates and the renderer, like any other revision; what cannot be made is reported, never guessed at.
-10. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
+10. **Founder posts restate the founder.** A founder post is written only from `sources/`, sentence by
+   sentence with the quotes it restates, and ships only past the source gate. `sources/` holds only the
+   founder's own words: never an article, a colleague's notes, or text written for the founder. When the
+   material is not there, the slot waits and the founder is asked; nothing fills the gap.
+11. **Brand material belongs to its client.** Never copy anything from `brands/<a>/` into `brands/<b>/`
    or into `engine/` or `layouts/`. `internal/` never ships.
-11. Commit the render harness and tests with every change. Do not commit `node_modules/` or
+12. Commit the render harness and tests with every change. Do not commit `node_modules/` or
    `test/output/`.
 
 ## Known gaps
@@ -113,7 +118,14 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - Ledgers in `brands/clubpilot/content/` use the session-era schema (`template`, `format`). Generated
   batches will add `layout` and `surface`; the gates must keep accepting the old fields so the
   regression suite keeps running against the shipped batches.
-- Not built yet: source mode (founder posts from material Byron supplies) and the brand-update inbox.
+- Not built yet: the brand-update inbox.
+- The source gate is lexical (quotes found word for word, in the founder's turn; numbers, names, most
+  words and negations carried by the quotes). It cannot tell a faithful restatement from one that bends
+  the meaning with the founder's own words; the founder's review of each draft is the last check.
+  Transcripts are read from `Name: words` lines or a speaker line with a timestamp; other formats are
+  read as one author's document, so only the founder's own exports belong in `sources/`.
+- Not yet exercised against a live Buffer account: a text-only LinkedIn post created through the API
+  (the schema allows it: `assets` defaults to empty), and transcription against the live model.
 - The Drive sync, the vision reading and the scout are tested against an in-memory Drive, a recorded
   Unsplash and recorded readings, not yet against the live services.
 - A brief's reading (`briefs/<name>.json`) is the model's; it can misplace an idea's week or channel.
@@ -126,6 +138,9 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
 - The full-bleed layout darkens the wordmark corner from the photo's measured top zones, which are
   measured on the whole photo; a landscape photo cropped to 4:5 shows its middle. Measure the crop
   instead when a render shows a weak wordmark.
+- Workflows run on `ubuntu-24.04`, not `ubuntu-latest`, which moves to Ubuntu 26 on Oct 19, 2026.
+  Chromium's system packages come from `playwright-core`'s installer; move the runners only together
+  with a `playwright-core` that supports the new image, and only on a green CI run.
 - Goldens are lossless WebP, about 10 MB for Club Pilot. Every intended visual change adds a changed
   golden to history; batch visual changes rather than regenerating goldens for each small tweak.
 <!-- core-only -->

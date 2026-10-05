@@ -19,6 +19,9 @@
  *                 override, recorded) or to Retired.
  *   Briefs        the reviewer's briefs (Word, Google Docs, Markdown, text),
  *                 copied into briefs/ when new or changed.
+ *   Sources       the founder's own words for source mode (voice memos from
+ *                 a phone, Word, Google Docs, Markdown, text), copied into
+ *                 sources/ when new or changed.
  *   Suggested     the weekly scout's candidates (scout.js). One the reviewer
  *                 moves to Active is added to the library; a photo dropped
  *                 straight into Active is too. Either way the move is the
@@ -46,11 +49,12 @@ const { GOOGLE_DOC } = require('../drive/client');
 
 const DEFAULT_FOLDERS = {
   inbox: 'Inbox', active: 'Active', parked: 'Parked', retired: 'Retired', needsLook: 'Needs a look', briefs: 'Briefs',
-  suggested: 'Suggested', rejected: 'Rejected',
+  suggested: 'Suggested', rejected: 'Rejected', sources: 'Sources',
 };
 const STATE_FOLDERS = ['active', 'parked', 'retired', 'needsLook'];
 const IMAGE = /\.(jpe?g|png|webp|heic|tiff?)$/i;
 const BRIEF = /\.(docx|md|txt)$/i;
+const SOURCE = /\.(docx|md|txt|m4a|mp3|mp4|mpeg|mpga|wav|webm|ogg|flac)$/i;
 const md5 = (buf) => crypto.createHash('md5').update(buf).digest('hex');
 const day = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
@@ -99,13 +103,13 @@ function uniqueId(lib, base) {
  * One sync. lib is the loaded library (changed in place; the caller saves
  * it). ledgers: every batch ledger, for usage. Returns what happened.
  */
-async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, ledgers = [], now = Date.now(), log = () => {} }) {
+async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, sourcesDir, ledgers = [], now = Date.now(), log = () => {} }) {
   const dc = driveConfig(config);
   if (!dc.rootFolderId) throw new Error('config.json drive.rootFolderId is not set');
   const reviewer = (config.buffer && config.buffer.reviewerName) || 'the reviewer';
   const folders = await drive.ensureFolders(dc.rootFolderId, dc.folders);
   const at = new Date(now).toISOString();
-  const result = { added: [], needsLook: [], moved: [], overrides: [], retiredMissing: [], autoRetired: [], duplicates: [], described: 0, briefs: [] };
+  const result = { added: [], needsLook: [], moved: [], overrides: [], retiredMissing: [], autoRetired: [], duplicates: [], described: 0, briefs: [], sources: [] };
   const byFile = new Map(lib.photos.filter((p) => p.drive && p.drive.fileId).map((p) => [p.drive.fileId, p]));
   const byMd5 = new Map(lib.photos.filter((p) => p.drive && p.drive.md5).map((p) => [p.drive.md5, p]));
   const seen = new Set();
@@ -239,23 +243,28 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, l
     }
   }
 
-  /* -- Briefs ---------------------------------------------------------- */
-  if (briefsDir && folders.briefs) {
-    const stateFile = path.join(briefsDir, '.drive.json');
+  /* -- Briefs and Sources: copied in when new or changed ---------------- */
+  const copyIn = async (folderId, dir, accept) => {
+    const copied = [];
+    const stateFile = path.join(dir, '.drive.json');
     const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile, 'utf8')) : {};
-    for (const f of await drive.listFolder(folders.briefs)) {
+    for (const f of await drive.listFolder(folderId)) {
       const isDoc = f.mimeType === GOOGLE_DOC;
-      if (!isDoc && !BRIEF.test(f.name)) continue;
+      if (!isDoc && !accept.test(f.name)) continue;
       const version = f.md5Checksum || f.modifiedTime;
       if (state[f.id] && state[f.id].version === version) continue;
       const name = (state[f.id] && state[f.id].file) || `${slugify(f.name)}${isDoc ? '.docx' : path.extname(f.name).toLowerCase()}`;
-      fs.mkdirSync(briefsDir, { recursive: true });
-      fs.writeFileSync(path.join(briefsDir, name), await drive.download(f.id, f.mimeType));
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, name), await drive.download(f.id, f.mimeType));
       state[f.id] = { file: name, version, name: f.name };
-      result.briefs.push(name);
+      copied.push(name);
     }
-    if (result.briefs.length) fs.writeFileSync(stateFile, `${JSON.stringify(state, null, 2)}\n`);
-  }
+    if (copied.length) fs.writeFileSync(stateFile, `${JSON.stringify(state, null, 2)}\n`);
+    return copied;
+  };
+  if (briefsDir && folders.briefs) result.briefs = await copyIn(folders.briefs, briefsDir, BRIEF);
+  // The founder's own words for source mode: voice memos and documents.
+  if (sourcesDir && folders.sources) result.sources = await copyIn(folders.sources, sourcesDir, SOURCE);
   return result;
 }
 
@@ -285,6 +294,7 @@ function summaryMessage(r) {
   for (const d of r.duplicates) lines.push(`${d.name} is already in the library (${d.of}); the copy is in Retired.`);
   for (const a of r.autoRetired) lines.push(`${a.id} was used ${a.uses} times and is now in Retired.`);
   if (r.briefs.length) lines.push(`New or changed brief${r.briefs.length === 1 ? '' : 's'} from Drive: ${r.briefs.join(', ')}.`);
+  if (r.sources && r.sources.length) lines.push(`New material for the founder posts from Drive Sources: ${r.sources.join(', ')}. Founder posts waiting on material are tried again with it.`);
   return lines.length ? lines.join('\n') : null;
 }
 
@@ -319,12 +329,13 @@ if (require.main === module) {
     const r = await syncDrive({
       config, drive, provider: lazy, lib, photosDir: dry ? fs.mkdtempSync(path.join(os.tmpdir(), 'ce-dry-')) : photosDir,
       briefsDir: dry ? null : path.join(ws.dir, 'briefs'),
+      sourcesDir: dry ? null : path.join(ws.dir, 'sources'),
       ledgers: fs.existsSync(ws.contentDir) ? priorLedgers(ws.contentDir) : [],
     });
     if (!dry) photoLib.save(lib);
     const msg = summaryMessage(r);
     if (msg) await require('../notify').createNotifier(config).send(msg);
-    console.log(`added ${r.added.length}; needs a look ${r.needsLook.length}; moved ${r.moved.length}; overrides ${r.overrides.length}; retired (deleted in Drive) ${r.retiredMissing.length}; retired (uses) ${r.autoRetired.length}; duplicates ${r.duplicates.length}; descriptions ${r.described}; briefs ${r.briefs.length}`);
+    console.log(`added ${r.added.length}; needs a look ${r.needsLook.length}; moved ${r.moved.length}; overrides ${r.overrides.length}; retired (deleted in Drive) ${r.retiredMissing.length}; retired (uses) ${r.autoRetired.length}; duplicates ${r.duplicates.length}; descriptions ${r.described}; briefs ${r.briefs.length}; sources ${r.sources.length}`);
   })().catch((e) => {
     console.error(e.message);
     process.exit(1);

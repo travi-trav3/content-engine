@@ -389,7 +389,7 @@ function briefSummary(b, checks) {
 
 module.exports = {
   loadBriefs, activeBrief, briefRules, briefChecks, checkBrief, coverageReport, briefSummary, usedItems,
-  docxText, unzipEntry, withIds, weekOf, weekDates, BRIEF_SCHEMA, PLANNABLE,
+  docxText, unzipEntry, sourceText, withIds, weekOf, weekDates, BRIEF_SCHEMA, PLANNABLE,
 };
 
 if (require.main === module) {

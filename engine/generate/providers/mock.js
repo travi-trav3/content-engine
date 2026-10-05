@@ -37,7 +37,15 @@ function createMock({ dir }) {
     return { data: JSON.parse(JSON.stringify(data)), usage: { input: 0, cachedInput: 0, output: 0 } };
   }
 
-  return { name: 'mock', model: 'recorded', generate, calls };
+  /** A recorded transcript: <dir>/<key>.json holding { "text": ... }. */
+  async function transcribe({ key, filename, buffer }) {
+    calls.push({ key, transcribe: filename, bytes: buffer ? buffer.length : 0 });
+    const file = path.join(dir, `${key}.json`);
+    if (!fs.existsSync(file)) throw new Error(`mock: no recorded transcript for "${key}" (${file})`);
+    return { text: JSON.parse(fs.readFileSync(file, 'utf8')).text, model: 'recorded' };
+  }
+
+  return { name: 'mock', model: 'recorded', generate, transcribe, calls };
 }
 
 module.exports = { createMock };

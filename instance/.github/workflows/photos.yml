@@ -3,11 +3,13 @@ name: photos
 # The reviewer's Drive folders: new photos from Inbox are read and put in
 # rotation (or in Needs a look), the reviewer's moves between Active,
 # Parked, Retired and Needs a look are followed, usage is written onto each
-# photo, and briefs dropped in the Briefs folder are copied in and read.
+# photo, briefs dropped in the Briefs folder are copied in and read, and the
+# founder's material dropped in Sources is copied in and written from.
 # Four times a day, Pacific working hours, and on demand.
 #
 # A commit pushed with the workflow's own token starts no other workflow,
-# so the briefs copied from Drive are read here rather than by brief.yml.
+# so the briefs and sources copied from Drive are handled here rather than by
+# brief.yml and founder.yml.
 
 on:
   schedule:
@@ -32,7 +34,7 @@ env:
 
 jobs:
   photos:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -63,12 +65,19 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: node engine/generate/brief.js --notify
 
+      - name: Write founder posts from new material
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/generate/founder.js --fill --push
+
       - name: Commit what changed
         if: always()
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          for d in photos briefs; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
+          for d in photos briefs sources content; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
           git diff --cached --quiet && exit 0
           git commit -m "photos: Drive sync [skip ci]"
           git pull --rebase

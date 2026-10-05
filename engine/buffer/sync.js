@@ -43,6 +43,8 @@ const brandGate = require('../gates/brand-gate');
 const stat = require('../gates/stat-gate');
 const feedbackLog = require('../feedback/log');
 const { reviseFromNotes, captionBody } = require('../feedback/revise');
+const { reviseFounder, founderConfig } = require('../generate/founder');
+const { loadSources } = require('../generate/sources');
 const { createBuffer, ensureTags } = require('./client');
 const { createMockBuffer } = require('./mock');
 const { createHost } = require('../publish/host');
@@ -71,7 +73,7 @@ function openBatches(contentDir) {
     const ledgerFile = path.join(contentDir, d, 'ledger.json');
     if (!fs.existsSync(ledgerFile)) return null;
     const ledger = read(ledgerFile);
-    const open = ledger.posts.filter((p) => p.buffer && p.buffer.id && OPEN.includes(p.buffer.status));
+    const open = [...ledger.posts, ...(ledger.founder || [])].filter((p) => p.buffer && p.buffer.id && OPEN.includes(p.buffer.status));
     return open.length ? { name: d, no: Number(d.slice(6)), dir: path.join(contentDir, d), ledgerFile, ledger, open } : null;
   }).filter(Boolean);
 }
@@ -90,7 +92,7 @@ function captionFindings(post, newCaption, brandDir) {
   return run(newCaption).filter((f) => !before.has(f));
 }
 
-async function syncOnce({ config, buffer, host, provider, notifier, contentDir, stagingDir, renderer, library, lib = photoLib, feedbackFile, deferRenders = false, canRenderNow = canRender, now = Date.now(), log = () => {} }) {
+async function syncOnce({ config, buffer, host, provider, notifier, contentDir, stagingDir, sourcesDir, renderer, library, lib = photoLib, feedbackFile, deferRenders = false, canRenderNow = canRender, now = Date.now(), log = () => {} }) {
   const ws = workspace();
   const content = contentDir || ws.contentDir;
   const bc = bufferConfig(config);
@@ -112,6 +114,7 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
   const tz = config.timezone;
   let ctx = null;
   let ownRenderer = null;
+  let founderSources = null;
   const reviewCtx = async (b) => {
     if (!ctx) {
       if (!renderer && !ownRenderer) ownRenderer = await createRenderer();
@@ -203,14 +206,27 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
           events.push({ ...meta(b, post), kind: 'note', note: noteText, applied: false, reason: 'the post had already been published', understood: '' });
           continue;
         }
-        if (deferRenders && !renderer && !canRenderNow()) {
+        const isFounder = post.layout === 'text';
+        if (!isFounder && deferRenders && !renderer && !canRenderNow()) {
           result.deferred.push(post.id);
           continue;
         }
-        const c = await reviewCtx(b);
+        let c = null;
         let r;
         try {
-          r = await reviseFromNotes(c, { post, notes: fresh, bufferPost: bp });
+          if (isFounder) {
+            // Text only: no renderer, and the founder's own words as sources.
+            if (!founderSources) {
+              const fc = founderConfig(config);
+              founderSources = (await loadSources({ dir: sourcesDir || path.join(ws.dir, 'sources'), provider, founderNames: fc.names, model: fc.transcribeModel })).sources;
+            }
+            r = await reviseFounder({
+              config, brandDir: ws.brandDir, brandText: brandContext(ws.brandDir), provider, buffer, tagIds, log,
+            }, { post, ledger: b.ledger, notes: fresh, bufferPost: bp, sources: founderSources });
+          } else {
+            c = await reviewCtx(b);
+            r = await reviseFromNotes(c, { post, notes: fresh, bufferPost: bp });
+          }
         } catch (e) {
           // An outage (the model, Buffer, the assets host) is retried on the
           // next run; the notes stay unread. After three tries a person takes it.
@@ -225,7 +241,7 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
         const where = label(post, tz);
         if (r.applied) {
           current.buffer.revisions = [...(post.buffer.revisions || []), { at, notes: fresh.map((n) => n.id), understood: r.understood, changed: r.changed }];
-          write(path.join(b.dir, 'plan.json'), c.plan);
+          if (c) write(path.join(b.dir, 'plan.json'), c.plan);
           result.revised.push(post.id);
           if (config.notify && config.notify.onRevised) {
             await notifier.send([`Revised ${where} as asked: ${lower(stop(r.understood))}. Changed: ${r.changed.join(', ') || 'nothing visible'}.`,
