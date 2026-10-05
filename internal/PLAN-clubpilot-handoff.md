@@ -535,3 +535,25 @@ Done:
 
 Needs (Travis): an Unsplash developer app and key (`UNSPLASH_ACCESS_KEY`). The scout cannot fix the
 staff, members, dining and events gap: those need Club Pilot's own photos (the half-day shoot).
+
+### 2026-10-05, increment 11 (preflight, Byron's repository)
+
+Done:
+- `engine/doctor.js` (`npm run doctor`): config, secrets and every live service a run needs (OpenAI
+  model, Buffer organization and channels, assets repository and token, Slack, Drive folder, Unsplash),
+  each failure with what to do about it. `--slack-test` sends a test message. Exits non-zero until ready.
+- `scripts/make-instance.js`: builds Byron's repository from this one. The engine, layouts, tests, CI
+  and package files; the five workflows set to `brands/clubpilot` (`CE_WORKSPACE`); `docs/INSTANCE.md`;
+  a README; and an AGENTS.md that opens with where each of Byron's asks goes (photos, never-say rules,
+  briefs, cadence, CTAs, one draft) and what never to do, then carries every core rule. Never ships:
+  `internal/`, `instance/`, the script itself. `--update` replaces only what the core owns, so later
+  engine releases never touch Byron's brand files, photos, briefs, batches or feedback.
+- `test/instance.test.js` builds the instance, runs the gate regression suite and the preflight tests
+  inside it, and checks an update keeps Byron's edits.
+
+Open (Travis, before a second client): test fixtures are Club Pilot's and `test/` ships whole. Move
+fixtures under their brand first.
+
+Cutover, once the dependencies exist: `node scripts/make-instance.js --brand clubpilot --out <dir>`,
+push to Byron's private repository, add the six secrets, fill `config.json` from
+`node engine/buffer/setup.js`, `npm run doctor` until ready, then run `batch` by hand with "force".

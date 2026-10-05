@@ -23,6 +23,10 @@ concurrency:
 permissions:
   contents: write
 
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
 jobs:
   batch:
     runs-on: ubuntu-latest
@@ -54,7 +58,7 @@ jobs:
           code=$?
           # 0 clean or not due, 1 some posts need a person (the clean ones still go to Buffer), 2 failed.
           if [ $code -eq 2 ]; then exit 1; fi
-          echo "changed=$(git status --porcelain content | wc -l)" >> "$GITHUB_OUTPUT"
+          echo "changed=$(git status --porcelain "$CE_WORKSPACE/content" | wc -l)" >> "$GITHUB_OUTPUT"
 
       - name: Draft in Buffer
         if: steps.generate.outputs.changed != '0'
@@ -69,8 +73,8 @@ jobs:
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          for d in content feedback briefs; do if [ -e "$d" ]; then git add "$d"; fi; done
+          for d in content feedback briefs; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
           git diff --cached --quiet && exit 0
-          git commit -m "batch: $(ls content | grep '^batch-' | sort | tail -1) [skip ci]"
+          git commit -m "batch: $(ls "$CE_WORKSPACE/content" | grep '^batch-' | sort | tail -1) [skip ci]"
           git pull --rebase
           git push

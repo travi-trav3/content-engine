@@ -1,7 +1,8 @@
-# Instance files
+# Running an instance
 
-What a client's own repository gets on top of the core, and nothing the core repository runs itself.
-When an instance is created, the contents of this folder are copied to the instance's root.
+The workflows, secrets and setup of a client's own repository. In the core, these files live in
+`instance/` and run nowhere; `scripts/make-instance.js` installs the workflows into a client's repository,
+set to the client's workspace (`brands/<brand>/`), with this page as `docs/INSTANCE.md`.
 
 | File | What it does |
 |---|---|

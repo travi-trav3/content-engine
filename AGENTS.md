@@ -6,7 +6,7 @@ Instructions for any coding agent (Codex, Claude, others) and any person changin
 
 The core of Applied Intelligence's social content engine: checks (gates) that stop known failure types,
 a renderer that turns a layout plus props into exact-size PNGs, and the layout kit. Clients get a copy of
-it in their own GitHub organization. Club Pilot is the first brand and lives here as a fixture.
+it in their own GitHub organization. Club Pilot is the first brand; its workspace is `brands/clubpilot/`.
 
 ```
 engine/lib/        workspace.js: where brand/ and content/ live (CE_WORKSPACE)
@@ -20,12 +20,16 @@ engine/feedback/   revise.js (a note becomes a new version), log.js (feedback/lo
 engine/publish/    host.js: renders to the public assets repository, content-hashed and verified
 engine/notify.js   messages to the reviewer (Slack webhook or console)
 engine/doctor.js   the preflight: every key, channel and permission a live run needs, each failure with its fix
-instance/          files only a client instance gets: the batch and sync workflows
 layouts/           one folder per layout; _shared/ holds base.css, h.js and thread.js
-brands/<name>/     a brand fixture: brand/, content/, photos/, test-props/, goldens/
-test/              gates-regression.js, photos.test.js, render.test.js, generate.test.js, buffer.test.js, fixtures/
-internal/          Applied Intelligence planning material. Never copied into a client instance
+brands/<name>/     a brand workspace: brand/, content/, photos/, briefs/, feedback/, test-props/, goldens/
+test/              one suite per area (gates-regression.js, *.test.js) and fixtures/
 ```
+
+<!-- core-only -->
+Only in the core, never in a client's copy: `internal/` (Applied Intelligence planning material),
+`instance/` (the workflows and setup guide a client's repository gets) and `scripts/make-instance.js`,
+which builds a client's repository from this one.
+<!-- /core-only -->
 
 ## Commands
 
@@ -47,8 +51,20 @@ CE_WORKSPACE=brands/clubpilot npm run photos:ingest -- ~/Downloads/new-photos
 CE_WORKSPACE=brands/clubpilot npm run photos:review -- review.json --by "Name"
 node engine/render/contact-sheet.js --out sheet.png /tmp/renders/*.png   # look before you commit
 ```
+<!-- core-only -->
 
-In a client instance `brand/` and `content/` sit at the repository root and `CE_WORKSPACE` is unset.
+```
+node scripts/make-instance.js --brand clubpilot --out ../clubpilot-content            # a client's repository
+node scripts/make-instance.js --brand clubpilot --out ../clubpilot-content --update   # bring it to this core
+```
+
+`--update` replaces what the core owns (`engine/`, `layouts/`, `test/`, CI, the workflows, package
+files, AGENTS.md) and never touches the client's workspace. Commit the result in the client's
+repository; its CI runs the same suites.
+<!-- /core-only -->
+
+A client instance keeps this layout: its workspace is `brands/<name>/`, and every workflow sets
+`CE_WORKSPACE` to it.
 
 Chromium is the build pinned by `playwright-core` in package.json. CI installs it with
 `npx playwright-core install --with-deps chromium`. In a cloud sandbox that preinstalls browsers under
@@ -112,3 +128,8 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
   instead when a render shows a weak wordmark.
 - Goldens are lossless WebP, about 10 MB for Club Pilot. Every intended visual change adds a changed
   golden to history; batch visual changes rather than regenerating goldens for each small tweak.
+<!-- core-only -->
+- `make-instance.js` copies `test/` whole, and the fixtures are Club Pilot's (`test/fixtures/*/clubpilot`,
+  the October brief's reading). Before a second client, move fixtures under their brand and have the
+  packager leave other brands' out, or one client's material ships to another.
+<!-- /core-only -->

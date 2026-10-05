@@ -17,6 +17,10 @@ concurrency:
 permissions:
   contents: write
 
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
 jobs:
   scout:
     runs-on: ubuntu-latest
@@ -44,7 +48,7 @@ jobs:
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          if [ -e photos/scout.json ]; then git add photos/scout.json; fi
+          if [ -e "$CE_WORKSPACE/photos/scout.json" ]; then git add "$CE_WORKSPACE/photos/scout.json"; fi
           git diff --cached --quiet && exit 0
           git commit -m "scout: weekly suggestions [skip ci]"
           git pull --rebase

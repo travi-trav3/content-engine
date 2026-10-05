@@ -22,6 +22,10 @@ concurrency:
 permissions:
   contents: write
 
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -65,7 +69,7 @@ jobs:
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          for d in content feedback; do if [ -e "$d" ]; then git add "$d"; fi; done
+          for d in content feedback; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
           git diff --cached --quiet && exit 0
           git commit -m "sync: reviewer activity from Buffer [skip ci]"
           git pull --rebase

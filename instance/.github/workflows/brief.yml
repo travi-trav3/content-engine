@@ -9,8 +9,8 @@ name: brief
 on:
   push:
     paths:
-      - 'briefs/**'
-      - '!briefs/**/*.json'
+      - '__WS__/briefs/**'
+      - '!__WS__/briefs/**/*.json'
   workflow_dispatch:
 
 concurrency:
@@ -19,6 +19,10 @@ concurrency:
 
 permissions:
   contents: write
+
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
 
 jobs:
   brief:
@@ -44,7 +48,7 @@ jobs:
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          git add briefs
+          git add "$CE_WORKSPACE/briefs"
           git diff --cached --quiet && exit 0
           git commit -m "brief: read $(git diff --cached --name-only | grep '\.json$' | xargs -n1 basename | tr '\n' ' ')[skip ci]"
           git pull --rebase

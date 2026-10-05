@@ -26,6 +26,10 @@ concurrency:
 permissions:
   contents: write
 
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
 jobs:
   photos:
     runs-on: ubuntu-latest
@@ -64,7 +68,7 @@ jobs:
         run: |
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
-          for d in photos briefs; do if [ -e "$d" ]; then git add "$d"; fi; done
+          for d in photos briefs; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
           git diff --cached --quiet && exit 0
           git commit -m "photos: Drive sync [skip ci]"
           git pull --rebase
