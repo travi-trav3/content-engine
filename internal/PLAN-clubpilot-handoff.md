@@ -609,6 +609,8 @@ Decisions for Byron:
   "40+ integrations" tripped (stat gate), and that number is WriterAccess's, not Club Pilot's. It is now
   an approved stat citing the map, scoped to sentences that name WriterAccess (new opt-in
   `"scope": "sentence"` in approved-stats.json), so "Club Pilot has 40+ integrations" still fails.
+  Travis confirmed (Oct 8): the line mentions WriterAccess, the company Byron exited, and promises
+  nothing about Club Pilot; it stays as written.
 - Testing those topics found a real gap: "Club Pilot connects with the operational systems clubs already
   rely on" passed, because the integration check named only the tee sheet, reservations, POS and club
   software. Generic names now fail as a present-tense claim; Byron's ambition ("we want to connect

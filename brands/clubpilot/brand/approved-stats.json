@@ -95,7 +95,7 @@
       "pattern": "writeraccess[^.!?\\n]{0,100}40\\+?\\s?integrations|40\\+?\\s?integrations[^.!?\\n]{0,100}writeraccess",
       "scope": "sentence",
       "attribution": "the founder's own record of WriterAccess; never a Club Pilot figure",
-      "source": "Byron White, Club Pilot October Content Map (shared Sep 30, 2026), Byron LinkedIn week 4: \"WriterAccess connected businesses, writers, and 40+ integrations rather than trying to replace the ecosystem.\"",
+      "source": "Byron White, Club Pilot October Content Map (shared Sep 30, 2026), Byron LinkedIn week 4: \"WriterAccess connected businesses, writers, and 40+ integrations rather than trying to replace the ecosystem.\" Confirmed by Travis, Oct 8, 2026: a mention of the company Byron exited, never a promise about Club Pilot.",
       "bannedTreatments": [],
       "comparisonAllowed": true
     }
