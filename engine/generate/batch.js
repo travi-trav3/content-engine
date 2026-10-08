@@ -17,9 +17,13 @@
  * Renders go to .staging/batch-NN/ (not committed); publishing them to the
  * assets repository and drafting them in Buffer are separate steps.
  *
- *   node engine/generate/batch.js [--start YYYY-MM-DD] [--batch NN]
- *                                 [--provider openai|mock] [--mock-dir DIR] [--plan-only]
- *                                 [--if-due DAYS]
+ *   node engine/generate/batch.js [--start YYYY-MM-DD] [--batch NN] [--resume]
+ *                                 [--provider codex|agent|openai|mock] [--mock-dir DIR]
+ *                                 [--plan-only] [--if-due DAYS]
+ *
+ * With the agent provider the run stops at the end of a stage whose model
+ * calls have no answer yet (exit 3, the open requests listed); --resume picks
+ * the unfinished batch up again with every earlier answer replayed.
  *
  * --if-due DAYS generates only when the last planned post is fewer than DAYS
  * days away, so a weekly schedule makes a batch every other week, a week
@@ -27,7 +31,7 @@
  *
  * Exit 0: every gate passed and every render is clean, or no batch was due.
  * Exit 1: the batch needs a person (see report.md). Exit 2: the run itself
- * failed. Nothing is ever scheduled from here.
+ * failed. Exit 3: waiting for answers. Nothing is ever scheduled from here.
  */
 
 'use strict';
@@ -51,6 +55,7 @@ const { ledgerEntry } = require('./ledger');
 const feedbackLog = require('../feedback/log');
 const briefMode = require('./brief');
 const founder = require('./founder');
+const { isPending } = require('./providers/agent');
 const { loadSources } = require('./sources');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
@@ -136,6 +141,27 @@ function findingsByPost(gates, ids) {
   return out;
 }
 
+/** The latest batch with no ledger yet: a run that stopped part way. */
+function unfinishedBatch(contentDir) {
+  if (!fs.existsSync(contentDir)) return null;
+  const nums = fs.readdirSync(contentDir).map((d) => /^batch-(\d{2})$/.exec(d)).filter(Boolean).map((m) => Number(m[1])).sort((a, b) => a - b);
+  const last = nums.pop();
+  if (!last) return null;
+  return fs.existsSync(path.join(contentDir, `batch-${String(last).padStart(2, '0')}`, 'ledger.json')) ? null : last;
+}
+
+const waitingOn = (provider) => Boolean(provider && provider.pending && provider.pending.length);
+
+/** The run stops: answers are missing. report.md says which, and how to go on. */
+function waiting(result, provider, stage, batchDir) {
+  Object.assign(result, { stage: 'waiting', waitingAt: stage, ok: false, waiting: provider.pending.slice() });
+  const lines = [`# ${result.batch}: waiting for answers`, '', `Window: ${result.window}. Stopped at: ${stage}.`, '',
+    `${result.waiting.length} request${result.waiting.length === 1 ? '' : 's'} need an answer. Write each one's answer where its file says, then run the same command again; answered requests replay and the run continues.`, '',
+    ...result.waiting.map((w) => `- ${w.request}${w.reason ? ` (${w.reason})` : ''}`), ''];
+  fs.writeFileSync(path.join(batchDir, 'report.md'), `${lines.join('\n')}`);
+  return result;
+}
+
 async function runBatch(opts = {}) {
   const now = opts.now || Date.now();
   const ws = workspace();
@@ -152,11 +178,13 @@ async function runBatch(opts = {}) {
 
   const libraryErrors = validateLibrary(config);
   if (libraryErrors.length) throw new Error(`config.json cta library: ${libraryErrors.join('; ')}`);
-  const priors = priorLedgers(contentDir);
+  // A run that stopped to wait for answers (the agent provider) is picked up
+  // where it left off: same batch, same window, earlier answers replayed.
+  const batchNo = opts.batchNo || (opts.resume && unfinishedBatch(contentDir)) || nextBatchNo(contentDir);
+  const nn = String(batchNo).padStart(2, '0');
+  const priors = priorLedgers(contentDir, `batch-${nn}`);
   // Photos the earlier batches used count against the 30-day reuse window.
   const library = photoLib.withLedgerUsage(ownLibrary, priors);
-  const batchNo = opts.batchNo || nextBatchNo(contentDir);
-  const nn = String(batchNo).padStart(2, '0');
   const start = opts.start || defaultStart(priors, now);
   const slots = slotsFor({ cadence: config.cadence, start, timeZone: config.timezone });
   const catalog = loadCatalog({ brand, library, config });
@@ -175,15 +203,22 @@ async function runBatch(opts = {}) {
   /* -- the brief: the reviewer's own plan for the month, if any ------- */
   const briefsDir = opts.briefsDir || path.join(ws.dir, 'briefs');
   const { briefs, unread } = await briefMode.loadBriefs({ dir: briefsDir, provider, log: note });
+  if (waitingOn(provider)) return waiting(result, provider, 'brief', batchDir);
   const brief = briefs.length ? briefMode.activeBrief({ briefs, slots, priors, config }) : null;
   const briefFindings = brief ? brief.briefs.flatMap((b) => briefMode.checkBrief(b, brandDir)) : [];
   result.brief = { unread, active: brief ? brief.briefs.map((b) => b.name) : [] };
 
   /* -- 1. plan ------------------------------------------------------- */
-  const plan = await makePlan({
-    provider, brandDir, brand, config, catalog, library, lib: photoLib, slots, priors, batchNo,
-    plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), reviewerFeedback, brief, log: note,
-  });
+  let plan;
+  try {
+    plan = await makePlan({
+      provider, brandDir, brand, config, catalog, library, lib: photoLib, slots, priors, batchNo,
+      plannedOn: today(now), demoClubs, factIds: factIdsOf(brandDir), reviewerFeedback, brief, log: note,
+    });
+  } catch (e) {
+    if (!isPending(e)) throw e;
+    return waiting(result, provider, 'plan', batchDir);
+  }
   if (!plan.failures.length) {
     assignVariants(plan.entries, priors, config);
     assignEndCards(plan.entries, priors, config);
@@ -232,7 +267,15 @@ async function runBatch(opts = {}) {
     usedBy.set(w.id, r.post.photos);
     return r;
   };
-  for (const w of work) await write(w);
+  for (const w of work) {
+    try {
+      await write(w);
+    } catch (e) {
+      // Every post's request is written before the run stops, so the agent answers them together.
+      if (!isPending(e)) throw e;
+    }
+  }
+  if (waitingOn(provider)) return waiting(result, provider, 'write', batchDir);
 
   /* -- 3 + 4. gates and renders, rewriting what fails ---------------- */
   const renders = new Map();
@@ -295,12 +338,18 @@ async function runBatch(opts = {}) {
         const w = work.find((x) => x.id === id);
         if (!w) continue;
         renders.delete(id);
-        await write(w, feedback);
+        try {
+          await write(w, feedback);
+        } catch (e) {
+          if (!isPending(e)) throw e;
+        }
       }
+      if (waitingOn(provider)) break;
     }
   } finally {
     await renderer.close();
   }
+  if (waitingOn(provider)) return waiting(result, provider, 'rewrite', batchDir);
 
   /* -- 5. record ----------------------------------------------------- */
   const ledger = {
@@ -323,6 +372,8 @@ async function runBatch(opts = {}) {
     const fr = await founder.fillFounder({ ledger, config, brandDir, brandText, sources: loaded.sources, provider, priors, now, log: note });
     result.founder = { ...fr, problems: loaded.problems, untranscribed: loaded.untranscribed };
     fs.writeFileSync(path.join(batchDir, 'ledger.json'), `${JSON.stringify(ledger, null, 2)}\n`);
+    // Founder slots waiting on answers stay planned; the routine's founder step finishes them.
+    if (waitingOn(provider)) result.waiting = provider.pending.slice();
   }
   const files = work.filter((w) => renders.has(w.id)).flatMap((w) => {
     const post = written.get(w.id).post;
@@ -410,7 +461,7 @@ function batchDue(priors, now, days) {
   return { due: !last || last - now < days * 86400000, last: last ? new Date(last).toISOString() : null };
 }
 
-module.exports = { runBatch, defaultStart, nextBatchNo, renderFeedback, workEntry, findingsByPost, batchDue };
+module.exports = { runBatch, defaultStart, nextBatchNo, unfinishedBatch, renderFeedback, workEntry, findingsByPost, batchDue };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
@@ -433,11 +484,18 @@ if (require.main === module) {
       start: arg('start'),
       batchNo: arg('batch') ? Number(arg('batch')) : undefined,
       planOnly: argv.includes('--plan-only'),
+      resume: argv.includes('--resume'),
       log: (e) => {
         if (e.failures && e.failures.length) console.log(`${e.step}${e.id ? ` ${e.id}` : ''} round ${e.round}: ${e.failures.length} failure(s)`);
         else if (e.step === 'render') console.log(`render ${e.id}: ${e.issues.length ? e.issues.join(', ') : 'clean'}`);
       },
     });
+    if (r.waiting && r.waiting.length) {
+      console.log(`\n${r.batch} (${r.window}): waiting for ${r.waiting.length} answer(s):`);
+      for (const w of r.waiting) console.log(`  ${w.request}${w.reason ? `  (${w.reason})` : ''}`);
+      console.log('Answer them, then run the same command again.');
+      process.exit(3);
+    }
     console.log(`\n${r.batch} (${r.window}): ${r.stage}, ${r.ok ? 'ready for review' : 'needs a person'}. See ${path.relative(process.cwd(), path.join(r.dir, 'report.md'))}`);
     process.exit(r.ok ? 0 : 1);
   })().catch((e) => {

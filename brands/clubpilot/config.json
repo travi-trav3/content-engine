@@ -3,10 +3,9 @@
   "timezone": "America/Los_Angeles",
   "review": "buffer-drafts",
   "provider": {
-    "name": "openai",
-    "model": "gpt-5",
-    "apiKeyEnv": "OPENAI_API_KEY",
-    "reasoningEffort": "medium"
+    "name": "codex",
+    "model": null,
+    "cli": null
   },
   "cadence": {
     "batchDays": 14,

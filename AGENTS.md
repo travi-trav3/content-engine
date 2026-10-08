@@ -37,7 +37,10 @@ which builds a client's repository from this one.
 npm ci
 npm test                                                  # everything CI runs
 CE_WORKSPACE=brands/clubpilot node engine/gates/check-batch.js 05
-CE_WORKSPACE=brands/clubpilot npm run generate -- --plan-only          # needs OPENAI_API_KEY
+CE_WORKSPACE=brands/clubpilot npm run routine -- --provider agent      # the routine, answered by you (below)
+CE_WORKSPACE=brands/clubpilot npm run change -- --post <id> --note "..." --provider agent   # a change the reviewer asks for
+CE_WORKSPACE=brands/clubpilot npm run push -- --open                   # draft what is ready, update changed drafts (Buffer key)
+node engine/codex-auth.js seed|check                                   # the client's ChatGPT login for scheduled runs
 CE_WORKSPACE=brands/clubpilot npm run generate -- --provider mock --mock-dir test/fixtures/generate/clubpilot --start 2026-10-05
 CE_WORKSPACE=brands/clubpilot npm run push -- --batch 06 --dry-run              # what would go to Buffer
 CE_WORKSPACE=brands/clubpilot node engine/generate/brief.js                   # read briefs, print their checks
@@ -70,6 +73,33 @@ A client instance keeps this layout: its workspace is `brands/<name>/`, and ever
 Chromium is the build pinned by `playwright-core` in package.json. CI installs it with
 `npx playwright-core install --with-deps chromium`. In a cloud sandbox that preinstalls browsers under
 `PLAYWRIGHT_BROWSERS_PATH`, do not run any install command; the pinned build is already there.
+
+## The routine and changes in Codex
+
+Writing runs on the client's ChatGPT subscription, never an API key. On a schedule, `routine.yml` runs
+`engine/routine.js` with the `codex` provider: every model call is one `codex exec`, signed in as the
+client. In conversation, you (Codex in the client's ChatGPT) are the model: run the engine with
+`--provider agent` and answer its requests yourself.
+
+**When asked to run the routine (or "write the batch"):**
+1. `npm run routine -- --provider agent`. Exit 0: done. Exit 3: it lists requests in
+   `<workspace>/exchange/requests/`.
+2. Answer every listed request: read its instructions and input (and the brand files it points to,
+   once per session), and write JSON that fits its schema to the path it names. You are the model the
+   step calls; write as the instructions say, not as you would prefer. The engine checks your answer
+   against the schema, then runs its gates and rewrites on it like on any model's answer.
+3. Run the routine again. Answered requests replay. Repeat until it exits 0 or 1 (1: some posts need a
+   person; say which and why, from the batch's report.md).
+4. Commit and push (`content/`, `briefs/`, `sources/`, `feedback/`). `drafts.yml` puts it in Buffer.
+
+**When the reviewer asks for a change to a post:** find the post's id in the latest ledger, then
+`npm run change -- --post <id> --note "<their words>" --provider agent`, answer its requests the same
+way, run it again until it says Changed or Not changed, then commit and push; `drafts.yml` updates the
+draft in Buffer. If it says Not changed, tell the reviewer the reason it gives. Never edit a ledger,
+plan or post by hand: a change that does not go through the writer and the gates does not ship.
+
+**Never** answer a request by changing the engine, a gate, a brand file or a test so that an answer
+passes, and never call Buffer yourself: drafts reach Buffer only from GitHub, where the keys are.
 
 ## Rules
 
@@ -125,7 +155,16 @@ Chromium is the build pinned by `playwright-core` in package.json. CI installs i
   Transcripts are read from `Name: words` lines or a speaker line with a timestamp; other formats are
   read as one author's document, so only the founder's own exports belong in `sources/`.
 - Not yet exercised against a live Buffer account: a text-only LinkedIn post created through the API
-  (the schema allows it: `assets` defaults to empty), and transcription against the live model.
+  (the schema allows it: `assets` defaults to empty).
+- Scheduled writing runs `codex exec` signed in with the client's ChatGPT login, which OpenAI documents
+  as an advanced CI path (private repositories only). Tested with a stand-in CLI; the first live run
+  settles the flags (`--output-schema`, `--output-last-message`, `--image`) and whether the login
+  refreshes as expected. A run stopped by the ChatGPT usage limit keeps its answers in
+  `<workspace>/exchange/responses/` and the next weekday run finishes it.
+- Codex cannot listen to audio: on the subscription, voice memos need their transcript as text. The
+  API provider can still transcribe (`openai`), at API cost.
+- A routine run by Codex on a Mac renders on macOS; GitHub re-renders on Linux when it drafts, and the
+  bytes may differ slightly (a warning, not a failure).
 - The Drive sync, the vision reading and the scout are tested against an in-memory Drive, a recorded
   Unsplash and recorded readings, not yet against the live services.
 - A brief's reading (`briefs/<name>.json`) is the model's; it can misplace an idea's week or channel.

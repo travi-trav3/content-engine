@@ -17,7 +17,20 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { slidesToPdf } = require('../render/pdf');
+
+const fileSha = (f) => crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+
+/**
+ * What a draft shows, as one hash: the text Buffer gets, the first comment,
+ * and the render of every image. When the ledger's signature differs from the
+ * one recorded at the last push, the draft needs updating.
+ */
+function contentSignature(post) {
+  const renders = post.layout === 'text' ? [] : post.slides ? post.slides.map((s) => (s.render && s.render.sha256) || null) : [(post.render && post.render.sha256) || null];
+  return crypto.createHash('sha256').update(JSON.stringify({ text: post.postText || post.caption || '', firstComment: post.firstComment || null, renders })).digest('hex').slice(0, 16);
+}
 
 const pad2 = (n) => String(n).padStart(2, '0');
 const isLinkedIn = (channel) => String(channel).startsWith('linkedin');
@@ -43,7 +56,8 @@ async function ensureRenders({ post, dir, renderer, library, size }) {
     : [{ file: files[0], layout: post.layout, surface: post.renderSurface, props: post.props, sha: post.render && post.render.sha256 }];
   fs.mkdirSync(dir, { recursive: true });
   for (const j of jobs) {
-    if (fs.existsSync(j.file)) continue;
+    // A file left from an earlier version of the post is not this post: re-render it.
+    if (fs.existsSync(j.file) && (!j.sha || fileSha(j.file) === j.sha)) continue;
     if (!renderer) throw new Error(`${j.file} is missing and no renderer was given`);
     const slide = j.stored ? slideContext(post, j.stored) : undefined;
     const r = await renderer.render({ layout: j.layout, surface: j.surface, size, props: j.props, slide, library, out: j.file });
@@ -51,6 +65,13 @@ async function ensureRenders({ post, dir, renderer, library, size }) {
     if (j.sha && r.sha256 !== j.sha) warnings.push(`${path.basename(j.file)} re-rendered with different bytes than the batch run`);
   }
   return { files, warnings };
+}
+
+/** Whether every render file a post needs is in dir and is the render the ledger recorded. */
+function rendersCurrent(post, dir) {
+  const files = renderFiles(post, dir);
+  const shas = post.slides ? post.slides.map((sl) => sl.render && sl.render.sha256) : [post.render && post.render.sha256];
+  return files.every((f, i) => fs.existsSync(f) && (!shas[i] || fileSha(f) === shas[i]));
 }
 
 /** The slide context the carousel layouts read, rebuilt from a ledger slide. */
@@ -121,4 +142,4 @@ function draftInput(post, { channelId, media, tagIds }) {
   };
 }
 
-module.exports = { renderFiles, ensureRenders, publishMedia, draftInput, channelMetadata, documentTitle, slideContext };
+module.exports = { renderFiles, rendersCurrent, ensureRenders, publishMedia, draftInput, channelMetadata, documentTitle, slideContext, contentSignature };

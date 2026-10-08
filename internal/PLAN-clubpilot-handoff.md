@@ -148,8 +148,9 @@ If Byron does not review, drafts sit in Buffer and nothing publishes. That is th
 
 ### Byron's running costs
 
-OpenAI API usage (low single-digit dollars per batch at this size; billed on platform.openai.com,
-separately from his ChatGPT subscription; set a monthly limit), a Buffer plan that covers three
+No OpenAI API: since 2026-10-08 all writing runs on Byron's ChatGPT subscription through Codex (it
+draws on the plan's Codex allowance; Plus is the floor, heavy same-day ChatGPT use competes with a
+batch), a Buffer plan that covers three
 channels and API access (2026-10-08: the free plan, which allows exactly three channels; confirm its
 API allowance covers sync, about 1,500 requests a month), GitHub Actions minutes (about 1,800 a month
 with sync every 15 minutes in working hours, against 2,000 free on a free organization's private
@@ -617,3 +618,45 @@ Decisions for Byron:
   with...") passes. Regression cases both ways; no historical verdict changed.
 - Founder posts at 2 a week need about two memos a week, or one memo covering two topics. The October
   map has one founder topic a week; the other slot writes from the strongest unused idea in his sources.
+
+### 2026-10-08, increment 14 (writing on Byron's ChatGPT subscription, not the API)
+
+Decided (Travis): the engine writes on Byron's monthly ChatGPT subscription, every two weeks, inside
+his ChatGPT/Codex, so he can go back and forth with it.
+
+What the platform allows (researched Oct 8): Codex Automations run on a schedule in the ChatGPT app,
+but a scheduled run on a repository needs his computer on with the app open; Codex Cloud has no
+scheduled runs, and strips secrets before the agent runs. OpenAI documents `codex exec` signed in with
+a ChatGPT login on CI runners as an advanced path for exactly this ("ChatGPT/Codex rate limits instead
+of API key usage"), private repositories only. So the schedule stays in GitHub Actions and the model
+calls go to Codex on his login; his own conversations with Codex work on the same repository.
+
+Done:
+- Providers: `codex` (one `codex exec` per request, read-only, `--output-schema`, his login restored
+  into a private CODEX_HOME and saved back when refreshed) and `agent` (Codex in conversation answers
+  the requests itself). Both share an exchange of request and answer files, checked against the schema,
+  replayed on the next run, re-asked when the request changed.
+- `codex-auth.js`: his login encrypted in the workspace (`codex-auth.enc`), the key only in the Actions
+  secret `CODEX_AUTH_KEY`. Seeded once with `codex login` and `node engine/codex-auth.js seed`.
+- `engine/routine.js`: briefs, the batch when due (or unfinished), founder posts. `routine.yml` runs it
+  weekday mornings (a minute and no usage when nothing is due), drafts with `push.js --open`, and keeps
+  a stopped run's answers so the next morning finishes it.
+- `engine/feedback/change.js`: a change Byron asks Codex for goes through the writer, every gate and
+  the renderer, like a Buffer note; `drafts.yml` (on push) updates the draft in place, tagged Revised,
+  never over a caption he edited in Buffer. `push.js --open` drafts and updates across batches by a
+  content signature.
+- All workflows: `CODEX_AUTH_KEY` instead of `OPENAI_API_KEY`; the preflight checks the login opens and
+  is a ChatGPT login, not an API key. AGENTS.md tells Codex how to run the routine and make changes.
+- `test/subscription.test.js`: the October batch through the agent exchange (stop, answer, resume) and
+  through a stand-in Codex CLI (a usage limit mid-batch, finished the next run with nothing asked
+  twice), identical to the recorded batch; a change pushed to Buffer as an update.
+
+Costs and limits to tell Byron:
+- No API bill. A batch is about 20 Codex calls with the brand files (about 100 KB) each; on Plus that
+  is a real share of a five-hour window. If his own Codex use the same morning hits the limit, the
+  batch finishes the next weekday morning, and he gets a Slack message saying so.
+- Voice memos need their transcript as text (iPhone Voice Memos shows one); Codex cannot hear audio.
+- The ChatGPT login can expire; the preflight and a Slack message say so, and re-seeding takes a minute.
+
+Open: the first live run with his login settles the Codex CLI flags and login refresh in CI (tested
+here with a stand-in). Seeding needs his ChatGPT sign-in once, on a computer he trusts.

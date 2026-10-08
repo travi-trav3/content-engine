@@ -35,6 +35,7 @@ const path = require('path');
 const { workspace } = require('../lib/workspace');
 const photoLib = require('./library');
 const { proposeTags } = require('./vision');
+const { isPending } = require('../generate/providers/agent');
 const { slugify } = require('./ingest');
 const { driveConfig } = require('./drive-sync');
 
@@ -74,7 +75,7 @@ async function scout({ config, drive, unsplash, provider, lib, state, now = Date
   if (!dc.rootFolderId) throw new Error('config.json drive.rootFolderId is not set');
   const folders = await drive.ensureFolders(dc.rootFolderId, { suggested: 'Suggested', rejected: 'Rejected', ...dc.folders });
   const at = new Date(now).toISOString();
-  const result = { suggested: [], rejectedSeen: [], screenedOut: [] };
+  const result = { suggested: [], rejectedSeen: [], screenedOut: [], waiting: [] };
 
   // The reviewer's no's, remembered.
   for (const f of await drive.listFolder(folders.rejected)) {
@@ -101,7 +102,15 @@ async function scout({ config, drive, unsplash, provider, lib, state, now = Date
         known.add(photo.id);
         const data = await unsplash.download(photo, { width: minWidth });
         const name = creditName(photo);
-        const reading = await proposeTags({ provider, buffer: data, id: slugify(name), lib, brandName: config.brand || 'the brand' });
+        let reading;
+        try {
+          reading = await proposeTags({ provider, buffer: data, id: slugify(name), lib, brandName: config.brand || 'the brand' });
+        } catch (e) {
+          if (!isPending(e)) throw e;
+          known.delete(photo.id); // not screened: offered again next week
+          result.waiting.push(photo.id);
+          continue;
+        }
         if (reading.concerns.length || reading.subject !== subject) {
           state.screenedOut.push(photo.id);
           result.screenedOut.push({ id: photo.id, why: reading.concerns.length ? reading.concerns.join('; ') : `reads as ${reading.subject}, not ${subject}` });

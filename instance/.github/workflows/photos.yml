@@ -37,7 +37,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
+      # The branch as it is now: the ChatGPT login file may have been refreshed since the run was queued.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
@@ -55,19 +58,19 @@ jobs:
       - name: Sync the Drive folders
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: node engine/photos/drive-sync.js
 
       - name: Read new briefs
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: node engine/generate/brief.js --notify
 
       - name: Write founder posts from new material
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: node engine/generate/founder.js --fill --push
@@ -78,6 +81,7 @@ jobs:
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
           for d in photos briefs sources content; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
+          if [ -e "$CE_WORKSPACE/codex-auth.enc" ]; then git add "$CE_WORKSPACE/codex-auth.enc"; fi
           git diff --cached --quiet && exit 0
           git commit -m "photos: Drive sync [skip ci]"
           git pull --rebase

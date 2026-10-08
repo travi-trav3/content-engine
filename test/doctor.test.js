@@ -29,8 +29,10 @@ const check = (label, ok, detail = '') => {
 };
 
 const IDS = { org: 'o00000000000000000000001', ig: 'c0000000000000000000000a', li: 'c0000000000000000000000b', byron: 'c0000000000000000000000c' };
+// An instance on an API key (other clients); Club Pilot's own Codex setup is checked below.
 const config = {
   ...base,
+  provider: { name: 'openai', model: 'gpt-5', apiKeyEnv: 'OPENAI_API_KEY' },
   buffer: { ...base.buffer, organizationId: IDS.org, channels: { instagram: IDS.ig, linkedin_page: IDS.li, linkedin_byron: IDS.byron }, reviewers: ['byron@clubpilot.test'] },
   assets: { ...base.assets, repo: 'clubpilot/social-assets' },
   drive: { ...base.drive, rootFolderId: 'root123' },
@@ -102,7 +104,7 @@ const has = (r, status, re) => r.checks.some((c) => c.status === status && re.te
 
   console.log('== offline, nothing set ==');
   const offlineFetch = services({});
-  const bare = await preflight({ config: base, env: {}, live: false, fetchImpl: offlineFetch, ws: WS });
+  const bare = await preflight({ config: { ...base, provider: config.provider }, env: {}, live: false, fetchImpl: offlineFetch, ws: WS });
   check('every missing secret and id is listed, with the fix', !bare.ready
     && ['OPENAI_API_KEY', 'BUFFER_API_KEY', 'buffer.organizationId', 'assets.repo', 'ASSETS_PUSH_TOKEN'].every((s) => has(bare, 'fail', new RegExp(s.replace('.', '\\.')))));
   check('the optional services only warn', ['notify', 'drive', 'scout', 'founder'].every((a) => bare.checks.filter((c) => c.area === a).every((c) => c.status === 'warn' && !c.required)));
@@ -112,6 +114,31 @@ const has = (r, status, re) => r.checks.some((c) => c.status === status && re.te
   const keysOnly = services({});
   await preflight({ config, env, live: false, fetchImpl: keysOnly, ws: WS });
   check('even with every key set, --offline makes no call', keysOnly.calls.length === 0, String(keysOnly.calls.length));
+
+  console.log('== Club Pilot: Codex on the ChatGPT subscription, no API key ==');
+  const os = require('os');
+  const codexAuth = require('../engine/codex-auth');
+  const codexConfig = { ...config, provider: base.provider };
+  check('Club Pilot\'s config writes with Codex', base.provider.name === 'codex');
+  const noKeyEnv = { ...env };
+  delete noKeyEnv.OPENAI_API_KEY;
+  const bareCodex = await preflight({ config: codexConfig, env: noKeyEnv, live: false, fetchImpl: services({}), ws: WS });
+  check('no saved login and no key: both fail, with how to make them', !bareCodex.ready && has(bareCodex, 'fail', /no ChatGPT login saved.*codex login/) && has(bareCodex, 'fail', /CODEX_AUTH_KEY is not set/));
+  check('and no API key is asked for', !bareCodex.checks.some((c) => /OPENAI_API_KEY/.test(`${c.detail} ${c.fix || ''}`)));
+  const tmpWs = { ...WS, dir: fs.mkdtempSync(path.join(os.tmpdir(), 'ce-doctor-')) };
+  const authKey = crypto.randomBytes(32).toString('base64');
+  const saveLogin = (auth) => fs.writeFileSync(path.join(tmpWs.dir, 'codex-auth.enc'), codexAuth.encrypt(Buffer.from(JSON.stringify(auth)), authKey));
+  saveLogin({ tokens: { id_token: 'x', access_token: 'y', refresh_token: 'z' }, last_refresh: '2026-10-08T15:00:00Z' });
+  const subFetch = services({});
+  const sub = await preflight({ config: codexConfig, env: { ...noKeyEnv, CODEX_AUTH_KEY: authKey }, fetchImpl: subFetch, ws: tmpWs });
+  check('a saved ChatGPT login that opens passes the model check, with no call to the API', has(sub, 'ok', /the ChatGPT login opens \(refreshed 2026-10-08\); writing runs on the subscription/)
+    && !sub.checks.some((c) => c.area === 'model' && c.status === 'fail') && !subFetch.calls.some((c) => c.url.includes('api.openai.com')), format(sub));
+  check('it says voice memos need a transcript', has(sub, 'warn', /cannot listen to audio/));
+  const wrong = await preflight({ config: codexConfig, env: { ...noKeyEnv, CODEX_AUTH_KEY: crypto.randomBytes(32).toString('base64') }, live: false, fetchImpl: services({}), ws: tmpWs });
+  check('the wrong key fails: the login does not open', has(wrong, 'fail', /does not open with CODEX_AUTH_KEY/));
+  saveLogin({ OPENAI_API_KEY: 'sk-x' });
+  const apiLogin = await preflight({ config: codexConfig, env: { ...noKeyEnv, CODEX_AUTH_KEY: authKey }, live: false, fetchImpl: services({}), ws: tmpWs });
+  check('a Codex login that is an API key fails: it bills the API, not the subscription', has(apiLogin, 'fail', /an API key, which bills the API/));
 
   console.log(failures ? `\ndoctor: ${failures} CHECK(S) FAILED` : '\ndoctor: ALL CHECKS PASS');
   process.exit(failures ? 1 : 0);

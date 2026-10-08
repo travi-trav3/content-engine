@@ -45,6 +45,7 @@ const feedbackLog = require('../feedback/log');
 const { reviseFromNotes, captionBody } = require('../feedback/revise');
 const { reviseFounder, founderConfig } = require('../generate/founder');
 const { loadSources } = require('../generate/sources');
+const { isPending } = require('../generate/providers/agent');
 const { createBuffer, ensureTags } = require('./client');
 const { createMockBuffer } = require('./mock');
 const { createHost } = require('../publish/host');
@@ -97,7 +98,7 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
   const content = contentDir || ws.contentDir;
   const bc = bufferConfig(config);
   const batches = openBatches(content);
-  const result = { checked: 0, revised: [], notApplied: [], captionEdits: [], approved: [], deleted: [], sent: [], errors: [], deferred: [] };
+  const result = { checked: 0, revised: [], notApplied: [], captionEdits: [], approved: [], deleted: [], sent: [], errors: [], deferred: [], waiting: [] };
   if (!batches.length) return result;
 
   // Tag ids recorded at push time save a request on every run.
@@ -228,6 +229,12 @@ async function syncOnce({ config, buffer, host, provider, notifier, contentDir, 
             r = await reviseFromNotes(c, { post, notes: fresh, bufferPost: bp });
           }
         } catch (e) {
+          // The agent provider: the note waits for its answer, unread, and
+          // is not counted as a failure.
+          if (isPending(e)) {
+            result.waiting.push(post.id);
+            continue;
+          }
           // An outage (the model, Buffer, the assets host) is retried on the
           // next run; the notes stay unread. After three tries a person takes it.
           post.buffer.noteFailures = (post.buffer.noteFailures || 0) + 1;

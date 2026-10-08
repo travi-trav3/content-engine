@@ -35,7 +35,7 @@ const { ledgerEntry } = require('../generate/ledger');
 const { shellOf } = require('../generate/catalog');
 const { photoSummary } = require('../generate/context');
 const { checkAll } = require('../gates/check-batch');
-const { publishMedia, channelMetadata, renderFiles } = require('../buffer/media');
+const { publishMedia, channelMetadata, renderFiles, contentSignature } = require('../buffer/media');
 
 const pad2 = (n) => String(n).padStart(2, '0');
 const channelName = (c) => (String(c).startsWith('linkedin') ? 'LinkedIn' : 'Instagram');
@@ -131,7 +131,7 @@ async function reviseFromNotes(ctx, { post, notes, bufferPost }) {
   }).join('\n');
   const user = [
     ctx.brandText,
-    '<draft>', describePost(post, bufferPost.text, library), '</draft>',
+    '<draft>', describePost(post, bufferPost ? bufferPost.text : (post.buffer && post.buffer.text) || post.postText || post.caption, library), '</draft>',
     '<options>',
     targets.length ? `Layouts this post can switch to:\n${menu}` : 'This post keeps its layout (carousels and threads cannot switch).',
     `Surfaces of the current layout: ${(post.layout === 'carousel' ? ['dark', 'light', 'photo'] : (catalog.find((c) => c.id === post.layout) || { surfaces: [] }).surfaces).join(', ')}`,
@@ -185,7 +185,9 @@ async function reviseFromNotes(ctx, { post, notes, bufferPost }) {
   const otherPhotos = ledger.posts.filter((p) => p !== post).flatMap((p) => p.photos || []);
   const usedPhotos = read.newPhoto ? [...otherPhotos, ...(post.photos || [])] : otherPhotos;
 
-  const current = captionBody(bufferPost.text, post);
+  // What the caption reads now: in Buffer when there is a draft, else the ledger's.
+  const bufferText = bufferPost ? bufferPost.text : (post.buffer && post.buffer.text) || post.postText || post.caption;
+  const current = captionBody(bufferText, post);
   const request = [
     `The reviewer's note on this draft: "${noteText}"`,
     `What it asks for: ${read.understood}`,
@@ -269,6 +271,13 @@ async function reviseFromNotes(ctx, { post, notes, bufferPost }) {
   }
 
   /* -- 4. swap the draft's images ------------------------------------- */
+  // Without Buffer (a change made in the repository, by Codex), the revision
+  // is recorded and push.js --open swaps it into the draft after the push.
+  if (!ctx.buffer || !post.buffer || !post.buffer.id) {
+    ledger.posts[index] = revised;
+    for (const [i, e] of plan.posts.entries()) if (e.id === post.id) plan.posts[i] = newPlan.posts[i];
+    return { ...base, applied: true, changed: changes(post, revised), post: revised };
+  }
   const { media, published } = await publishMedia({ post: revised, files, host: ctx.host, folder: `batch-${nn}`, config, workDir: path.dirname(files[0]) });
   const tagIds = [ctx.tagIds.engine, ctx.tagIds.revised].filter(Boolean);
   const input = { id: post.buffer.id, assets: media, tagIds };
@@ -280,9 +289,11 @@ async function reviseFromNotes(ctx, { post, notes, bufferPost }) {
   revised.buffer = {
     ...post.buffer,
     text: read.changeCaption ? norm(edited.text || input.text) : post.buffer.text,
+    sentText: read.changeCaption ? revised.postText : post.buffer.sentText,
     firstComment: read.changeCaption ? revised.firstComment : post.buffer.firstComment,
     media: published,
     tagRoles: ['engine', 'revised'],
+    signature: contentSignature(read.changeCaption ? revised : { ...revised, postText: post.postText, firstComment: post.firstComment }),
   };
   ledger.posts[index] = revised;
   for (const [i, e] of plan.posts.entries()) if (e.id === post.id) plan.posts[i] = newPlan.posts[i];

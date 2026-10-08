@@ -31,7 +31,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
+      # The branch as it is now: the ChatGPT login file may have been refreshed since the run was queued.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
@@ -45,7 +48,7 @@ jobs:
       # needs-render.txt, and only then is Chromium installed for a second pass.
       - name: Sync with Buffer
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           ASSETS_PUSH_TOKEN: ${{ secrets.ASSETS_PUSH_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -58,7 +61,7 @@ jobs:
       - name: Revise from the notes
         if: hashFiles('needs-render.txt') != ''
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           ASSETS_PUSH_TOKEN: ${{ secrets.ASSETS_PUSH_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -70,6 +73,7 @@ jobs:
           git config user.name "content-engine"
           git config user.email "content-engine@users.noreply.github.com"
           for d in content feedback sources; do if [ -e "$CE_WORKSPACE/$d" ]; then git add "$CE_WORKSPACE/$d"; fi; done
+          if [ -e "$CE_WORKSPACE/codex-auth.enc" ]; then git add "$CE_WORKSPACE/codex-auth.enc"; fi
           git diff --cached --quiet && exit 0
           git commit -m "sync: reviewer activity from Buffer [skip ci]"
           git pull --rebase

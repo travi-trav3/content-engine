@@ -4,7 +4,7 @@
  *
  * Builds a client's repository from the core: the engine, the layouts, the
  * tests and CI, the client's brand workspace, and the instance workflows
- * (batch, brief, founder, photos, scout, sync) set to that workspace. What never
+ * (routine, drafts, brief, founder, photos, scout, sync) set to that workspace. What never
  * ships: internal/ (Applied Intelligence's plans and contracts), other
  * clients' brands, this script, and anything generated.
  *
@@ -62,12 +62,16 @@ feedback log. Every workflow sets \`CE_WORKSPACE=${ws}\`; export it when you run
 | Words for the founder's own posts | A voice memo or note in the Drive folder's Sources, or \`${ws}/sources/\` (\`founder.yml\` writes from it). Only the founder's own words go there. |
 | A different cadence or channel mix | \`${ws}/config.json\` \`cadence\`; then \`npm run doctor\`. |
 | Different calls to action | \`${ws}/config.json\` \`cta.variants\` and \`cta.endCards\`. |
-| A change to one draft | A note on the draft in Buffer (\`sync.yml\` revises it). |
-| A batch now | Run the \`batch\` workflow with "force". |
+| A change to one draft | Ask Codex (below), or a note on the draft in Buffer (\`sync.yml\` revises it). |
+| A batch now | Run the \`routine\` workflow with "batch now", or ask Codex: run the routine (AGENTS.md, "The routine in Codex"). |
+| A change to a post | Ask Codex. It runs \`npm run change\` (the same writer and gates as a note), commits and pushes; \`drafts.yml\` updates the draft in Buffer. |
 
 ## Never
 
 - Commit a key, token or service-account file. Secrets live in the repository's Actions secrets only.
+  The one exception is \`${ws}/codex-auth.enc\`: the client's ChatGPT login, encrypted, whose key is
+  the \`CODEX_AUTH_KEY\` secret. Never decrypt it into the repository.
+- Use an OpenAI API key for writing. Writing runs on the client's ChatGPT subscription.
 - Edit \`engine/\`, \`layouts/\` or \`test/\` to make a post pass. Those come from Applied Intelligence and
   are replaced on update; a change there needs \`npm test\` to pass and should be sent back upstream.
 - Schedule or publish from code. Drafts only; the reviewer schedules.

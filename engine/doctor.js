@@ -10,7 +10,8 @@
  *   node engine/doctor.js --offline       config and secrets only, no network
  *   node engine/doctor.js --slack-test    also post a test message to the Slack channel
  *
- * Required for a batch to reach Buffer: the model and its key, Buffer (key,
+ * Required for a batch to reach Buffer: the model (the client's saved ChatGPT
+ * login for Codex, or an API key), Buffer (key,
  * organization, every cadence channel connected and unlocked), the public
  * assets repository and its token, a cadence the plan gate accepts, the
  * brand files and the CTA library. Optional, reported as warnings: Slack,
@@ -40,15 +41,37 @@ async function preflight({ config, env = process.env, fetchImpl = fetch, live = 
   /* -- model ------------------------------------------------------------ */
   const p = config.provider || {};
   const openaiKey = secret(p.apiKeyEnv || 'OPENAI_API_KEY');
-  if (p.name !== 'openai') add('model', WARN, `provider is "${p.name}"; only openai runs live`, 'Set config.json provider.name to "openai".');
-  if (!p.model) add('model', FAIL, 'no model in config.json', 'Set config.json provider.model to a model this key can use.');
-  if (!openaiKey) add('model', FAIL, `${p.apiKeyEnv || 'OPENAI_API_KEY'} is not set`, 'Add the OpenAI API key (an account with billing) as a repository secret.');
-  if (live && openaiKey && p.model) {
-    const res = await fetchImpl(`https://api.openai.com/v1/models/${encodeURIComponent(p.model)}`, { headers: { authorization: `Bearer ${openaiKey}` } }).catch((e) => ({ status: 0, error: e }));
-    if (res.status === 200) add('model', OK, `${p.model} is available to this key`);
-    else if (res.status === 401) add('model', FAIL, 'OpenAI rejected the key', 'Check the OPENAI_API_KEY secret; create a new key if it was revoked.');
-    else if (res.status === 404) add('model', FAIL, `${p.model} is not available to this key`, 'Pick a model the account can use (platform.openai.com, Limits) and set provider.model.');
-    else add('model', FAIL, `OpenAI answered ${res.status || res.error.message}`, 'Retry; if it persists, check status.openai.com.');
+  if (p.name === 'codex') {
+    // Codex on the client's ChatGPT subscription: the saved login, and the key that opens it.
+    const blob = path.join(ws.dir, 'codex-auth.enc');
+    const authKey = secret('CODEX_AUTH_KEY');
+    const how = 'On a computer signed in to the ChatGPT account: `codex login`, then `node engine/codex-auth.js seed` in the repository; commit codex-auth.enc and add the key it prints as the CODEX_AUTH_KEY secret.';
+    if (!fs.existsSync(blob)) add('model', FAIL, `no ChatGPT login saved (${path.relative(process.cwd(), blob)} is missing)`, how);
+    if (!authKey) add('model', FAIL, 'CODEX_AUTH_KEY is not set', `Add it as a repository secret. ${how}`);
+    if (fs.existsSync(blob) && authKey) {
+      try {
+        const auth = JSON.parse(require('./codex-auth').decrypt(fs.readFileSync(blob, 'utf8'), authKey).toString('utf8'));
+        if (auth.tokens) add('model', OK, `the ChatGPT login opens${auth.last_refresh ? ` (refreshed ${String(auth.last_refresh).slice(0, 10)})` : ''}; writing runs on the subscription`);
+        else if (auth.OPENAI_API_KEY) add('model', FAIL, 'the saved Codex login is an API key, which bills the API, not the subscription', how);
+        else add('model', FAIL, 'the saved Codex login holds no ChatGPT sign-in', how);
+      } catch (e) {
+        add('model', FAIL, e.message, how);
+      }
+    }
+    add('model', WARN, 'Codex cannot listen to audio: voice memos for founder posts need their transcript as text', 'iPhone Voice Memos shows a transcript under each recording; add it to Sources as a note or .txt file.', false);
+  } else if (p.name === 'agent') {
+    add('model', OK, 'answers come from the agent running the engine (Codex in ChatGPT); nothing runs unattended');
+  } else {
+    if (p.name !== 'openai') add('model', WARN, `provider is "${p.name}"; it does not run live`, 'Set config.json provider.name to "codex" (the ChatGPT subscription) or "openai" (an API key).');
+    if (!p.model) add('model', FAIL, 'no model in config.json', 'Set config.json provider.model to a model this key can use.');
+    if (!openaiKey) add('model', FAIL, `${p.apiKeyEnv || 'OPENAI_API_KEY'} is not set`, 'Add the OpenAI API key (an account with billing) as a repository secret.');
+    if (live && openaiKey && p.model) {
+      const res = await fetchImpl(`https://api.openai.com/v1/models/${encodeURIComponent(p.model)}`, { headers: { authorization: `Bearer ${openaiKey}` } }).catch((e) => ({ status: 0, error: e }));
+      if (res.status === 200) add('model', OK, `${p.model} is available to this key`);
+      else if (res.status === 401) add('model', FAIL, 'OpenAI rejected the key', 'Check the OPENAI_API_KEY secret; create a new key if it was revoked.');
+      else if (res.status === 404) add('model', FAIL, `${p.model} is not available to this key`, 'Pick a model the account can use (platform.openai.com, Limits) and set provider.model.');
+      else add('model', FAIL, `OpenAI answered ${res.status || res.error.message}`, 'Retry; if it persists, check status.openai.com.');
+    }
   }
 
   /* -- Buffer ----------------------------------------------------------- */
@@ -181,7 +204,7 @@ async function preflight({ config, env = process.env, fetchImpl = fetch, live = 
     if (files.length) add('founder', OK, `${files.length} source file${files.length === 1 ? '' : 's'} in the founder's own words`, null, false);
     else add('founder', WARN, 'no material from the founder yet: each founder slot will ask for it with questions', 'A voice memo in the Drive folder Sources, or a note in sources/, gives the founder posts their words.', false);
     const tm = f.transcribeModel || 'gpt-4o-transcribe';
-    if (live && openaiKey) {
+    if (live && openaiKey && p.name === 'openai') {
       const res = await fetchImpl(`https://api.openai.com/v1/models/${encodeURIComponent(tm)}`, { headers: { authorization: `Bearer ${openaiKey}` } }).catch((e) => ({ status: 0, error: e }));
       if (res.status === 200) add('founder', OK, `${tm} (voice memos) is available to this key`, null, false);
       else add('founder', WARN, `${tm} is not available to this key (${res.status || res.error.message}): voice memos cannot be transcribed`, 'Set config.json founder.transcribeModel to a transcription model the account can use; documents still work.', false);

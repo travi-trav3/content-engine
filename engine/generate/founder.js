@@ -40,6 +40,8 @@ const { weekOf } = require('./brief');
 const { brandContext } = require('./context');
 const src = require('./sources');
 const { checkFounderPosts, findingsOf, assembleCaption, flatSentences } = require('../gates/source-gate');
+const { isPending } = require('./providers/agent');
+const { contentSignature } = require('../buffer/media');
 
 const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const write = (f, v) => fs.writeFileSync(f, `${JSON.stringify(v, null, 2)}\n`);
@@ -228,13 +230,21 @@ function earlierQuotesOf(ledgers) {
 async function fillFounder({ ledger, config, brandDir, brandText = brandContext(brandDir), sources, provider, priors = [], now = Date.now(), force = false, log = () => {} }) {
   const cfg = founderConfig(config);
   const key = src.sourcesKey(sources);
-  const result = { written: [], needsSource: [], failed: [], waiting: [], late: [] };
+  const result = { written: [], needsSource: [], failed: [], waiting: [], late: [], pending: [] };
   const earlier = earlierQuotesOf([...priors, ledger]);
   for (const post of ledger.founder || []) {
     if (post.status === 'written' || (post.buffer && post.buffer.id)) continue;
     if (Date.parse(post.dueAt) - now < cfg.minLeadHours * 3600000) { result.late.push(post.id); continue; }
     if (!force && post.status !== 'planned' && post.sourcesKey === key) { result.waiting.push(post.id); continue; }
-    const r = await writeFounderPost({ provider, post, sources, config, brandDir, brandText, earlierQuotes: earlier, log });
+    let r;
+    try {
+      r = await writeFounderPost({ provider, post, sources, config, brandDir, brandText, earlierQuotes: earlier, log });
+    } catch (e) {
+      // The agent provider: this slot waits for its answer, unchanged.
+      if (!isPending(e)) throw e;
+      result.pending.push(post.id);
+      continue;
+    }
     for (const k of ['paragraphs', 'caption', 'postText', 'headline', 'summary', 'sourceNote', 'sources', 'findings', 'questions']) delete post[k];
     Object.assign(post, r.fields, { sourcesKey: key, triedAt: new Date(now).toISOString(), draft: r.data });
     if (r.status === 'written') { result.written.push(post.id); earlier.push(...flatSentences(post).flatMap((s) => s.refs.map((x) => x.quote))); }
@@ -282,8 +292,8 @@ async function reviseFounder(ctx, { post, ledger, notes, bufferPost, sources }) 
   const { config, brandDir, brandText, provider } = ctx;
   const cfg = founderConfig(config);
   const all = [...sources];
-  if (post.buffer && post.buffer.captionEdited) {
-    let edited = String(bufferPost.text || '').trim();
+  if (post.buffer && post.buffer.captionEdited && (bufferPost || post.buffer.text)) {
+    let edited = String((bufferPost ? bufferPost.text : post.buffer.text) || '').trim();
     if (cfg.signOff && edited.endsWith(cfg.signOff)) edited = edited.slice(0, -cfg.signOff.length).trim();
     const doc = { name: 'buffer-edit.md', kind: 'document', sha256: null, text: edited, turns: [{ speaker: null, founder: true, text: edited, tokens: src.tokens(edited) }] };
     doc.founderWords = doc.turns[0].tokens.length;
@@ -298,10 +308,18 @@ async function reviseFounder(ctx, { post, ledger, notes, bufferPost, sources }) 
   }
   if (r.status === 'failed') return { ...base, applied: false, reason: `the rewrite kept failing the source checks: ${(r.fields.findings || []).slice(0, 2).join('; ')}` };
   const revised = { ...post, ...r.fields };
+  const i = ledger.founder.indexOf(post);
+  // Without Buffer (a change made by Codex in the repository), push.js --open swaps it in after the push.
+  if (!ctx.buffer || !post.buffer || !post.buffer.id) {
+    if (i >= 0) ledger.founder[i] = revised;
+    return { ...base, applied: true, changed: ['caption'], post: revised };
+  }
   const tagIds = [ctx.tagIds.engine, ctx.tagIds.revised].filter(Boolean);
   const edited = await ctx.buffer.editPost({ id: post.buffer.id, text: revised.postText, tagIds });
-  revised.buffer = { ...post.buffer, text: String((edited && edited.text) || revised.postText).replace(/\r\n/g, '\n').trim(), tagRoles: ['engine', 'revised'], captionEdited: false };
-  const i = ledger.founder.indexOf(post);
+  revised.buffer = {
+    ...post.buffer, text: String((edited && edited.text) || revised.postText).replace(/\r\n/g, '\n').trim(), sentText: revised.postText,
+    tagRoles: ['engine', 'revised'], captionEdited: false, signature: contentSignature(revised),
+  };
   if (i >= 0) ledger.founder[i] = revised;
   return { ...base, applied: true, changed: ['caption'], post: revised };
 }
@@ -330,14 +348,18 @@ async function fillAll({ contentDir, brandDir, sourcesDir, config, provider, not
     const priors = all.filter((b) => b < name).map((b) => path.join(contentDir, b, 'ledger.json')).filter((f) => fs.existsSync(f)).map(read);
     const r = await fillFounder({ ledger, config, brandDir, brandText, sources: loaded.sources, provider, priors, now, force, log });
     const asking = ledger.founder.filter((p) => r.needsSource.includes(p.id));
-    for (const p of asking) p.askedAt = new Date(now).toISOString();
+    // Asked now if there is someone to tell; otherwise the push message asks.
+    if (notifier) for (const p of asking) p.askedAt = new Date(now).toISOString();
     write(file, ledger);
     out.batches.push({ batch: name, ...r });
     asks.push(...asking);
     failed.push(...ledger.founder.filter((p) => r.failed.includes(p.id)));
     if (r.written.length) touched.push(Number(name.slice(6)));
   }
-  const problems = loaded.problems.length ? `Material that could not be used:\n${loaded.problems.map((p) => `- ${p}`).join('\n')}` : null;
+  // Codex cannot listen to audio: a voice memo needs its transcript as text.
+  const recordings = loaded.untranscribed.map((f) => `${f} is a recording. Add its transcript as text to Sources (iPhone Voice Memos shows one under each recording; copy it into a note or a .txt file).`);
+  out.problems = [...loaded.problems, ...recordings];
+  const problems = out.problems.length ? `Material that could not be used:\n${out.problems.map((p) => `- ${p}`).join('\n')}` : null;
   for (const msg of [askMessage(asks, config), failedMessage(failed, config), problems]) if (msg && notifier) await notifier.send(msg);
   if (push && touched.length) {
     const { pushBatch, bufferConfig } = require('../buffer/push');

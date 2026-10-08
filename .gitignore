@@ -3,3 +3,4 @@ test/output/
 .staging/
 .env
 needs-render.txt
+**/exchange/requests/

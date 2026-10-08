@@ -149,14 +149,28 @@ library is checked for dashes, exclamation marks and sales words on every run.
 
 ## Providers
 
-`providers/openai.js` calls the OpenAI Responses API with a strict JSON schema, retries rate limits
-and server errors, and reads the key from the environment variable in `config.json`
-(`OPENAI_API_KEY`). `providers/mock.js` answers from recorded responses and is what the tests use. A
-new provider is one file that implements `generate({ key, system, user, schema, schemaName })` and
-returns `{ data, usage }`.
+Every step calls `provider.generate({ key, system, user, schema, schemaName, images })` and gets
+`{ data, usage }`; which model answers is `config.json` `provider.name`:
 
-The model in `config.json` is a starting value. Confirm it against the models available on the
-account when the key is set up, and run one batch with `--plan-only` first.
+- **`codex`** (Club Pilot): Codex on the client's ChatGPT subscription. Each request is answered by one
+  `codex exec`, read-only, held to the request's schema, signed in with the client's saved login
+  (`engine/codex-auth.js`). No API key, no per-token bill; it draws on the plan's Codex allowance.
+  This is how the scheduled workflows write.
+- **`agent`**: the agent running the command is the model (Codex in the client's ChatGPT, in
+  conversation). The run stops at the end of a stage with its open requests listed (exit 3); the agent
+  answers them and runs the command again.
+- **`openai`**: the Responses API with a key (`OPENAI_API_KEY`), billed per token.
+- **`mock`**: recorded responses, for the tests.
+
+`codex` and `agent` share the exchange (`providers/agent.js`): each request is a file in
+`<workspace>/exchange/requests/`, each answer a file in `responses/` with the hash of the request it
+answers. Answers replay on the next run, so a run that stopped (waiting for an agent, or at the ChatGPT
+usage limit) continues where it left off, and a request that changed since is answered again. Every
+answer is checked against its schema (`schema.js`) before the engine uses it, then the gates and
+rewrites run as on any model's answer.
+
+Voice memos need the `openai` provider to be transcribed; on the subscription, add the memo's
+transcript as text.
 
 ## Config
 
@@ -164,7 +178,7 @@ account when the key is set up, and run one batch with `--plan-only` first.
 {
   "timezone": "America/Los_Angeles",
   "review": "buffer-drafts",
-  "provider": { "name": "openai", "model": "...", "apiKeyEnv": "OPENAI_API_KEY", "reasoningEffort": "medium" },
+  "provider": { "name": "codex", "model": null, "cli": null },
   "cadence": { "batchDays": 14, "slots": [ { "dayOfBatch": 0, "time": "08:35", "channel": "linkedin_page" } ] },
   "channels": { "instagram": { "size": "ig" }, "linkedin_page": { "size": "li" } },
   "cta": { "every": 4, "type": "demo", "link": "https://...", "variants": [ { "id": "...", "linkedin": "... https://...", "instagram": "... Link in bio." } ] },

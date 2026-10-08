@@ -45,6 +45,7 @@ const { workspace } = require('../lib/workspace');
 const photoLib = require('./library');
 const { ingestOne, slugify, unsplashSource } = require('./ingest');
 const { proposeTags } = require('./vision');
+const { isPending } = require('../generate/providers/agent');
 const { GOOGLE_DOC } = require('../drive/client');
 
 const DEFAULT_FOLDERS = {
@@ -109,7 +110,7 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, s
   const reviewer = (config.buffer && config.buffer.reviewerName) || 'the reviewer';
   const folders = await drive.ensureFolders(dc.rootFolderId, dc.folders);
   const at = new Date(now).toISOString();
-  const result = { added: [], needsLook: [], moved: [], overrides: [], retiredMissing: [], autoRetired: [], duplicates: [], described: 0, briefs: [], sources: [] };
+  const result = { added: [], needsLook: [], moved: [], overrides: [], retiredMissing: [], autoRetired: [], duplicates: [], described: 0, briefs: [], sources: [], waiting: [] };
   const byFile = new Map(lib.photos.filter((p) => p.drive && p.drive.fileId).map((p) => [p.drive.fileId, p]));
   const byMd5 = new Map(lib.photos.filter((p) => p.drive && p.drive.md5).map((p) => [p.drive.md5, p]));
   const seen = new Set();
@@ -122,10 +123,11 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, s
     const local = path.join(tmp, `${id}${path.extname(f.name).toLowerCase() || '.jpg'}`);
     fs.writeFileSync(local, data);
     const credit = unsplashSource(f.name);
+    // Read first: a reading that has to wait (the agent provider) leaves nothing half-added.
+    const reading = await proposeTags({ provider, buffer: data, id, lib, brandName: config.brand || 'the brand' });
     await ingestOne(local, { license: credit ? null : `Supplied by ${reviewer} through the Drive photo library` }, lib, photosDir);
     const p = lib.photos.find((x) => x.id === id);
     if (credit) p.source = credit;
-    const reading = await proposeTags({ provider, buffer: data, id, lib, brandName: config.brand || 'the brand' });
     Object.assign(p, {
       subject: reading.subject, time: reading.time, people: reading.people, tags: reading.tags, focus: reading.focus,
       description: reading.description,
@@ -158,7 +160,15 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, s
     for (const f of inbox) {
       const fresh = await duplicateOf(f, folders.inbox);
       if (!fresh) continue;
-      const { p, reading } = await addPhoto(f, fresh.data, fresh.sum, `uploaded by ${reviewer}`);
+      let added;
+      try {
+        added = await addPhoto(f, fresh.data, fresh.sum, `uploaded by ${reviewer}`);
+      } catch (e) {
+        if (!isPending(e)) throw e;
+        result.waiting.push(f.name); // stays in Inbox until its reading is answered
+        continue;
+      }
+      const { p, reading } = added;
       if (reading.concerns.length) {
         p.restricted = true;
         p.restrictedReason = reading.concerns.join('; ');
@@ -182,7 +192,14 @@ async function syncDrive({ config, drive, provider, lib, photosDir, briefsDir, s
           if (role !== 'active' || !(IMAGE.test(f.name) || /^image\//.test(f.mimeType || ''))) continue;
           const fresh = await duplicateOf(f, folders.active);
           if (!fresh) continue;
-          const added = await addPhoto(f, fresh.data, fresh.sum, `moved to Active by ${reviewer}`);
+          let added;
+          try {
+            added = await addPhoto(f, fresh.data, fresh.sum, `moved to Active by ${reviewer}`);
+          } catch (e) {
+            if (!isPending(e)) throw e;
+            result.waiting.push(f.name);
+            continue;
+          }
           added.p.drive.folder = 'active';
           if (added.reading.concerns.length) {
             added.p.notes = `${added.p.notes ? `${added.p.notes} ` : ''}The reading noted: ${added.reading.concerns.join('; ')}; in rotation because ${reviewer} put it in Active.`.trim();

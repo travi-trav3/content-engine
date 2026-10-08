@@ -42,8 +42,10 @@ check('npm test in the instance runs every suite but this one, which needs the p
   !exists('test/instance.test.js') && !pkg.scripts['test:instance'] && !pkg.scripts.test.includes('instance')
   && pkg.scripts.test.split(' && ').length === JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).scripts.test.split(' && ').length - 1
   && pkg.scripts.test.split(' && ').every((s) => exists(s.replace(/^node /, ''))), pkg.scripts.test);
-const wfs = ['batch.yml', 'brief.yml', 'founder.yml', 'photos.yml', 'scout.yml', 'sync.yml'];
-check('the six instance workflows are installed beside CI', wfs.every((f) => exists(`.github/workflows/${f}`)) && r.workflows.length === 6);
+const wfs = ['brief.yml', 'drafts.yml', 'founder.yml', 'photos.yml', 'routine.yml', 'scout.yml', 'sync.yml'];
+check('the seven instance workflows are installed beside CI', wfs.every((f) => exists(`.github/workflows/${f}`)) && r.workflows.length === 7 && !exists('.github/workflows/batch.yml'));
+check('no workflow asks for an API key: writing runs on the ChatGPT subscription',
+  wfs.every((f) => !read(`.github/workflows/${f}`).includes('OPENAI_API_KEY')) && /CODEX_AUTH_KEY/.test(read('.github/workflows/routine.yml')));
 check('each is set to the brand workspace, with no placeholder left',
   wfs.every((f) => /\nenv:\n {2}CE_WORKSPACE: brands\/clubpilot\n/.test(read(`.github/workflows/${f}`)) && !read(`.github/workflows/${f}`).includes('__WS__')));
 check('the brief and founder workflows fire on the workspace\'s own folders', /- 'brands\/clubpilot\/briefs\/\*\*'/.test(read('.github/workflows/brief.yml'))

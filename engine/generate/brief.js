@@ -183,7 +183,15 @@ async function loadBriefs({ dir = path.join(workspace().dir, 'briefs'), provider
       if (saved.sourceSha256 === sha) { briefs.push(saved); continue; }
     }
     if (!provider) { unread.push(f); continue; }
-    const { data, usage } = await provider.generate({ key: `brief-${name}`, system: READ_SYSTEM, user: `<brief file="${f}">\n${text}\n</brief>`, schema: BRIEF_SCHEMA, schemaName: 'brief' });
+    let answer;
+    try {
+      answer = await provider.generate({ key: `brief-${name}`, system: READ_SYSTEM, user: `<brief file="${f}">\n${text}\n</brief>`, schema: BRIEF_SCHEMA, schemaName: 'brief' });
+    } catch (e) {
+      // The agent provider: the reading waits for its answer (provider.pending lists it).
+      if (e && e.pending) { unread.push(f); continue; }
+      throw e;
+    }
+    const { data, usage } = answer;
     log({ step: 'brief', name, usage });
     const brief = { name, source: f, sourceSha256: sha, readAt: new Date().toISOString(), ...withIds(name, data) };
     fs.writeFileSync(cache, `${JSON.stringify(brief, null, 2)}\n`);

@@ -1,0 +1,67 @@
+name: drafts
+
+# When a change to the content is pushed (Codex in the founder's ChatGPT
+# revising a post, as asked in conversation), Buffer catches up: posts ready
+# and not drafted are drafted, and drafts whose post changed are updated in
+# place, tagged Revised. A caption edited in Buffer is never overwritten.
+# Commits made by the other workflows do not start this one; they draft
+# themselves.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '__WS__/content/**'
+  workflow_dispatch:
+
+concurrency:
+  group: content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+# The brand workspace: set by scripts/make-instance.js.
+env:
+  CE_WORKSPACE: __WS__
+
+jobs:
+  drafts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: chromium-${{ hashFiles('package-lock.json') }}
+
+      - run: npx playwright-core install --with-deps chromium
+
+      - name: Draft and update in Buffer
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          ASSETS_PUSH_TOKEN: ${{ secrets.ASSETS_PUSH_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: node engine/buffer/push.js --open
+
+      - name: Commit what Buffer now holds
+        if: always()
+        run: |
+          git config user.name "content-engine"
+          git config user.email "content-engine@users.noreply.github.com"
+          git add "$CE_WORKSPACE/content"
+          git diff --cached --quiet && exit 0
+          git commit -m "drafts: Buffer updated [skip ci]"
+          git pull --rebase
+          git push
