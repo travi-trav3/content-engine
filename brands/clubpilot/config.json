@@ -43,11 +43,6 @@
         "channel": "instagram"
       },
       {
-        "dayOfBatch": 9,
-        "time": "12:20",
-        "channel": "linkedin_page"
-      },
-      {
         "dayOfBatch": 10,
         "time": "09:10",
         "channel": "linkedin_page"
@@ -55,11 +50,6 @@
       {
         "dayOfBatch": 11,
         "time": "18:35",
-        "channel": "instagram"
-      },
-      {
-        "dayOfBatch": 13,
-        "time": "16:40",
         "channel": "instagram"
       }
     ]
@@ -289,11 +279,19 @@
         "time": "07:40"
       },
       {
+        "dayOfBatch": 3,
+        "time": "07:40"
+      },
+      {
         "dayOfBatch": 8,
+        "time": "07:40"
+      },
+      {
+        "dayOfBatch": 10,
         "time": "07:40"
       }
     ],
-    "signOff": "Cheers, Byron White, Founder, Club Pilot",
+    "signOff": null,
     "minWords": 90,
     "maxWords": 220,
     "minOverlap": 0.6,

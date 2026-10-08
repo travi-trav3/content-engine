@@ -46,7 +46,12 @@ const OUT = path.join(__dirname, 'output', 'buffer');
 const NOW = Date.parse('2026-09-30T12:00:00Z');
 const baseConfig = JSON.parse(fs.readFileSync(path.join(WS.dir, 'config.json'), 'utf8'));
 const CHANNELS = { instagram: 'c0000000000000000000000a', linkedin_page: 'c0000000000000000000000b', linkedin_byron: null };
-const config = { ...baseConfig, buffer: { ...baseConfig.buffer, organizationId: 'o00000000000000000000001', channels: CHANNELS } };
+// The calendar the recorded batch was planned on (test/fixtures/generate/clubpilot/recorded-cadence.json).
+const RECORDED = JSON.parse(fs.readFileSync(path.join(GEN_FIXTURES, 'recorded-cadence.json'), 'utf8'));
+const config = {
+  ...baseConfig, cadence: RECORDED.cadence, founder: { ...baseConfig.founder, slots: RECORDED.founderSlots },
+  buffer: { ...baseConfig.buffer, organizationId: 'o00000000000000000000001', channels: CHANNELS },
+};
 
 let failures = 0;
 const check = (label, ok, detail = '') => {
@@ -155,7 +160,7 @@ function stubFetch(script) {
   const contentDir = path.join(dir, 'content');
   const stagingDir = path.join(dir, 'staging');
   const feedbackFile = path.join(dir, 'feedback', 'log.jsonl');
-  const gen = await runBatch({ provider: createMock({ dir: GEN_FIXTURES }), contentDir, stagingDir, start: '2026-10-05', now: NOW, feedbackFile });
+  const gen = await runBatch({ provider: createMock({ dir: GEN_FIXTURES }), config, contentDir, stagingDir, start: '2026-10-05', now: NOW, feedbackFile });
   check('the recorded batch generates clean', gen.ok, gen.stage);
   const batchDir = path.join(contentDir, 'batch-06');
   const ledgerFile = path.join(batchDir, 'ledger.json');

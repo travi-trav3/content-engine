@@ -148,9 +148,14 @@ If Byron does not review, drafts sit in Buffer and nothing publishes. That is th
 
 ### Byron's running costs
 
-OpenAI API usage (low single-digit dollars per batch at this size), a Buffer plan that covers three
-channels and API access (confirm API key availability on the plan he picks), GitHub Actions
-minutes (well inside the free allowance at biweekly cadence), GitHub hosting (free).
+OpenAI API usage (low single-digit dollars per batch at this size; billed on platform.openai.com,
+separately from his ChatGPT subscription; set a monthly limit), a Buffer plan that covers three
+channels and API access (2026-10-08: the free plan, which allows exactly three channels; confirm its
+API allowance covers sync, about 1,500 requests a month), GitHub Actions minutes (about 1,800 a month
+with sync every 15 minutes in working hours, against 2,000 free on a free organization's private
+repositories: put a card on the organization with a small spending limit, or jobs stop when the
+minutes run out), GitHub hosting (free), Unsplash (free; the demo key's 50 requests an hour covers the
+weekly scout many times over).
 
 ## 4. Timeline
 
@@ -591,3 +596,22 @@ Decisions for Byron:
   never a present integration.
 - His LinkedIn is locked in Buffer (5 channels on a 4-channel plan). Until it is connected, founder
   posts are written and wait, undrafted.
+
+### 2026-10-08, increment 13 (Byron's decisions via Travis)
+
+- No sign-off on posts. BRAND.md override and changelog; `founder.signOff` null. Email copy keeps it.
+- Two posts a week on each channel: Instagram and the company page lose one slot each in week 2 (Wed
+  LinkedIn, Sun Instagram), so 4 + 4 per batch; Byron's LinkedIn goes to Tuesday and Thursday 7:40,
+  4 per batch. The plan gate's limits hold at 8 posts (LinkedIn exactly half, surface cap 3, 2 to 3
+  carousels, 1 to 2 humor, at most 2 asks). The recorded test batch keeps its 10-slot calendar in
+  `test/fixtures/generate/clubpilot/recorded-cadence.json`.
+- Correction to increment 12: the October map's weeks 2 and 4 pass the gates as Byron wrote them. Only
+  "40+ integrations" tripped (stat gate), and that number is WriterAccess's, not Club Pilot's. It is now
+  an approved stat citing the map, scoped to sentences that name WriterAccess (new opt-in
+  `"scope": "sentence"` in approved-stats.json), so "Club Pilot has 40+ integrations" still fails.
+- Testing those topics found a real gap: "Club Pilot connects with the operational systems clubs already
+  rely on" passed, because the integration check named only the tee sheet, reservations, POS and club
+  software. Generic names now fail as a present-tense claim; Byron's ambition ("we want to connect
+  with...") passes. Regression cases both ways; no historical verdict changed.
+- Founder posts at 2 a week need about two memos a week, or one memo covering two topics. The October
+  map has one founder topic a week; the other slot writes from the strongest unused idea in his sources.

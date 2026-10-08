@@ -164,7 +164,13 @@ function checkPost(post, stats) {
     for (const n of extractNumerals(text)) {
       if (isExempt(n, text)) continue;
       const window = text.slice(Math.max(0, n.index - 30), n.index + n.token.length + 30);
-      const matchesApproved = referenced.some((s) => s.re.test(window));
+      // A stat with "scope": "sentence" is approved only where its whole
+      // pattern sits in the numeral's own sentence (the WriterAccess figure
+      // is approved for WriterAccess, never for Club Pilot).
+      const start = Math.max(...['.', '!', '?', '\n'].map((c) => text.lastIndexOf(c, n.index))) + 1;
+      const endAt = text.slice(n.index).search(/[.!?\n](\s|$)/);
+      const sentence = text.slice(start, endAt < 0 ? text.length : n.index + endAt + 1);
+      const matchesApproved = referenced.some((s) => s.re.test(s.scope === 'sentence' ? sentence : window));
       if (matchesApproved) continue;
       if (hasEstimateLabel(n, text)) continue;
       add(FAIL, 'stat.unapprovedNumeral',

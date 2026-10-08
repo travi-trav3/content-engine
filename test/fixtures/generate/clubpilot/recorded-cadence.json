@@ -1,0 +1,70 @@
+{
+  "_comment": "The cadence the recorded batch (Oct 5 to 18, 2026) was planned on: ten company posts and two founder slots, with the sign-off then in force. The recorded responses fit only this calendar, so the tests run on it whatever config.json says today (two a week per channel since 2026-10-08).",
+  "cadence": {
+    "batchDays": 14,
+    "startDay": "mon",
+    "slots": [
+      {
+        "dayOfBatch": 0,
+        "time": "08:35",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 1,
+        "time": "12:05",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 3,
+        "time": "09:50",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 5,
+        "time": "10:20",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 7,
+        "time": "07:55",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 8,
+        "time": "19:45",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 9,
+        "time": "12:20",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 10,
+        "time": "09:10",
+        "channel": "linkedin_page"
+      },
+      {
+        "dayOfBatch": 11,
+        "time": "18:35",
+        "channel": "instagram"
+      },
+      {
+        "dayOfBatch": 13,
+        "time": "16:40",
+        "channel": "instagram"
+      }
+    ]
+  },
+  "founderSlots": [
+    {
+      "dayOfBatch": 1,
+      "time": "07:40"
+    },
+    {
+      "dayOfBatch": 8,
+      "time": "07:40"
+    }
+  ],
+  "founderSignOff": "Cheers, Byron White, Founder, Club Pilot"
+}

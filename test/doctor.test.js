@@ -98,7 +98,7 @@ const has = (r, status, re) => r.checks.some((c) => c.status === status && re.te
     drive.ready && has(drive, 'fail', /Share the folder with engine@cp\.iam\.gserviceaccount\.com/));
   const lopsided = { ...config, cadence: { ...config.cadence, slots: config.cadence.slots.map((s) => ({ ...s, channel: 'instagram' })) } };
   const cad = await preflight({ config: lopsided, env, fetchImpl: services({}), ws: WS });
-  check('a cadence the plan gate would refuse fails before any batch is planned', !cad.ready && has(cad, 'fail', /LinkedIn has 0 of 10 slots/));
+  check('a cadence the plan gate would refuse fails before any batch is planned', !cad.ready && has(cad, 'fail', new RegExp(`LinkedIn has 0 of ${config.cadence.slots.length} slots`)));
 
   console.log('== offline, nothing set ==');
   const offlineFetch = services({});

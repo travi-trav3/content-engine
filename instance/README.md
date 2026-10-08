@@ -23,11 +23,11 @@ subfolder, as the Word file or Google Doc it was written in, or straight into `b
 file, Upload files). Name it so it sorts by month
 (`2026-11-november-map.docx`). Within a few minutes the reviewer gets a message: how many ideas the
 engine will use, the weekly themes, and anything in it that trips a check. The next batches draw at
-least three in ten posts from it.
+least three in ten posts from it (`brief.minShare`).
 
 ## The founder's posts
 
-Two founder posts a batch (Tuesdays) go to the founder's own LinkedIn, written only from the founder's
+Founder posts (set in `founder.slots`) go to the founder's own LinkedIn, written only from the founder's
 own words. The material goes in the Drive folder's `Sources` subfolder (a voice memo straight from a
 phone is the easiest: answer the questions the engine sent, out loud) or in `sources/` in GitHub. A
 memo is transcribed once; a call transcript counts only the founder's turns. When there is not enough

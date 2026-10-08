@@ -42,7 +42,8 @@ const read = (f) => JSON.parse(fs.readFileSync(f, 'utf8'));
 const base = read(path.join(WS.dir, 'config.json'));
 const config = {
   ...base,
-  founder: { ...base.founder, name: 'Dana', names: ['Dana', 'Dana Reyes'], signOff: 'Dana Reyes, Founder' },
+  // Two Tuesday slots, as the recorded responses were made for; a sign-off, to test the mechanism.
+  founder: { ...base.founder, name: 'Dana', names: ['Dana', 'Dana Reyes'], signOff: 'Dana Reyes, Founder', slots: [{ dayOfBatch: 1, time: '07:40' }, { dayOfBatch: 8, time: '07:40' }] },
   buffer: { ...base.buffer, organizationId: 'org-test', channels: { instagram: 'ch-ig', linkedin_page: 'ch-li', linkedin_byron: 'ch-founder' }, reviewers: [] },
 };
 const notifier = { sent: [], async send(m) { this.sent.push(m); } };
@@ -124,6 +125,9 @@ const notifier = { sent: [], async send(m) { this.sent.push(m); } };
   check('each takes the brief\'s founder idea for its week', slots.map((p) => p.briefItem).join() === 'map/founder-w1,map/founder-w2');
   const later = founder.planFounder({ config, start: '2026-10-05', batchNo: 2, briefs: [brief], priors: [{ founder: [{ briefItem: 'map/founder-w1' }] }] });
   check('an idea used before is not used again, and no slot runs a later week\'s idea', later[0].briefItem === null && later[1].briefItem === 'map/founder-w2');
+  const byron = founder.planFounder({ config: base, start: '2026-10-19', batchNo: 7 });
+  check('Byron\'s config: two founder posts a week, Tuesday and Thursday, with no sign-off (2026-10-08)',
+    byron.length === 4 && byron.map((p) => p.date).join() === '2026-10-20,2026-10-22,2026-10-27,2026-10-29' && base.founder.signOff === null, byron.map((p) => p.date).join());
   check('founder posts are off unless the config turns them on', founder.planFounder({ config: { ...config, founder: { ...config.founder, enabled: false } }, start: '2026-10-05', batchNo: 1 }).length === 0);
 
   console.log('== filling the slots: written, or stuck and reported ==');

@@ -76,6 +76,13 @@ const OPS_SYSTEMS = '(tee[ -]?sheets?|reservation systems?|point[ -]of[ -]sale|p
 const INTEGRATION_VERBS = '(integrat\\w*|sync\\w*|plugs? into|plugged into|pulls? (from|data from)|reads? from|writes? to|connects? (to|with)|connected (to|with)|hooks? into|talks? to)';
 const INTEGRATION_CLAIM = new RegExp(
   `\\b${INTEGRATION_VERBS}[^.!?\\n]{0,40}\\b${OPS_SYSTEMS}\\b|\\b${OPS_SYSTEMS}\\b[^.!?\\n]{0,20}\\b(integration|sync)\\b`, 'i');
+// The same systems by a generic name. Byron's partnership story (Oct map,
+// weeks 2 and 4) says Club Pilot wants to connect with them: as an ambition
+// that passes; as a present-tense fact it is the claim above. Named systems
+// get no ambition exemption.
+const OPS_GENERIC = '(operational (systems?|software|platforms?|technology|tools)|(systems?|software|tools|platforms?) (that )?(clubs?|the club|your club) (already )?(use|uses|run|runs|rel(y|ies) on|depends? on))';
+const GENERIC_CLAIM = new RegExp(`\\b${INTEGRATION_VERBS}[^.!?\\n]{0,40}\\b${OPS_GENERIC}`, 'i');
+const AMBITION = /\b(wants?|wanted|ambition|aims?|hopes?|plans?|goal|vision|believe|to (connect|integrate|sync|work) with)\b/i;
 
 // Permitted only inside interactionType === 'escalation'. Their presence is
 // what makes a blocked term survivable, with a named human clearing it.
@@ -225,6 +232,12 @@ function checkPost(post, approved) {
   if (claim) {
     add(FAIL, 'capability.integrationClaim',
       `Claims a live integration with an operational system: "${claim[0]}". Club Pilot sits beside the tee sheet, reservations and POS; it does not connect to them. If an integration ships, add it to the capability boundary before any post names it.`);
+  } else {
+    const generic = text.flatMap((t) => String(t).split(/(?<=[.!?])\s+/)).find((s) => GENERIC_CLAIM.test(s) && !AMBITION.test(s));
+    if (generic) {
+      add(FAIL, 'capability.integrationClaim',
+        `Claims a live integration with the systems clubs run: "${generic.match(GENERIC_CLAIM)[0]}". As an ambition ("we want to connect with the systems clubs rely on") it is the partnership story; stated as what Club Pilot does today, it is not true.`);
+    }
   }
 
   /* -- Rule 6: actions attributed to the assistant -------------------- */

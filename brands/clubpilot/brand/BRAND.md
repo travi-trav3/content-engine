@@ -28,6 +28,12 @@
 - **Byron's personal LinkedIn (2026-09-30)** is being connected to the new Buffer account. Founder posts
   are first person and come only from material Byron supplies (source mode); each is approved by him
   before it publishes.
+- **No sign-off on posts (2026-10-08, Byron via Travis).** Posts, founder posts included, end on their
+  last line. "Cheers, Byron White, Founder, Club Pilot" repeats his name under his name on his own
+  profile and reads as unnatural anywhere in a feed. The sign-off stays for email copy only.
+- **Cadence (2026-10-08, Byron via Travis):** two posts a week on each channel: Instagram, the Club
+  Pilot LinkedIn page, and Byron's own LinkedIn (`config.json` `cadence` and `founder.slots`). This
+  supersedes the October map's one founder post a week.
 - **Where clubs start (2026-09-30, home page draft "Fix the Messaging Channels. One at a Time.").**
   Byron softened the 2.0 story after Heather's concern about walking away from the SMS strength: most
   clubs start with text messaging and AI Assist, and 2.0 adds email and the mobile app, which a club
@@ -233,7 +239,7 @@ not ship.
 - Editorial mix (amended 2026-08-26, from Byron's brief): 50% teach or observe, 25% start
   conversations, 15% what we're learning or building, 10% promote. At most one post per batch
   carries a CTA. The old four-give-one-ask ratio is superseded (see changelog).
-- Sign founder/email copy as: **Cheers, Byron White, Founder, Club Pilot.** Internal docs sign as **Travis**.
+- Posts carry no sign-off (2026-10-08, see overrides). Email copy signs as: **Cheers, Byron White, Founder, Club Pilot.** Internal docs sign as **Travis**.
 
 **The disarm framework (run before writing any post):** (1) Who is this for — champion, buyer, or both, never "clubs." (2) What does it make them feel — one word (seen, safe, relieved, capable, hopeful). (3) Which aversion does it disarm — more systems, more work, or more risk. The through-line that disarms all three: *nothing you built was a mistake.*
 
@@ -481,6 +487,13 @@ Never use these. They are recorded so a future session does not rediscover and r
 Amendments preserve the superseded text here rather than deleting it, so the history stays legible.
 Note: this repo has no `ClubPilot_locked_state_v3.md`; this file is where the locked state lives, so
 the changelog lives here too.
+
+### 2026-10-08 — No sign-off on posts; two posts a week per channel
+
+- **§3 "Sign founder/email copy as: Cheers, Byron White, Founder, Club Pilot."** Superseded for posts;
+  kept for email copy.
+- **Cadence:** five company-page LinkedIn and five Instagram posts per two weeks, and one founder post
+  a week (October map), become two a week on each of the three channels.
 
 ### 2026-09-30 — Club Pilot 2.0 and the Sep 30 home page draft
 

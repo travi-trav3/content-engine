@@ -116,7 +116,7 @@ an experience he never had; this is the mode that makes that impossible to ship 
   speaker named in `founder.names` are the founder's; everything else is context. Everything in a
   document without turns is treated as the founder's, so `sources/` holds nothing else. The Drive folder
   `Sources` is copied in by the Drive sync.
-- **Slots** come from `founder.slots` (Tuesdays at 7:40 for Club Pilot) on `founder.channel`, recorded as
+- **Slots** come from `founder.slots` (Tuesdays and Thursdays at 7:40 for Club Pilot) on `founder.channel`, recorded as
   `ledger.founder`, beside the company feed and outside its plan and rotation. Each takes the brief's
   founder idea for its week, if there is one, or the strongest idea in the sources no earlier founder post
   was built on.

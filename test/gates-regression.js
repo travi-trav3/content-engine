@@ -167,6 +167,14 @@ fails('ordering dinner by text', capPost({ caption: 'Members order dinner by tex
 fails('a dining reservation outside any thread', capPost({ caption: 'Move a dining reservation in seconds.' }), 'capability.lexicon.blocked');
 fails('a claim that Club Pilot syncs with the tee sheet', capPost({ caption: 'Club Pilot syncs with your tee sheet.' }), 'capability.integrationClaim');
 fails('a claim of a POS integration', capPost({ caption: 'Answers come straight from the POS integration.' }), 'capability.integrationClaim');
+// Byron's October map, weeks 2 and 4: the partnership story is an ambition.
+// The same words as a present fact are the claim, by a generic name.
+fails('Club Pilot connects with the operational systems clubs rely on', capPost({ caption: 'Club Pilot connects with the operational systems clubs already rely on.' }), 'capability.integrationClaim');
+fails('answers sync with the software a club already uses', capPost({ caption: 'Answers sync with the software your club already uses.' }), 'capability.integrationClaim');
+fails('a named system gets no ambition exemption', capPost({ caption: 'Club Pilot wants to sync with your tee sheet.' }), 'capability.integrationClaim');
+passes('the ambition, in the map\'s words', capPost({ caption: 'Club Pilot wants to connect with the operational technology ecosystem rather than replace it.' }));
+passes('the ambition, about the systems clubs rely on', capPost({ caption: 'We want communication to connect with the systems clubs already rely on.' }));
+passes('not ripping them out', capPost({ caption: 'Club Pilot\'s ambition is not to rip them out but to connect with them.' }));
 
 console.log('== press: Golf Digest featured Club Pilot and judged nothing (BRAND.md section 8) ==');
 const pressRules = (caption) => brand.checkBatch({ posts: [{ id: 'press', pillar: 'Proof', headline: 'Featured at the PGA Show.', caption, clubMarks: [] }] })
@@ -179,6 +187,12 @@ pressFails('Golf Digest called it the best', 'Golf Digest called Club Pilot one 
 pressPasses('featured in Golf Digest', 'As featured in Golf Digest, 2026.');
 pressPasses('the locked quote, verbatim, with its attribution',
   `"${brand.PRESS_QUOTE}" Golf Digest, 2026`);
+
+console.log('== stats: a figure approved for one subject only (sentence scope) ==');
+const statRules = (caption) => stat.checkBatch({ posts: [{ id: 'st', caption }] }).failures.map((f) => f.rule);
+check('passes: Byron\'s WriterAccess figure, in the map\'s own sentence', statRules('WriterAccess connected businesses, writers, and 40+ integrations rather than trying to replace the ecosystem.').length === 0);
+check('fails: the same figure as a Club Pilot number (stat.unapprovedNumeral)', statRules('Club Pilot has 40+ integrations.').includes('stat.unapprovedNumeral'));
+check('fails: WriterAccess in the sentence before does not approve it (stat.unapprovedNumeral)', statRules('I learned a lot at WriterAccess. Club Pilot now has 40+ integrations.').includes('stat.unapprovedNumeral'));
 
 console.log('== source: founder voice restates a recorded source (Aug 24, Byron Aug 21) ==');
 // Byron's own written words of Aug 21, about the invented Aug 24 post. As a

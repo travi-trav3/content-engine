@@ -96,7 +96,7 @@ Rules that are checked, sentence by sentence:
 3. In a transcript, what other people said is context, never ${who}'s words. Never put it in ${who}'s mouth.
 4. A sentence that claims nothing (a short transition such as "Here's the thing.") may have no quote. So may a closing question to the reader that asserts nothing.
 5. If the sources do not hold enough of ${who}'s own words on the topic for a post of at least ${cfg.minWords} words, set supported to false, leave paragraphs empty, and write three to five questions ${who} could answer out loud in a few minutes that would give this post its material: ask for what happened, who was there, what changed, what ${who} learned. Plain words, one thing per question.
-6. Follow the brand files on words, punctuation and claims. The engine adds any sign-off; do not write one. No hashtags, no links, no emoji.
+6. Follow the brand files on words, punctuation and claims. Write no sign-off: the engine adds one only if the brand sets it. No hashtags, no links, no emoji.
 
 Shape: a first line that makes a club leader stop, short paragraphs of one to three sentences, ${cfg.minWords} to ${cfg.maxWords} words. Return only the JSON the schema asks for.`;
 }

@@ -36,7 +36,10 @@ const photoLib = require('../engine/photos/library');
 const WS = workspace();
 const FIXTURES = path.join(__dirname, 'fixtures', 'generate', 'clubpilot');
 const OUT = path.join(__dirname, 'output', 'generate');
-const config = JSON.parse(fs.readFileSync(path.join(WS.dir, 'config.json'), 'utf8'));
+// The live config, on the calendar the recorded batch was planned on.
+const RECORDED = JSON.parse(fs.readFileSync(path.join(FIXTURES, 'recorded-cadence.json'), 'utf8'));
+const liveConfig = JSON.parse(fs.readFileSync(path.join(WS.dir, 'config.json'), 'utf8'));
+const config = { ...liveConfig, cadence: RECORDED.cadence, founder: { ...liveConfig.founder, slots: RECORDED.founderSlots } };
 const brand = JSON.parse(fs.readFileSync(path.join(WS.brandDir, 'render.json'), 'utf8'));
 const NOW = Date.parse('2026-09-30T12:00:00Z');
 
@@ -184,7 +187,7 @@ function strict(schema, at = '$') {
   const mock = createMock({ dir: FIXTURES });
   const events = [];
   const r = await runBatch({
-    provider: mock, contentDir: path.join(dir, 'content'), stagingDir: path.join(dir, 'staging'),
+    provider: mock, config, contentDir: path.join(dir, 'content'), stagingDir: path.join(dir, 'staging'),
     start: '2026-10-05', now: NOW, log: (e) => events.push(e),
   });
   check('the batch finishes ready for review', r.ok && r.stage === 'done', JSON.stringify({ stage: r.stage, unresolved: r.unresolved, failures: r.failures }));
@@ -388,7 +391,7 @@ function strict(schema, at = '$') {
   const revMock = createMock({ dir: revDir });
   const revContent = freshContent('revision');
   const rr = await runBatch({
-    provider: revMock, contentDir: path.join(revContent, 'content'), stagingDir: path.join(revContent, 'staging'),
+    provider: revMock, config, contentDir: path.join(revContent, 'content'), stagingDir: path.join(revContent, 'staging'),
     start: '2026-10-05', now: NOW, planOnly: true,
   });
   const planCalls = revMock.calls.filter((c) => c.key === 'plan');

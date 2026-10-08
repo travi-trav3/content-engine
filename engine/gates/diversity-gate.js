@@ -49,7 +49,7 @@ const STOPWORDS = new Set([
 // Required treatments repeat by design and are exempt from the shared-phrase
 // check. Only mandated boilerplate belongs here, never a headline idea.
 const BOILERPLATE = [
-  'cheers byron white founder club pilot', // BRAND.md required founder sign-off
+  'cheers byron white founder club pilot', // the sign-off batches 1 to 3 carried; posts carry none since 2026-10-08
   'powered by club pilot',                 // required thread microline
 ];
 
