@@ -51,6 +51,12 @@ routine and changes in Codex", is what Codex follows):
 
 Notes on Buffer drafts still work too (`sync.yml` reads them every 15 minutes and revises with Codex).
 
+The Codex environment for this repository (ChatGPT, Codex, Environments): setup script
+`npm ci && npx playwright-core install --with-deps chromium`, environment variable
+`CE_WORKSPACE=brands/<brand>`. It needs no secrets and no internet access while working: Codex writes,
+checks and renders here, and a change reaches Buffer only after it is merged into `main`, from GitHub.
+In Codex on the web each change arrives as a pull request; merging it is the go-ahead.
+
 ## The ChatGPT login
 
 Scheduled runs sign in to Codex as the client. Once, on a computer the client trusts:
